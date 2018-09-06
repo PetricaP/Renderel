@@ -23,7 +23,7 @@ unsigned int Shader::CompileShader(const char *const shaderSource,
                                    unsigned int type) {
     GLCall(unsigned int shaderID = glCreateShader(type));
     GLCall(glShaderSource(shaderID, 1, &shaderSource, NULL));
-    delete shaderSource;
+    delete[] shaderSource;
 
     GLCall(glCompileShader(shaderID));
 
@@ -51,12 +51,7 @@ char *Shader::loadFile(std::string path) {
     }
     fseek(stream, 0, SEEK_END);
     unsigned long length = ftell(stream);
-    char *shaderSource = (char *)malloc(length * sizeof(char));
-    if (shaderSource == NULL) {
-        fprintf(stderr, "Failed to allocate memory for file %s\n",
-                path.c_str());
-        return NULL;
-    }
+    char *shaderSource = new char[length];
     shaderSource[length] = '\0';
     fseek(stream, 0, SEEK_SET);
     fread(shaderSource, 1, length, stream);
