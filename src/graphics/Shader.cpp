@@ -1,7 +1,6 @@
 #include "Debug.hpp"
 #include "GL/glew.h"
 #include "graphics/Shader.hpp"
-#include <iostream>
 
 namespace renderel::graphics {
 
@@ -13,6 +12,10 @@ Shader::Shader(std::string vertexShaderPath, std::string fragmentShaderPath) {
     unsigned int fragmentShaderID =
         CompileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
     m_RendererID = CreateProgram(vertexShaderID, fragmentShaderID);
+}
+
+Shader::~Shader() {
+    glDeleteProgram(m_RendererID);
 }
 
 void Shader::Bind() const { glUseProgram(m_RendererID); }
@@ -51,12 +54,11 @@ char *Shader::loadFile(std::string path) {
     }
     fseek(stream, 0, SEEK_END);
     unsigned long length = ftell(stream);
-    char *shaderSource = new char[length];
+    char *shaderSource = new char[length + 1];
     shaderSource[length] = '\0';
     fseek(stream, 0, SEEK_SET);
     fread(shaderSource, 1, length, stream);
     fclose(stream);
-    std::cout << shaderSource << std::endl;
     return shaderSource;
 }
 

@@ -11,6 +11,7 @@ class Shader {
 
   public:
     Shader(std::string vertexShaderPath, std::string fragmentShaderPath);
+    ~Shader();
     void Bind() const;
     void Unbind() const;
 

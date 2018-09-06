@@ -2,6 +2,8 @@
 #include "GL/glew.h"
 #include "Window.hpp"
 #include "graphics/Shader.hpp"
+#include "graphics/VertexBuffer.hpp"
+#include "graphics/VertexArray.hpp"
 #include <iostream>
 
 using namespace renderel::graphics;
@@ -16,18 +18,13 @@ int main() {
         -0.5f, -0.5f  // 2
     };
 
-    unsigned int vao;
-    GLCall(glGenVertexArrays(1, &vao));
-    GLCall(glBindVertexArray(vao));
+    VertexArray va;
+    VertexBuffer vb(positions, sizeof(positions));
+    VertexBufferLayout layout;
+    layout.Push<float>(2);
 
-    unsigned int vbo;
-    GLCall(glGenBuffers(1, &vbo));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, vbo));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions,
-                        GL_STATIC_DRAW));
-
-    GLCall(glEnableVertexAttribArray(0));
-    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0));
+    va.AddBuffer(vb, layout);
+    va.Bind();
 
     unsigned int indices[] = {0, 1, 2};
 
