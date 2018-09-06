@@ -1,3 +1,0 @@
-/home/ppetrica/Renderel/out/CMakeFiles/CMakeTmp/CMakeFiles/rebuild_cache.dir
-/home/ppetrica/Renderel/out/CMakeFiles/CMakeTmp/CMakeFiles/edit_cache.dir
-/home/ppetrica/Renderel/out/CMakeFiles/CMakeTmp/CMakeFiles/cmTC_bf229.dir
