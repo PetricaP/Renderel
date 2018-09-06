@@ -1,9 +1,5 @@
 # Cleaning...
-rm -rf ./out
-mkdir out
 
-cd out
-cmake -G"Unix Makefiles" ..
-make
-
-cd ..
+make -C lib/glew/auto/
+cmake . -Bbuild/
+make -C build/
