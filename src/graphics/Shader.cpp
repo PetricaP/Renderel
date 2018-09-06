@@ -52,13 +52,16 @@ char *Shader::loadFile(std::string path) {
         fprintf(stderr, "Couldn't open file %s\n", path.c_str());
         return NULL;
     }
+
     fseek(stream, 0, SEEK_END);
     unsigned long length = ftell(stream);
+
     char *shaderSource = new char[length + 1];
     shaderSource[length] = '\0';
     fseek(stream, 0, SEEK_SET);
     fread(shaderSource, 1, length, stream);
     fclose(stream);
+
     return shaderSource;
 }
 
