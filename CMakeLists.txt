@@ -8,6 +8,11 @@ project(Renderel)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -pedantic -Wall -Wextra -g")
 
+if (UNIX)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    set(OpenGL_GL_PREFERENCE LEGACY)
+endif (UNIX)
+
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
@@ -27,5 +32,6 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw)
 
 add_executable(Renderel ${PROJECT_SOURCES})
 
-target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/include/graphics)
+
 target_link_libraries(Renderel glew_s glfw)
