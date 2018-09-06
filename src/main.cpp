@@ -3,6 +3,8 @@
 #include "Window.hpp"
 #include <iostream>
 
+using namespace renderel::graphics;
+
 static int CompileShader(char shaderSource[], unsigned int type) {
     GLCall(unsigned int shaderID = glCreateShader(type));
     GLCall(glShaderSource(shaderID, 1, &shaderSource, NULL));
@@ -62,8 +64,8 @@ static unsigned int CreateGLSLProgram(unsigned int vertexShaderID,
 }
 
 int main() {
-    renderel::graphics::Window window(960, 540, "Hello");
-    window.setClearColor(0.7f, 0.7f, 0.2f);
+    Window window(960, 540, "Hello");
+    window.SetClearColor(0.8f, 0.8f, 0.0f);
 
     float positions[] = {
         0.5f,  -0.5f, // 0
@@ -105,7 +107,7 @@ int main() {
                                   "layout(location = 0) out vec4 color;\n"
                                   "\n"
                                   "void main() {"
-                                  "   color = vec4(0.5f, 0.1f, 0.1f, 1.0f);\n"
+                                  "   color = vec4(0.8f, 0.2f, 0.2f, 1.0f);\n"
                                   "}\n";
 
     unsigned int vertexShaderID =

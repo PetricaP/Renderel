@@ -35,7 +35,7 @@ Window::Window(int width, int height, std::string title)
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void Window::setClearColor(float r, float g, float b) {
+void Window::SetClearColor(float r, float g, float b) {
     glClearColor(r, g, b, 1.0f);
 }
 

@@ -36,6 +36,6 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw)
 
 add_executable(Renderel ${PROJECT_SOURCES})
 
-target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/include/graphics)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(Renderel glew_s glfw)

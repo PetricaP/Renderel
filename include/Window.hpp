@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_WINDOW_HPP
-#define GRAPHICS_WINDOW_HPP
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
 #include <string>
 #include <GL/glew.h>
@@ -20,7 +20,7 @@ public:
     void Clear() const;
     void SwapBuffers() const;
     void PollEvents() const;
-    void setClearColor(float r, float g, float b);
+    void SetClearColor(float r, float g, float b);
 
     int getWidth() const { return m_Width; }
     int getHeight() const { return m_Width; }
@@ -28,4 +28,4 @@ public:
 
 } // namespace renderel::graphics
 
-#endif // GRAPHICS_WINDOW_HPP
+#endif // WINDOW_HPP
