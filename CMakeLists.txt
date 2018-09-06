@@ -18,7 +18,11 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 # Adding GLEW
 
+set( BUILD_SHARED_LIBS FALSE )
+set( BUILD_UTILS OFF CACHE BOOL "" FORCE )
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glew/build/cmake)
+set_target_properties(glew PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
 
 # Adding GLFW
 
