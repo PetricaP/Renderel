@@ -48,6 +48,9 @@ bool Window::ShouldClose() const { return glfwWindowShouldClose(m_GLFWwindow); }
 
 void Window::Clear() const {
     glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Window::SwapBuffers() const {
     glfwSwapBuffers(m_GLFWwindow);
 }
 

@@ -18,6 +18,7 @@ public:
 
     bool ShouldClose() const;
     void Clear() const;
+    void SwapBuffers() const;
     void PollEvents() const;
     void setClearColor(float r, float g, float b);
 
