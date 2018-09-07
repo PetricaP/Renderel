@@ -5,13 +5,13 @@ namespace renderel::graphics {
 
 class IndexBuffer {
   private:
-    unsigned int m_RendererID;
+	unsigned int m_RendererID;
 
   public:
-    IndexBuffer(void *data, unsigned int count);
-    ~IndexBuffer();
-    void Bind() const;
-    void Unbind() const;
+	IndexBuffer(void *data, unsigned int count);
+	~IndexBuffer();
+	void Bind() const;
+	void Unbind() const;
 };
 
 } // namespace renderel::graphics

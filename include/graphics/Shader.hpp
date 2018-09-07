@@ -7,20 +7,20 @@ namespace renderel::graphics {
 
 class Shader {
   private:
-    unsigned int m_RendererID;
+	unsigned int m_RendererID;
 
   public:
-    Shader(std::string vertexShaderPath, std::string fragmentShaderPath);
-    ~Shader();
-    void Bind() const;
-    void Unbind() const;
+	Shader(std::string vertexShaderPath, std::string fragmentShaderPath);
+	~Shader();
+	void Bind() const;
+	void Unbind() const;
 
   private:
-    static unsigned int CompileShader(const char *const shaderSource,
-                                      unsigned int type);
-    static char *loadFile(std::string path);
-    static unsigned int CreateProgram(unsigned int vertexShaderID,
-                                      unsigned int fragmentShaderID);
+	static unsigned int CompileShader(const char *const shaderSource,
+									  unsigned int type);
+	static char *loadFile(std::string path);
+	static unsigned int CreateProgram(unsigned int vertexShaderID,
+									  unsigned int fragmentShaderID);
 };
 
 } // namespace renderel::graphics
