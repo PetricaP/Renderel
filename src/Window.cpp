@@ -1,7 +1,7 @@
 #include "Window.hpp"
 #include <iostream>
 
-namespace renderel::graphics {
+namespace renderel {
 
 Window::Window(int width, int height, std::string title)
     : m_Width(width), m_Height(height) {
@@ -58,4 +58,4 @@ void Window::PollEvents() const {
     glfwPollEvents();
 }
 
-} // namespace renderel::graphics
+} // namespace renderel

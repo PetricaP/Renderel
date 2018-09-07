@@ -1,18 +1,19 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <string>
-#include <GL/glew.h>
 #include "GLFW/glfw3.h"
+#include "GL/glew.h"
+#include <string>
 
-namespace renderel::graphics {
+namespace renderel {
 
 class Window {
   private:
     int m_Width;
     int m_Height;
     GLFWwindow *m_GLFWwindow;
-public:
+
+  public:
     Window(int width, int height, std::string title);
     ~Window();
 
@@ -26,6 +27,6 @@ public:
     int getHeight() const { return m_Width; }
 };
 
-} // namespace renderel::graphics
+} // namespace renderel
 
 #endif // WINDOW_HPP
