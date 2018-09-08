@@ -3,7 +3,8 @@
 
 namespace renderel::math {
 
-template <typename T> struct Vec2 {
+template <typename T>
+struct Vec2 {
 	T x;
 	T y;
 
