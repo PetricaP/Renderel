@@ -18,14 +18,14 @@ int main() {
 		-0.5f, 0.5f   // 3
 	};
 
+	unsigned int indices[] = {0, 1, 2, 1, 2, 3};
+
 	renderel::graphics::VertexArray va;
 	renderel::graphics::VertexBuffer vb(positions, sizeof(positions));
 	renderel::graphics::VertexBufferLayout layout;
 	layout.Push<float>(2);
 
 	va.AddBuffer(vb, layout);
-
-	unsigned int indices[] = {0, 1, 2, 1, 2, 3};
 
 	renderel::graphics::IndexBuffer ib(indices, sizeof(indices));
 

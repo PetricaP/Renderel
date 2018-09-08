@@ -21,7 +21,7 @@ class Window {
 	void Clear() const;
 	void SwapBuffers() const;
 	void PollEvents() const;
-	void SetClearColor(float r, float g, float b);
+	void SetClearColor(float r, float g, float b) const;
 
 	int getWidth() const { return m_Width; }
 	int getHeight() const { return m_Width; }

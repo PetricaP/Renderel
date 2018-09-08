@@ -35,7 +35,7 @@ Window::Window(int width, int height, std::string title)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void Window::SetClearColor(float r, float g, float b) {
+void Window::SetClearColor(float r, float g, float b) const {
 	glClearColor(r, g, b, 1.0f);
 }
 
@@ -46,16 +46,10 @@ Window::~Window() {
 
 bool Window::ShouldClose() const { return glfwWindowShouldClose(m_GLFWwindow); }
 
-void Window::Clear() const {
-	glClear(GL_COLOR_BUFFER_BIT);
-}
+void Window::Clear() const { glClear(GL_COLOR_BUFFER_BIT); }
 
-void Window::SwapBuffers() const {
-	glfwSwapBuffers(m_GLFWwindow);
-}
+void Window::SwapBuffers() const { glfwSwapBuffers(m_GLFWwindow); }
 
-void Window::PollEvents() const {
-	glfwPollEvents();
-}
+void Window::PollEvents() const { glfwPollEvents(); }
 
 } // namespace renderel
