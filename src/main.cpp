@@ -5,11 +5,12 @@
 #include "graphics/Shader.hpp"
 #include "graphics/VertexArray.hpp"
 #include "graphics/VertexBuffer.hpp"
+#include <cmath>
 #include <iostream>
 
 int main() {
 	renderel::Window window(960, 540, "Hello");
-	window.SetClearColor(0.8f, 0.8f, 0.0f);
+	window.SetClearColor(0.1f, 0.1f, 0.1f);
 
 	float positions[] = {
 		0.5f,  -0.5f, // 0
@@ -32,14 +33,24 @@ int main() {
 	renderel::graphics::Shader shader("shaders/vertexShader.glsl",
 									  "shaders/fragmentShader.glsl");
 
+	shader.Bind();
+	shader.SetUniform2f("u_LightPos", 0.0f, 0.0f);
+
+	float g = 0.0f;
 	while (!window.ShouldClose()) {
 		window.PollEvents();
 		window.Clear();
+
 		va.Bind();
 		shader.Bind();
 		ib.Bind();
+
+		shader.SetUniform4f("u_Color", 0.5f + sin(g) / 2, 0.3f, 0.4f, 1.0f);
+
 		GLCall(
 			glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0));
+
 		window.SwapBuffers();
+		g += 0.1;
 	}
 }

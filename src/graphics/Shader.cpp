@@ -1,22 +1,24 @@
 #include "Debug.hpp"
 #include "GL/glew.h"
 #include "graphics/Shader.hpp"
+#include <iostream>
 
 namespace renderel::graphics {
 
-Shader::Shader(std::string vertexShaderPath, std::string fragmentShaderPath) {
+Shader::Shader(const std::string &vertexShaderPath,
+			   const std::string &fragmentShaderPath) {
 	char *vertexShaderSource = loadFile(vertexShaderPath);
 	char *fragmentShaderSource = loadFile(fragmentShaderPath);
+
 	unsigned int vertexShaderID =
 		CompileShader(vertexShaderSource, GL_VERTEX_SHADER);
 	unsigned int fragmentShaderID =
 		CompileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
+
 	m_RendererID = CreateProgram(vertexShaderID, fragmentShaderID);
 }
 
-Shader::~Shader() {
-	glDeleteProgram(m_RendererID);
-}
+Shader::~Shader() { glDeleteProgram(m_RendererID); }
 
 void Shader::Bind() const { glUseProgram(m_RendererID); }
 
@@ -35,11 +37,13 @@ unsigned int Shader::CompileShader(const char *const shaderSource,
 	if (compilationResult != GL_TRUE) {
 		fprintf(stderr, "Failed to compile %s shader.\n",
 				(type == GL_VERTEX_SHADER) ? "vertex" : "fragment");
+
 		int infoLogLength = 0;
 		GLCall(glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
 		char log[1024];
 		GLCall(glGetShaderInfoLog(shaderID, infoLogLength, NULL, log));
 		fprintf(stderr, "Log: %s\n", log);
+
 		GLCall(glDeleteShader(shaderID));
 	}
 
@@ -81,6 +85,7 @@ unsigned int Shader::CreateProgram(unsigned int vertexShaderID,
 
 	int infoLogLength;
 	GLCall(glGetProgramiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
+
 	if (infoLogLength > 0) {
 		char *log = (char *)malloc((infoLogLength + 1) * sizeof(char));
 		if (log == NULL) {
@@ -98,6 +103,28 @@ unsigned int Shader::CreateProgram(unsigned int vertexShaderID,
 	GLCall(glDeleteShader(fragmentShaderID));
 
 	return shaderID;
+}
+
+int Shader::GetUniformLocation(const std::string &name) {
+	if (m_LocationCache.find(name) != m_LocationCache.end()) {
+		return m_LocationCache[name];
+	}
+	GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
+	if (location == -1) {
+		std::cout << "Warning: Uniform " << name << " might not exist."
+				  << std::endl;
+	}
+	m_LocationCache[name] = location;
+	return location;
+}
+
+void Shader::SetUniform4f(const std::string &name, float f0, float f1, float f2,
+						  float f3) {
+	GLCall(glUniform4f(GetUniformLocation(name), f0, f1, f2, f3));
+}
+
+void Shader::SetUniform2f(const std::string &name, float f0, float f1) {
+	GLCall(glUniform2f(GetUniformLocation(name), f0, f1));
 }
 
 } // namespace renderel::graphics
