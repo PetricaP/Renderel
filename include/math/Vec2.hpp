@@ -6,9 +6,11 @@
 namespace renderel::math {
 
 template <typename T>
-struct Vec2 {
-	T x;
-	T y;
+union Vec2 {
+	struct {
+		T x, y;
+	};
+	T elements[2];
    
     Vec2();
     Vec2(T x, T y);
@@ -22,7 +24,20 @@ struct Vec2 {
 	Vec2 &operator-=(const Vec2 &other);
 	Vec2 &operator*=(const Vec2 &other);
 	Vec2 &operator/=(const Vec2 &other);
+
+	T &operator[](unsigned int index);
+	T operator[](unsigned int index) const;
 };
+
+template <typename T>
+T &Vec2<T>::operator[](unsigned int index) {
+	return elements[index];
+}
+
+template <typename T>
+T Vec2<T>::operator[](unsigned int index) const {
+	return elements[index];
+}
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Vec2<T>& vec) {
