@@ -37,9 +37,9 @@ Mat4<T> Mat4<T>::Ortho(T right, T left, T top, T bottom, T near, T far) {
 	mat[0][0] = 2.0f / (right - left);
 	mat[1][1] = 2.0f / (top - bottom);
 	mat[2][2] = -2.0f / (far - near);
-	mat[0][3] = - (right + left) / (right - left);
-	mat[1][3] = - (top + bottom) / (top - bottom);
-	mat[2][3] = - (far + near) / (far - near);
+    mat[0][3] = -(right + left) / (right - left);
+    mat[1][3] = -(top + bottom) / (top - bottom);
+    mat[2][3] = -(far + near) / (far - near);
 	return mat;
 }
 

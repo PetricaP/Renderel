@@ -11,7 +11,7 @@ class Window {
   private:
 	int m_Width;
 	int m_Height;
-	GLFWwindow *m_GLFWwindow;
+    GLFWwindow *m_GLFWwindow = nullptr;
 
   public:
 	Window(int width, int height, std::string title);

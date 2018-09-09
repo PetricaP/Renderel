@@ -10,12 +10,13 @@ set(CMAKE_BUILD_TYPE Debug)
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   # using Clang
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -pedantic -Wall -Wextra -g -fms-extensions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wno-gnu-anonymous-struct -Wall -Wextra -g")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # using GCC
+    set(ignoreMe "${QT_QMAKE_EXECUTABLE}")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     set(OpenGL_GL_PREFERENCE LEGACY)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -pedantic -Wall -Wextra -g -fms-extensions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wno-gnu-anonymous-struct -Wall -Wextra -g")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
   # using Intel C++ 
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
@@ -23,13 +24,12 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif()
 
-file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 # Adding GLEW
 
-set( BUILD_SHARED_LIBS FALSE )
-set( BUILD_UTILS OFF CACHE BOOL "" FORCE )
+set(BUILD_SHARED_LIBS FALSE)
+set(BUILD_UTILS OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glew/build/cmake)
 set_target_properties(glew PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
@@ -44,7 +44,11 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw)
 
 #Adding Renderel
 
-add_executable(Renderel ${PROJECT_SOURCES})
+file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
+file(GLOB_RECURSE PROJECT_HEADERS "src/*.hpp")
+file(GLOB SHADERS shaders/*.frag shaders/*.vert shaders/*.glsl)
+
+add_executable(Renderel ${SHADERS} ${PROJECT_SOURCES} ${PROJECT_HEADERS})
 
 target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include ${PROJECT_SOURCE_DIR}/include)
 

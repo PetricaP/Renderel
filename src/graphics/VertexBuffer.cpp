@@ -1,6 +1,6 @@
+#include "graphics/VertexBuffer.hpp"
 #include "Debug.hpp"
 #include "GL/glew.h"
-#include "graphics/VertexBuffer.hpp"
 
 namespace renderel::graphics {
 

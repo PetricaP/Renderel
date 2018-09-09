@@ -7,9 +7,9 @@ namespace renderel::math {
 
 template <typename T>
 union Vec3 {
-	struct {
+    struct {
 		T x, y, z;
-	};
+    };
 	T elements[3];
 
 	Vec3();

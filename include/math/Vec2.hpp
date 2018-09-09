@@ -11,7 +11,7 @@ union Vec2 {
 		T x, y;
 	};
 	T elements[2];
-   
+
     Vec2();
     Vec2(T x, T y);
 
@@ -40,18 +40,16 @@ T Vec2<T>::operator[](unsigned int index) const {
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream& os, const Vec2<T>& vec) {
+std::ostream &operator<<(std::ostream &os, const Vec2<T> &vec) {
     std::cout << "Vec2(" << vec.x << ", " << vec.y << ")";
     return os;
 }
 
 template <typename T>
-Vec2<T>::Vec2() :
-    x(0), y(0) { }
+Vec2<T>::Vec2() : x(0), y(0) {}
 
 template <typename T>
-Vec2<T>::Vec2(T x, T y) :
-    x(x), y(y) { }
+Vec2<T>::Vec2(T x, T y) : x(x), y(y) {}
 
 template <typename T>
 void Vec2<T>::add(const Vec2<T> &other) {
