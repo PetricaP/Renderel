@@ -5,6 +5,7 @@
 #include "graphics/Shader.hpp"
 #include "graphics/VertexArray.hpp"
 #include "graphics/VertexBuffer.hpp"
+#include "math/Vec3.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -35,6 +36,11 @@ int main() {
 
 	shader.Bind();
 	shader.SetUniform2f("u_LightPos", 0.0f, 0.0f);
+
+    renderel::math::Vec3<int> Helou(3, 4, 8);
+    renderel::math::Vec3<int> Yay(4,2,5);
+    renderel::math::Vec3<int> Sum = Helou + Yay;
+    std::cout << Sum << std::endl;
 
 	float g = 0.0f;
 	while (!window.ShouldClose()) {
