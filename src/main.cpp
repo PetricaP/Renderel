@@ -9,8 +9,12 @@
 #include <cmath>
 #include <iostream>
 
+using namespace renderel;
+using namespace math;
+using namespace graphics;
+
 int main() {
-	renderel::Window window(960, 540, "Hello");
+	Window window(960, 540, "Hello");
 	window.SetClearColor(0.1f, 0.1f, 0.1f);
 
 	float positions[] = {
@@ -22,25 +26,20 @@ int main() {
 
 	unsigned int indices[] = {0, 1, 2, 1, 2, 3};
 
-	renderel::graphics::VertexArray va;
-	renderel::graphics::VertexBuffer vb(positions, sizeof(positions));
-	renderel::graphics::VertexBufferLayout layout;
+	VertexArray va;
+	VertexBuffer vb(positions, sizeof(positions));
+	VertexBufferLayout layout;
 	layout.Push<float>(2);
 
 	va.AddBuffer(vb, layout);
 
-	renderel::graphics::IndexBuffer ib(indices, sizeof(indices));
+	IndexBuffer ib(indices, sizeof(indices));
 
-	renderel::graphics::Shader shader("shaders/vertexShader.glsl",
+	Shader shader("shaders/vertexShader.glsl",
 									  "shaders/fragmentShader.glsl");
 
 	shader.Bind();
 	shader.SetUniform2f("u_LightPos", 0.0f, 0.0f);
-
-    renderel::math::Vec3<int> Helou(3, 4, 8);
-    renderel::math::Vec3<int> Yay(4,2,5);
-    renderel::math::Vec3<int> Sum = Helou + Yay;
-    std::cout << Sum << std::endl;
 
 	float g = 0.0f;
 	while (!window.ShouldClose()) {

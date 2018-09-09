@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_SHADER_HPP
 #define GRAPHICS_SHADER_HPP
 
+#include "math/Mat4.hpp"
 #include <string>
 #include <unordered_map>
 
@@ -22,6 +23,7 @@ class Shader {
 	void SetUniform4f(const std::string &name, float f0, float f1, float f2,
 					  float f3);
 	void SetUniform2f(const std::string &name, float f0, float f1);
+	void SetUniformMat4f(const std::string &name, const math::Mat4<float> &mat);
 
   private:
 	int GetUniformLocation(const std::string &name);

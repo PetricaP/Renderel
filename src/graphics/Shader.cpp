@@ -127,4 +127,9 @@ void Shader::SetUniform2f(const std::string &name, float f0, float f1) {
 	GLCall(glUniform2f(GetUniformLocation(name), f0, f1));
 }
 
+void Shader::SetUniformMat4f(const std::string &name,
+							 const math::Mat4<float> &mat) {
+	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat.elements[0][0]));
+}
+
 } // namespace renderel::graphics
