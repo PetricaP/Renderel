@@ -7,12 +7,13 @@ namespace renderel::math {
 
 template <typename T = float>
 union Vec3 {
-    struct {
+	struct {
 		T x, y, z;
-    };
+	};
 	T elements[3];
 
 	Vec3();
+	Vec3(T t);
 	Vec3(T x, T y, T z);
 
 	void add(const Vec3 &other);
@@ -24,6 +25,11 @@ union Vec3 {
 	Vec3 &operator-=(const Vec3 &other);
 	Vec3 &operator*=(const Vec3 &other);
 	Vec3 &operator/=(const Vec3 &other);
+
+	Vec3 &operator+=(T t);
+	Vec3 &operator-=(T t);
+	Vec3 &operator*=(T t);
+	Vec3 &operator/=(T t);
 
 	T &operator[](unsigned int index);
 	T operator[](unsigned int index) const;
@@ -47,6 +53,9 @@ std::ostream &operator<<(std::ostream &os, const Vec3<T> &vec) {
 
 template <typename T>
 Vec3<T>::Vec3() : x(0), y(0), z(0) {}
+
+template <typename T>
+Vec3<T>::Vec3(T t) : x(t), y(t), z(t) {}
 
 template <typename T>
 Vec3<T>::Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
@@ -104,6 +113,38 @@ Vec3<T> &Vec3<T>::operator/=(const Vec3<T> &other) {
 }
 
 template <typename T>
+Vec3<T> &Vec3<T>::operator+=(T t) {
+	x += t;
+	y += t;
+	z += t;
+	return *this;
+}
+
+template <typename T>
+Vec3<T> &Vec3<T>::operator-=(T t) {
+	x -= t;
+	y -= t;
+	z -= t;
+	return *this;
+}
+
+template <typename T>
+Vec3<T> &Vec3<T>::operator*=(T t) {
+	x *= t;
+	y *= t;
+	z *= t;
+	return *this;
+}
+
+template <typename T>
+Vec3<T> &Vec3<T>::operator/=(T t) {
+	x /= t;
+	y /= t;
+	z /= t;
+	return *this;
+}
+
+template <typename T>
 Vec3<T> operator+(const Vec3<T> &first, const Vec3<T> &second) {
 	return {first.x + second.x, first.y + second.y, first.z + second.z};
 }
@@ -121,6 +162,46 @@ Vec3<T> operator*(const Vec3<T> &first, const Vec3<T> &second) {
 template <typename T>
 Vec3<T> operator/(const Vec3<T> &first, const Vec3<T> &second) {
 	return {first.x / second.x, first.y / second.y, first.z / second.z};
+}
+
+template <typename T>
+Vec3<T> operator+(const Vec3<T> &vec, T t) {
+	return {vec.x + t, vec.y + t, vec.z + t};
+}
+
+template <typename T>
+Vec3<T> operator-(const Vec3<T> &vec, T t) {
+	return {vec.x - t, vec.y - t, vec.z - t};
+}
+
+template <typename T>
+Vec3<T> operator*(const Vec3<T> &vec, T t) {
+	return {vec.x * t, vec.y * t, vec.z * t};
+}
+
+template <typename T>
+Vec3<T> operator/(const Vec3<T> &vec, T t) {
+	return {vec.x / t, vec.y / t, vec.z / t};
+}
+
+template <typename T>
+Vec3<T> operator+(T t, const Vec3<T> &vec) {
+	return {vec.x + t, vec.y + t, vec.z + t};
+}
+
+template <typename T>
+Vec3<T> operator-(T t, const Vec3<T> &vec) {
+	return {t - vec.x, t - vec.y, t - vec.z};
+}
+
+template <typename T>
+Vec3<T> operator*(T t, const Vec3<T> &vec) {
+	return {vec.x * t, vec.y * t, vec.z * t};
+}
+
+template <typename T>
+Vec3<T> operator/(T t, const Vec3<T> &vec) {
+	return {vec.x / t, vec.y / t, vec.z / t};
 }
 
 } // namespace renderel::math

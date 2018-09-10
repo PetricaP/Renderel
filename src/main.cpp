@@ -27,7 +27,7 @@ using APIWindowHandle = GLFWwindow *;
 
 int main() {
 	std::unique_ptr<Window> window =
-		std::make_unique<APIWindow>(WIDTH, HEIGHT, "Hello");
+		std::make_unique<APIWindow>(WIDTH, HEIGHT, "Renderel");
 
 	Renderer::InitGraphics();
 	Renderer::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -67,7 +67,6 @@ int main() {
 
 	Mat4<> model =
 		Mat4<>::Translation(Vec3<>(WIDTH / 2 - HEIGHT / 4, HEIGHT / 4, 0.0f));
-
 	shader.SetUniformMat4f("u_Model", model);
 
 	Texture texture("res/textures/cpp_logo.png");
@@ -87,8 +86,23 @@ int main() {
 											static_cast<float>(mousePos.x),
 											static_cast<float>(mousePos.y));
 		renderable.GetShader().SetUniformMat4f("u_Proj", proj);
-		renderable.GetShader().SetUniform4f("u_Color", 0.5f + sinf(g) / 2, 0.3f,
-											0.4f, 1.0f);
+		float s = sinf(g);
+		renderable.GetShader().SetUniform4f("u_Color", 0.5f + s / 2, 0.3f,
+											0.5f + cosf(g) / 2, 1.0f);
+		Mat4<> translation = Mat4<>::Translation(
+			Vec3<>(sinf(g / 10) * WIDTH / 3 + WIDTH / 2 - HEIGHT / 4,
+				   HEIGHT / 4, 0.0f));
+
+		Vec3<> scaleVec(0.7f + s / 3);
+		Mat4<> scale = Mat4<>::Scale(scaleVec);
+
+		Vec3<> translateScaleVec =
+			(1.0f - scaleVec) * Vec3<>(WIDTH / 8, HEIGHT / 8, 1);
+		Mat4<> translateScaleCenter = Mat4<>::Translation(translateScaleVec);
+
+		Mat4<> model = translation * translateScaleCenter * scale;
+		shader.SetUniformMat4f("u_Model", model);
+
 		texture.Bind();
 		shader.SetUniform1i("u_Texture", 0);
 

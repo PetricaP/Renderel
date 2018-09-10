@@ -20,8 +20,8 @@ union Mat4 {
 	Vec4<T> &operator[](unsigned int index);
 
 	static Mat4 Ortho(T right, T left, T top, T bottom, T near, T far);
-    static Mat4 Translation(const Vec3<T> &amount);
-    static Mat4 Scale(const Vec3<T> &scale);
+	static Mat4 Translation(const Vec3<T> &amount);
+	static Mat4 Scale(const Vec3<T> &scale);
 };
 
 template <typename T>
@@ -36,32 +36,33 @@ Vec4<T> &Mat4<T>::operator[](unsigned int index) {
 
 template <typename T>
 Mat4<T> Mat4<T>::Scale(const Vec3<T> &amount) {
-    Mat4<T> mat;
-    mat[0][0] = amount.x;
-    mat[1][1] = amount.y;
-    mat[2][2] = amount.z;
-    mat[3][3] = 1;
-    return mat;
+	Mat4<T> mat;
+	mat[0][0] = amount.x;
+	mat[1][1] = amount.y;
+	mat[2][2] = amount.z;
+	mat[3][3] = 1;
+	return mat;
 }
 
 template <typename T>
 Mat4<T> Mat4<T>::Translation(const Vec3<T> &amount) {
-    Mat4<T> mat(1);
-    mat[0][3] = amount.x;
-    mat[1][3] = amount.y;
-    mat[2][3] = amount.z;
-    return mat;
+	Mat4<T> mat(1);
+	mat[0][3] = amount.x;
+	mat[1][3] = amount.y;
+	mat[2][3] = amount.z;
+	return mat;
 }
 
 template <typename T>
 Mat4<T> Mat4<T>::Ortho(T left, T right, T bottom, T top, T near, T far) {
-	Mat4<T> mat(1);
+	Mat4<T> mat;
 	mat[0][0] = 2.0f / (right - left);
 	mat[1][1] = 2.0f / (top - bottom);
-    mat[2][2] = 2.0f / (near - far);
-    mat[0][3] = (right + left) / (left - right);
-    mat[1][3] = (top + bottom) / (bottom - top);
-    mat[2][3] = (far + near) / (far - near);
+	mat[2][2] = 2.0f / (near - far);
+	mat[0][3] = (right + left) / (left - right);
+	mat[1][3] = (top + bottom) / (bottom - top);
+	mat[2][3] = (far + near) / (far - near);
+	mat[3][3] = 1;
 	return mat;
 }
 
@@ -135,7 +136,7 @@ Mat4<T>::Mat4() {
 
 template <typename T>
 Mat4<T>::Mat4(T diag) {
-    memset(elements, 0, sizeof(elements));
+	memset(elements, 0, sizeof(elements));
 	for (int i = 0; i < 4; ++i) {
 		elements[i][i] = diag;
 	}
