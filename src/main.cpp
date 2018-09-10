@@ -1,6 +1,7 @@
 #include "Debug.hpp"
 #include "GL/glew.h"
 #include "WindowGLFW.hpp"
+#include "graphics/BasicRenderer.hpp"
 #include "graphics/IndexBuffer.hpp"
 #include "graphics/Shader.hpp"
 #include "graphics/VertexArray.hpp"
@@ -20,10 +21,17 @@ using namespace graphics;
 #define WIDTH 1080
 #define HEIGHT 720
 
+using APIWindow = WindowGLFW;
+using APIWindowHandle = GLFWwindow *;
+
 int main() {
     std::unique_ptr<Window> window =
-        std::make_unique<WindowGLFW>(WIDTH, HEIGHT, "Hello");
-    window->SetClearColor(0.1f, 0.1f, 0.1f);
+        std::make_unique<APIWindow>(WIDTH, HEIGHT, "Hello");
+
+    Renderer::InitGraphics();
+    Renderer::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+    std::unique_ptr<Renderer> renderer = std::make_unique<BasicRenderer>();
 
 	float positions[] = {
         0.0f,		  0.0f,			 // 0
@@ -59,27 +67,26 @@ int main() {
     shader.SetUniformMat4f("u_Model", model);
 
 	float g = 0.0f;
+    Renderable renderable(va, ib, shader);
     while (!window->ShouldClose()) {
         window->PollEvents();
-        window->Clear();
+        Renderer::Clear();
 
         Vec2<double> mousePos;
-        glfwGetCursorPos(static_cast<GLFWwindow *>(window->GetAPIwindow()),
-                         &mousePos.x, &mousePos.y);
-        shader.SetUniform2f("u_LightPos", static_cast<float>(mousePos.x),
-                            static_cast<float>(mousePos.y));
+        glfwGetCursorPos(
+            static_cast<APIWindowHandle>(window->GetAPIWindowHandle()),
+            &mousePos.x, &mousePos.y);
 
-        shader.SetUniformMat4f("u_Proj", proj);
+        renderable.GetShader().SetUniform2f("u_LightPos",
+                                            static_cast<float>(mousePos.x),
+                                            static_cast<float>(mousePos.y));
+        renderable.GetShader().SetUniformMat4f("u_Proj", proj);
+        renderable.GetShader().SetUniform4f("u_Color", 0.5f + sinf(g) / 2, 0.3f,
+                                            0.4f, 1.0f);
 
-		va.Bind();
-		shader.Bind();
-		ib.Bind();
+        renderer->Submit(renderable);
 
-        shader.SetUniform4f("u_Color", 0.5f + sinf(g) / 2, 0.3f, 0.4f, 1.0f);
-
-        GLCall(glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT,
-                              nullptr));
-
+        renderer->Flush();
         window->SwapBuffers();
 		g += 0.1;
 	}

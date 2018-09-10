@@ -45,11 +45,11 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw)
 #Adding Renderel
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
-file(GLOB_RECURSE PROJECT_HEADERS "src/*.hpp")
+file(GLOB_RECURSE PROJECT_HEADERS "include/*.hpp")
 file(GLOB SHADERS shaders/*.frag shaders/*.vert shaders/*.glsl)
 
 add_executable(Renderel ${SHADERS} ${PROJECT_SOURCES} ${PROJECT_HEADERS})
 
-target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(Renderel glew_s glfw)

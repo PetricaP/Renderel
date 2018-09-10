@@ -15,10 +15,9 @@ class WindowGLFW final : public Window {
     WindowGLFW(int width, int height, std::string title);
     virtual ~WindowGLFW() override;
 
-    virtual void *GetAPIwindow() override { return m_GLFWwindow; }
+    virtual void *GetAPIWindowHandle() override { return m_GLFWwindow; }
 
     virtual bool ShouldClose() const override;
-    virtual void Clear() const override;
     virtual void SwapBuffers() const override;
     virtual void PollEvents() const override;
 };

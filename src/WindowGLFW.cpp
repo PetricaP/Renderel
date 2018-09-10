@@ -1,5 +1,4 @@
 #include "WindowGLFW.hpp"
-#include <GL/glew.h>
 #include <iostream>
 
 namespace renderel {
@@ -28,13 +27,6 @@ WindowGLFW::WindowGLFW(int width, int height, std::string title)
 
     glfwMakeContextCurrent(m_GLFWwindow);
     glfwSwapInterval(1);
-
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "Error!" << std::endl;
-        exit(1);
-    }
-
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 WindowGLFW::~WindowGLFW() {
@@ -45,8 +37,6 @@ WindowGLFW::~WindowGLFW() {
 bool WindowGLFW::ShouldClose() const {
     return glfwWindowShouldClose(m_GLFWwindow);
 }
-
-void WindowGLFW::Clear() const { glClear(GL_COLOR_BUFFER_BIT); }
 
 void WindowGLFW::SwapBuffers() const { glfwSwapBuffers(m_GLFWwindow); }
 
