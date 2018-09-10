@@ -5,7 +5,25 @@ project(Renderel)
 
 # Setting up some flags
 
-set(CMAKE_BUILD_TYPE Debug)
+if ( CMAKE_BUILD_TYPE STREQUAL "" )
+        # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
+        # differentiation between debug and release builds.
+        set(
+                CMAKE_BUILD_TYPE
+                        "Debug"
+                CACHE STRING
+                        "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
+                FORCE
+        )
+endif ( CMAKE_BUILD_TYPE STREQUAL "" )
+
+if ( CMAKE_BUILD_TYPE STREQUAL "Release" )
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+        add_definitions( /O2 )
+    else()
+        add_definitions( -O3 )
+    endif()
+endif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   # using Clang
