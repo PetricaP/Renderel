@@ -80,22 +80,23 @@ unsigned int Shader::CreateProgram(unsigned int vertexShaderID,
 	GLCall(glGetProgramiv(shaderID, GL_LINK_STATUS, &result));
 	if (result == GL_FALSE) {
 		fprintf(stderr, "Failed to link program\n");
-		return 0;
-	}
 
-	int infoLogLength;
-	GLCall(glGetProgramiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
+		int infoLogLength;
+		GLCall(glGetProgramiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
 
-	if (infoLogLength > 0) {
-        char *log = static_cast<char *>(malloc(
-            static_cast<unsigned long>((infoLogLength + 1)) * sizeof(char)));
-        if (log == nullptr) {
-			fprintf(stderr, "Couldn't allocate memory for shader log.");
-			exit(EXIT_FAILURE);
+		if (infoLogLength > 0) {
+			char *log = static_cast<char *>(
+				malloc(static_cast<unsigned long>((infoLogLength + 1)) *
+					   sizeof(char)));
+			if (log == nullptr) {
+				fprintf(stderr, "Couldn't allocate memory for shader log.");
+				exit(EXIT_FAILURE);
+			}
+			GLCall(glGetProgramInfoLog(shaderID, infoLogLength, nullptr, log));
+			fprintf(stderr, "Log: %s\n", log);
+			free(log);
 		}
-        GLCall(glGetProgramInfoLog(shaderID, infoLogLength, nullptr, log));
-		fprintf(stderr, "Log: %s\n", log);
-		free(log);
+		return 0;
 	}
 
 	GLCall(glDetachShader(shaderID, vertexShaderID));
