@@ -52,12 +52,10 @@ int main() {
 
 	shader.Bind();
 
-    Mat4<float> proj =
-        Mat4<float>::Ortho(0.0f, WIDTH, HEIGHT, 0.0f, -1.0f, 1.0f);
+    Mat4<> proj = Mat4<>::Ortho(0.0f, WIDTH, HEIGHT, 0.0f, -1.0f, 1.0f);
     shader.SetUniformMat4f("u_Proj", proj);
 
-    Mat4<float> model =
-        Mat4<float>::Translation(Vec3<float>(WIDTH / 4, HEIGHT / 4, 0.0f));
+    Mat4<> model = Mat4<>::Translation(Vec3<>(WIDTH / 4, HEIGHT / 4, 0.0f));
     shader.SetUniformMat4f("u_Model", model);
 
 	float g = 0.0f;

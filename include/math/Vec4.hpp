@@ -5,7 +5,7 @@
 
 namespace renderel::math {
 
-template <typename T>
+template <typename T = float>
 union Vec4 {
 	struct {
 		T x, y, z, w;
