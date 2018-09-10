@@ -1,11 +1,13 @@
 #version 330 core
 
-layout(location = 0) in vec2 position;
-out vec2 pos;
+layout(location = 0) in vec4 position;
 
-uniform mat4 u_Proj = mat4(1.0f);
+uniform mat4 u_Proj;
+uniform mat4 u_Model;
+
+out vec4 o_Pos;
 
 void main() {
-        gl_Position = u_Proj * vec4(position, 0.0f, 1.0f);
-	pos = position;
+        gl_Position = u_Proj * u_Model * position;
+        o_Pos = u_Model * position;
 }

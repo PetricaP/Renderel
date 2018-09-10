@@ -1,28 +1,35 @@
 #include "Debug.hpp"
 #include "GL/glew.h"
-#include "Window.hpp"
+#include "WindowGLFW.hpp"
 #include "graphics/IndexBuffer.hpp"
 #include "graphics/Shader.hpp"
 #include "graphics/VertexArray.hpp"
 #include "graphics/VertexBuffer.hpp"
 #include "math/Mat4.hpp"
+#include "math/Vec2.hpp"
 #include "math/Vec3.hpp"
+#include <GLFW/glfw3.h>
 #include <cmath>
 #include <iostream>
+#include <memory>
 
 using namespace renderel;
 using namespace math;
 using namespace graphics;
 
+#define WIDTH 1080
+#define HEIGHT 720
+
 int main() {
-	Window window(960, 540, "Hello");
-	window.SetClearColor(0.1f, 0.1f, 0.1f);
+    std::unique_ptr<Window> window =
+        std::make_unique<WindowGLFW>(WIDTH, HEIGHT, "Hello");
+    window->SetClearColor(0.1f, 0.1f, 0.1f);
 
 	float positions[] = {
-		0.5f,  -0.5f, // 0
-		0.5f,  0.5f,  // 1
-		-0.5f, -0.5f, // 2
-		-0.5f, 0.5f   // 3
+        0.0f,		  0.0f,			 // 0
+        WIDTH / 2.0f, 0.0f,			 // 2
+        0.0f,		  HEIGHT / 2.0f, // 1
+        WIDTH / 2.0f, HEIGHT / 2.0f  // 3
 	};
 
     unsigned int indices[] = {
@@ -31,7 +38,9 @@ int main() {
     };
 
 	VertexArray va;
+
 	VertexBuffer vb(positions, sizeof(positions));
+
 	VertexBufferLayout layout;
 	layout.Push<float>(2);
 
@@ -42,15 +51,27 @@ int main() {
     Shader shader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
 	shader.Bind();
-	shader.SetUniform2f("u_LightPos", 0.0f, 0.0f);
 
-    Mat4<float> proj(1.0f);
+    Mat4<float> proj =
+        Mat4<float>::Ortho(0.0f, WIDTH, HEIGHT, 0.0f, -1.0f, 1.0f);
     shader.SetUniformMat4f("u_Proj", proj);
 
+    Mat4<float> model =
+        Mat4<float>::Translation(Vec3<float>(WIDTH / 4, HEIGHT / 4, 0.0f));
+    shader.SetUniformMat4f("u_Model", model);
+
 	float g = 0.0f;
-	while (!window.ShouldClose()) {
-		window.PollEvents();
-		window.Clear();
+    while (!window->ShouldClose()) {
+        window->PollEvents();
+        window->Clear();
+
+        Vec2<double> mousePos;
+        glfwGetCursorPos(static_cast<GLFWwindow *>(window->GetAPIwindow()),
+                         &mousePos.x, &mousePos.y);
+        shader.SetUniform2f("u_LightPos", static_cast<float>(mousePos.x),
+                            static_cast<float>(mousePos.y));
+
+        shader.SetUniformMat4f("u_Proj", proj);
 
 		va.Bind();
 		shader.Bind();
@@ -61,7 +82,7 @@ int main() {
         GLCall(glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT,
                               nullptr));
 
-		window.SwapBuffers();
+        window->SwapBuffers();
 		g += 0.1;
 	}
 }

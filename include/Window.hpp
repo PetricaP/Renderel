@@ -1,8 +1,6 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
 #include <string>
 
 namespace renderel {
@@ -11,17 +9,21 @@ class Window {
   private:
 	int m_Width;
 	int m_Height;
-    GLFWwindow *m_GLFWwindow = nullptr;
+
+  protected:
+    Window(int width, int height);
 
   public:
-	Window(int width, int height, std::string title);
-	~Window();
+    virtual ~Window() = default;
 
-	bool ShouldClose() const;
-	void Clear() const;
-	void SwapBuffers() const;
-	void PollEvents() const;
-	void SetClearColor(float r, float g, float b) const;
+    // This method is only here for debugging
+    virtual void *GetAPIwindow() = 0;
+
+    virtual bool ShouldClose() const = 0;
+    virtual void Clear() const = 0;
+    virtual void SwapBuffers() const = 0;
+    virtual void PollEvents() const = 0;
+    void SetClearColor(float r, float g, float b) const;
 
 	int getWidth() const { return m_Width; }
 	int getHeight() const { return m_Width; }

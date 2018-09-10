@@ -130,7 +130,7 @@ void Shader::SetUniform2f(const std::string &name, float f0, float f1) {
 
 void Shader::SetUniformMat4f(const std::string &name,
 							 const math::Mat4<float> &mat) {
-    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE,
+    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_TRUE,
                               &mat.elements[0][0]));
 }
 
