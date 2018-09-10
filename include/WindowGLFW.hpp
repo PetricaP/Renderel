@@ -9,17 +9,17 @@ namespace renderel {
 
 class WindowGLFW final : public Window {
   private:
-    GLFWwindow *m_GLFWwindow = nullptr;
+	GLFWwindow *m_GLFWwindow = nullptr;
 
   public:
-    WindowGLFW(int width, int height, std::string title);
-    virtual ~WindowGLFW() override;
+	WindowGLFW(int width, int height, std::string title);
+	virtual ~WindowGLFW() override;
 
-    virtual void *GetAPIWindowHandle() override { return m_GLFWwindow; }
+	virtual void *GetAPIWindowHandle() override { return m_GLFWwindow; }
 
-    virtual bool ShouldClose() const override;
-    virtual void SwapBuffers() const override;
-    virtual void PollEvents() const override;
+	virtual bool ShouldClose() const override;
+	virtual void SwapBuffers() const override;
+	virtual void PollEvents() const override;
 };
 
 } // namespace renderel

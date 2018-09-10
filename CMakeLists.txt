@@ -10,13 +10,13 @@ set(CMAKE_BUILD_TYPE Debug)
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   # using Clang
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wno-gnu-anonymous-struct -Wall -Wextra -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions  -Wall -Wextra -g")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # using GCC
     set(ignoreMe "${QT_QMAKE_EXECUTABLE}")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     set(OpenGL_GL_PREFERENCE LEGACY)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wno-gnu-anonymous-struct -Wall -Wextra -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wall -Wextra -g")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
   # using Intel C++ 
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
@@ -45,11 +45,11 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw)
 #Adding Renderel
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
-file(GLOB_RECURSE PROJECT_HEADERS "include/*.hpp")
+file(GLOB_RECURSE PROJECT_HEADERS "include/*.h*")
 file(GLOB SHADERS shaders/*.frag shaders/*.vert shaders/*.glsl)
 
 add_executable(Renderel ${SHADERS} ${PROJECT_SOURCES} ${PROJECT_HEADERS})
 
-target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include PUBLIC ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/include/vendor)
 
 target_link_libraries(Renderel glew_s glfw)

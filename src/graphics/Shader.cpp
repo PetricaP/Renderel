@@ -27,7 +27,7 @@ void Shader::Unbind() const { glUseProgram(0); }
 unsigned int Shader::CompileShader(const char *const shaderSource,
 								   unsigned int type) {
 	GLCall(unsigned int shaderID = glCreateShader(type));
-    GLCall(glShaderSource(shaderID, 1, &shaderSource, nullptr));
+	GLCall(glShaderSource(shaderID, 1, &shaderSource, nullptr));
 	delete[] shaderSource;
 
 	GLCall(glCompileShader(shaderID));
@@ -41,7 +41,7 @@ unsigned int Shader::CompileShader(const char *const shaderSource,
 		int infoLogLength = 0;
 		GLCall(glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
 		char log[1024];
-        GLCall(glGetShaderInfoLog(shaderID, infoLogLength, nullptr, log));
+		GLCall(glGetShaderInfoLog(shaderID, infoLogLength, nullptr, log));
 		fprintf(stderr, "Log: %s\n", log);
 
 		GLCall(glDeleteShader(shaderID));
@@ -52,15 +52,15 @@ unsigned int Shader::CompileShader(const char *const shaderSource,
 
 char *Shader::loadFile(std::string path) {
 	FILE *stream = fopen(path.c_str(), "rt");
-    if (stream == nullptr) {
+	if (stream == nullptr) {
 		fprintf(stderr, "Couldn't open file %s\n", path.c_str());
-        return nullptr;
+		return nullptr;
 	}
 
 	fseek(stream, 0, SEEK_END);
-    unsigned long length = static_cast<unsigned long>(ftell(stream));
+	unsigned long length = static_cast<unsigned long>(ftell(stream));
 
-    char *shaderSource = new char[length + 1];
+	char *shaderSource = new char[length + 1];
 	shaderSource[length] = '\0';
 	fseek(stream, 0, SEEK_SET);
 	fread(shaderSource, 1, length, stream);
@@ -131,8 +131,12 @@ void Shader::SetUniform2f(const std::string &name, float f0, float f1) {
 
 void Shader::SetUniformMat4f(const std::string &name,
 							 const math::Mat4<float> &mat) {
-    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_TRUE,
-                              &mat.elements[0][0]));
+	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_TRUE,
+							  &mat.elements[0][0]));
+}
+
+void Shader::SetUniform1i(const std::string &name, int val) {
+	GLCall(glUniform1i(GetUniformLocation(name), val));
 }
 
 } // namespace renderel::graphics
