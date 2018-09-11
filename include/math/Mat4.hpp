@@ -3,6 +3,7 @@
 
 #include "math/Vec3.hpp"
 #include "math/Vec4.hpp"
+#include <cmath>
 #include <cstring>
 #include <iostream>
 
@@ -20,7 +21,9 @@ union Mat4 {
 	Vec4<T> &operator[](unsigned int index);
 
 	static Mat4 Ortho(T right, T left, T top, T bottom, T near, T far);
-	static Mat4 Translation(const Vec3<T> &amount);
+    static Mat4 Perspective(float fov, float aspectRatio, float near,
+                            float far);
+    static Mat4 Translation(const Vec3<T> &amount);
 	static Mat4 Scale(const Vec3<T> &scale);
 };
 
@@ -64,6 +67,17 @@ Mat4<T> Mat4<T>::Ortho(T left, T right, T bottom, T top, T near, T far) {
 	mat[2][3] = (far + near) / (far - near);
 	mat[3][3] = 1;
 	return mat;
+}
+
+template <typename T>
+Mat4<T> Perspective(float fov, float aspectRatio, float near, float far) {
+    Mat4<T> mat;
+    mat[0][0] = 1.0f / (aspectRatio * tanf(fov / 2));
+    mat[1][1] = 1.0f / tanf(fov / 2);
+    mat[2][2] = -(far + near) / (far - near);
+    mat[3][2] = -1;
+    mat[2][3] = -(2.0f * far * near) / (far - near);
+    return mat;
 }
 
 template <typename T>
