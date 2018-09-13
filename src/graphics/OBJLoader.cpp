@@ -1,4 +1,3 @@
-#include "graphics/IndexBuffer.hpp"
-#include "Debug.hpp"
+#include "graphics/OBJLoader.hpp"
 
 namespace renderel::graphics {} // namespace renderel::graphics
