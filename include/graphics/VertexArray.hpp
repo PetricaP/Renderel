@@ -10,14 +10,14 @@ namespace renderel::graphics {
 class VertexArray {
   private:
 	unsigned int m_RendererID;
+	std::vector<VertexBuffer *> m_VBs;
 
   public:
 	VertexArray();
 	~VertexArray();
-	void AddBuffer(const VertexBuffer &vb,
-				   const VertexBufferLayout &layout) const;
-	void AddBuffers(std::vector<const VertexBuffer> vbs,
-					const VertexBufferLayout &layout) const;
+	void AddBuffer(VertexBuffer *vb, const VertexBufferLayout &layout);
+	void AddBuffers(std::vector<VertexBuffer *> vbs,
+					const VertexBufferLayout &layout);
 
 	void Bind() const;
 	void Unbind() const;
