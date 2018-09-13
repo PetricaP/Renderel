@@ -17,8 +17,6 @@ class WindowGLFW final : public Window {
                EventHandler *eventHandler);
     virtual ~WindowGLFW() override;
 
-	virtual void *GetAPIWindowHandle() override { return m_GLFWwindow; }
-
 	virtual bool ShouldClose() const override;
 	virtual void SwapBuffers() const override;
     virtual void PollEvents() const override;

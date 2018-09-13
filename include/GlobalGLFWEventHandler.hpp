@@ -10,18 +10,37 @@
 namespace renderel {
 
 // TODO: Add codes for events and keys
-enum Type {
+enum Action {
     KEYUP = GLFW_RELEASE,
-    KEYDOWN = GLFW_PRESS,
+    PRESS = GLFW_PRESS,
     KEYREPEAT = GLFW_REPEAT,
-    MOUSEUP,
-    MOUSEDOWN
+};
+
+enum Type { KEY, MOUSEBUTTON, MOUSEMOTION };
+
+#define MOUSE_BUTTON_LEFT GLFW_MOUSE_BUTTON_LEFT
+#define MOUSE_BUTTON_RIGHT GLFW_MOUSE_BUTTON_RIGHT
+
+struct KeyboardEvent {
+    unsigned int key;
+    unsigned int action;
+};
+
+struct MouseButtonEvent {
+    unsigned int button;
+    unsigned int action;
+};
+
+struct MouseMotionEvent {
+    int xPos;
+    int yPos;
 };
 
 struct Event {
 	Type type;
-	unsigned int key;
-	unsigned int action;
+    KeyboardEvent keyEvent;
+    MouseButtonEvent mouseButtonEvent;
+    MouseMotionEvent mouseMotionEvent;
 };
 
 struct WindowEventData {
@@ -31,45 +50,17 @@ struct WindowEventData {
 
 class GlobalGLFWEventHandler {
   private:
-    std::unordered_map<GLFWwindow *, WindowEventData> m_EventPoll;
+    static std::unordered_map<GLFWwindow *, WindowEventData> m_EventPoll;
 
   public:
-	void PollEvents(GLFWwindow *window) {
-        auto &windowEventData = m_EventPoll[window];
-        EventHandler *handler = windowEventData.eventHandler;
-        std::queue<Event> &queue = windowEventData.events;
-        static int count = 0;
-        while (!queue.empty()) {
-			count++;
-			Event &event = queue.front();
-			switch (event.action) {
-            case MOUSEDOWN:
-				handler->OnMouseUp(event.key, false);
-				break;
-            case MOUSEUP:
-				handler->OnMouseDown(event.key, false);
-                break;
-            case KEYDOWN:
-                handler->OnKeyDown(event.key, false);
-                break;
-            case KEYUP:
-                handler->OnKeyUp(event.key, false);
-                break;
-            case KEYREPEAT:
-                handler->OnKeyDown(event.key, true);
-                break;
-            }
-			queue.pop();
-		}
-	}
+    static void PollEvents(GLFWwindow *window);
+    static void PushEvent(GLFWwindow *window, const Event &event);
 
-	void PushEvent(GLFWwindow *window, Event event) {
-        m_EventPoll[window].events.push(event);
-	}
+    static auto &GetEventPoll() { return m_EventPoll; }
 
-    std::unordered_map<GLFWwindow *, WindowEventData> &GetEventPoll() {
-        return m_EventPoll;
-    }
+  private:
+    static void HandleEvents(WindowEventData &windowEventData);
+    static void HandleKeyEvent(EventHandler *handler, const Event &event);
 };
 
 } // namespace renderel

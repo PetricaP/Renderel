@@ -18,9 +18,6 @@ class Window {
   public:
     virtual ~Window() = default;
 
-    // TODO: This method is only here for debugging
-    virtual void *GetAPIWindowHandle() = 0;
-
     virtual bool ShouldClose() const = 0;
     virtual void SwapBuffers() const = 0;
     virtual void PollEvents() const = 0;

@@ -9,14 +9,11 @@ class EventHandler {
     EventHandler() = default;
     virtual ~EventHandler() = default;
 
-    virtual void OnKeyDown(unsigned int keyCode, bool isRepeat) = 0;
-    virtual void OnKeyUp(unsigned int keyCode, bool isRepeat) = 0;
-    virtual void OnMouseDown(unsigned int mouseButton,
-                             unsigned char numCliks) = 0;
-    virtual void OnMouseUp(unsigned int mouseButton,
-                           unsigned char numCliks) = 0;
-    virtual void OnMouseMove(int mousePosX, int mousePosY, int deltaX,
-                             int deltaY) = 0;
+    virtual void OnKeyDown(unsigned int, bool) {}
+    virtual void OnKeyUp(unsigned int, bool) {}
+    virtual void OnMouseDown(unsigned int, unsigned char) {}
+    virtual void OnMouseUp(unsigned int, unsigned char) {}
+    virtual void OnMouseMove(int, int) {}
 };
 
 } // namespace renderel

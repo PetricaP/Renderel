@@ -7,16 +7,38 @@
 
 namespace renderel {
 
-static GlobalGLFWEventHandler globalEventHandler;
-
-void key_callback(GLFWwindow *window, int key, int, int action, int) {
+// TODO: Methods practically the same, something is not right
+// Consider using inheritance here
+static void key_callback(GLFWwindow *window, int key, int, int action, int) {
     static int calls = 0;
     calls++;
-    std::cout << "callback: " << calls << std::endl;
     Event event;
-    event.key = static_cast<unsigned int>(key);
-    event.action = static_cast<unsigned int>(action);
-    globalEventHandler.PushEvent(window, event);
+    event.type = KEY;
+    event.keyEvent.key = static_cast<unsigned int>(key);
+    event.keyEvent.action = static_cast<unsigned int>(action);
+    GlobalGLFWEventHandler::PushEvent(window, event);
+}
+
+static void mouse_button_callback(GLFWwindow *window, int button, int action,
+                                  int) {
+    static int calls = 0;
+    calls++;
+    Event event;
+    event.type = MOUSEBUTTON;
+    event.mouseButtonEvent.button = static_cast<unsigned int>(button);
+    event.mouseButtonEvent.action = static_cast<unsigned int>(action);
+    GlobalGLFWEventHandler::PushEvent(window, event);
+}
+
+static void cursor_position_callback(GLFWwindow *window, double xPos,
+                                     double yPos) {
+    static int calls = 0;
+    calls++;
+    Event event;
+    event.type = MOUSEMOTION;
+    event.mouseMotionEvent.xPos = static_cast<int>(xPos);
+    event.mouseMotionEvent.yPos = static_cast<int>(yPos);
+    GlobalGLFWEventHandler::PushEvent(window, event);
 }
 
 // TODO: Add mouse input management
@@ -45,8 +67,11 @@ WindowGLFW::WindowGLFW(int width, int height, std::string title,
     }
 
     glfwSetKeyCallback(m_GLFWwindow, key_callback);
+    glfwSetMouseButtonCallback(m_GLFWwindow, mouse_button_callback);
+    glfwSetCursorPosCallback(m_GLFWwindow, cursor_position_callback);
 
-    globalEventHandler.GetEventPoll()[m_GLFWwindow].eventHandler = eventHandler;
+    GlobalGLFWEventHandler::GetEventPoll()[m_GLFWwindow].eventHandler =
+        eventHandler;
 
     glfwMakeContextCurrent(m_GLFWwindow);
     glfwSwapInterval(1);
@@ -65,7 +90,7 @@ void WindowGLFW::SwapBuffers() const { glfwSwapBuffers(m_GLFWwindow); }
 
 void WindowGLFW::PollEvents() const {
     glfwPollEvents();
-    globalEventHandler.PollEvents(m_GLFWwindow);
+    GlobalGLFWEventHandler::PollEvents(m_GLFWwindow);
 }
 
 } // namespace renderel
