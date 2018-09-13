@@ -64,7 +64,7 @@ int main() {
     layout.Push<float>(2);
 	layout.Push<float>(2);
 
-    va.AddBuffer(vb, layout);
+    va.AddBuffer(&vb, layout);
 
     IndexBuffer<unsigned int> ib(indices, sizeof(indices) / sizeof(indices[0]));
 
