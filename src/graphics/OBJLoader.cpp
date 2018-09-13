@@ -1,5 +1,6 @@
 #include "graphics/OBJLoader.hpp"
 
+<<<<<<< HEAD
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -84,3 +85,6 @@ bool OBJLoader::Load(const std::string &path, IndexBuffer *&ib, VertexArray *&va
 }
 
 } // namespace renderel::graphics
+=======
+namespace renderel::graphics {} // namespace renderel::graphics
+>>>>>>> c297d0f6c87a58184fd30ed76c82eea7fd94b6be

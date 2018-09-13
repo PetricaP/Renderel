@@ -62,7 +62,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw)
 
 #Adding Renderel
 
-file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
+file(GLOB_RECURSE PROJECT_SOURCES "src/*.c*")
 file(GLOB_RECURSE PROJECT_HEADERS "include/*.h*")
 file(GLOB SHADERS shaders/*.frag shaders/*.vert shaders/*.glsl)
 
