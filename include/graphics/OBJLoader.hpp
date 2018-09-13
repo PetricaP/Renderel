@@ -33,7 +33,7 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
         return false;
     }
 
-    char begin[32];
+    char begin[128];
 
     int currentLine = 0;
 
@@ -68,7 +68,7 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 
     va = new VertexArray();
 
-    VertexBuffer vb(
+    VertexBuffer *vb = new VertexBuffer(
         vertices.data(),
         static_cast<unsigned int>(vertices.size() * sizeof(math::Vec3<>)));
 

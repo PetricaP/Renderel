@@ -8,6 +8,7 @@
 #include "graphics/Texture.hpp"
 #include "graphics/VertexArray.hpp"
 #include "graphics/VertexBuffer.hpp"
+#include "graphics/OBJLoader.hpp"
 #include "math/Mat4.hpp"
 #include "math/Vec2.hpp"
 #include "math/Vec3.hpp"
@@ -44,29 +45,13 @@ int main() {
 
     BasicRenderer<unsigned int> renderer;
 
-	float vertices[] = {
-		0.0f,		   0.0f,		  0.0f, 0.0f, // 0
-		HEIGHT / 2.0f, 0.0f,		  1.0f, 0.0f, // 2
-		0.0f,		   HEIGHT / 2.0f, 0.0f, 1.0f, // 1
-        HEIGHT / 2.0f, HEIGHT / 2.0f, 1.0f, 1.0f  // 3
-	};
+	VertexArray *va;
+	IndexBuffer<> *ib;
 
-    unsigned int indices[] = {
-		0, 1, 2, // first triangle
-		1, 2, 3  // second triangle
-	};
-
-	VertexArray va;
-
-	VertexBuffer vb(vertices, sizeof(vertices));
-
-    VertexBufferLayout layout;
-    layout.Push<float>(2);
-	layout.Push<float>(2);
-
-    va.AddBuffer(&vb, layout);
-
-    IndexBuffer<unsigned int> ib(indices, sizeof(indices) / sizeof(indices[0]));
+	if (!OBJLoader::Load<>("res/models/munk.obj", ib, va)) {
+		std::cerr << "Failed to load OBJ! file" << std::endl;
+		return 1;
+	}
 
 	Shader shader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
@@ -82,7 +67,7 @@ int main() {
     float xPos = 0.0f;
     float yPos = 0.0f;
 
-    Renderable<unsigned int> renderable(va, ib, shader);
+    Renderable<unsigned int> renderable(*va, *ib, shader);
     float prevTime = 0;
     float newTime = static_cast<float>(glfwGetTime());
     float deltaTime;
