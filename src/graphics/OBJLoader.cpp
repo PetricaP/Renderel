@@ -16,8 +16,7 @@
 
 namespace renderel::graphics {
 
-bool OBJLoader::Load(const std::string &path, IndexBuffer *&ib,
-					 VertexArray *&va) {
+bool OBJLoader::Load(const std::string &path, IndexBuffer *&ib, VertexArray *&va) {
 
 	std::vector<math::Vec3<>> vertices;
 	std::vector<math::Vec2<>> textures;
@@ -65,14 +64,15 @@ bool OBJLoader::Load(const std::string &path, IndexBuffer *&ib,
 
 	va = new VertexArray();
 
-	VertexBuffer vb(
+	VertexBuffer *vb = new VertexBuffer(
 		vertices.data(),
 		static_cast<unsigned int>(vertices.size() * sizeof(math::Vec3<>)));
+	// TODO: memory leak; maybe fix, maybe no
 
 	VertexBufferLayout vbl;
 	vbl.Push<float>(3);
 
-	va->AddBuffer(vb, vbl);
+	va->AddBuffer(*vb, vbl);
 
 	ib = new IndexBuffer(indices.data(),
 						 static_cast<unsigned int>(
