@@ -13,6 +13,7 @@ union Vec4 {
 	T elements[4];
 
 	Vec4();
+    Vec4(T t);
 	Vec4(T x, T y, T z, T w);
 
 	void add(const Vec4 &other);
@@ -24,6 +25,11 @@ union Vec4 {
 	Vec4 &operator-=(const Vec4 &other);
 	Vec4 &operator*=(const Vec4 &other);
 	Vec4 &operator/=(const Vec4 &other);
+
+    Vec4 &operator+=(T t);
+    Vec4 &operator-=(T t);
+    Vec4 &operator*=(T t);
+    Vec4 &operator/=(T t);
 
 	T &operator[](unsigned int index);
 	T operator[](unsigned int index) const;
@@ -48,6 +54,9 @@ std::ostream &operator<<(std::ostream &os, const Vec4<T> &vec) {
 
 template <typename T>
 Vec4<T>::Vec4() : x(0), y(0), z(0), w(0) {}
+
+template <typename T>
+Vec4<T>::Vec4(T t) : x(t), y(t), z(t), w(t) {}
 
 template <typename T>
 Vec4<T>::Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
@@ -109,6 +118,42 @@ Vec4<T> &Vec4<T>::operator/=(const Vec4<T> &other) {
 }
 
 template <typename T>
+Vec4<T> &Vec4<T>::operator+=(T t) {
+    x += t;
+    y += t;
+    z += t;
+    w += t;
+    return *this;
+}
+
+template <typename T>
+Vec4<T> &Vec4<T>::operator-=(T t) {
+    x -= t;
+    y -= t;
+    z -= t;
+    w -= t;
+    return *this;
+}
+
+template <typename T>
+Vec4<T> &Vec4<T>::operator*=(T t) {
+    x *= t;
+    y *= t;
+    z *= t;
+    w *= t;
+    return *this;
+}
+
+template <typename T>
+Vec4<T> &Vec4<T>::operator/=(T t) {
+    x /= t;
+    y /= t;
+    z /= t;
+    w /= t;
+    return *this;
+}
+
+template <typename T>
 Vec4<T> operator+(const Vec4<T> &first, const Vec4<T> &second) {
 	return {first.x + second.x, first.y + second.y, first.z + second.z,
 			first.w + second.z};
@@ -130,6 +175,46 @@ template <typename T>
 Vec4<T> operator/(const Vec4<T> &first, const Vec4<T> &second) {
 	return {first.x / second.x, first.y / second.y, first.z / second.z,
 			first.w / second.z};
+}
+
+template <typename T>
+Vec4<T> operator+(const Vec4<T> &vec, T t) {
+    return {vec.x + t, vec.y + t, vec.z + t, vec.w + t};
+}
+
+template <typename T>
+Vec4<T> operator-(const Vec4<T> &vec, T t) {
+    return {vec.x - t, vec.y - t, vec.z - t, vec.w - t};
+}
+
+template <typename T>
+Vec4<T> operator*(const Vec4<T> &vec, T t) {
+    return {vec.x * t, vec.y * t, vec.z * t, vec.w * t};
+}
+
+template <typename T>
+Vec4<T> operator/(const Vec4<T> &vec, T t) {
+    return {vec.x / t, vec.y / t, vec.z / t, vec.w / t};
+}
+
+template <typename T>
+Vec4<T> operator+(T t, const Vec4<T> &vec) {
+    return {vec.x + t, vec.y + t, vec.z + t, vec.w + t};
+}
+
+template <typename T>
+Vec4<T> operator-(T t, const Vec4<T> &vec) {
+    return {t - vec.x, t - vec.y, t - vec.z, t - vec.w};
+}
+
+template <typename T>
+Vec4<T> operator*(T t, const Vec4<T> &vec) {
+    return {vec.x * t, vec.y * t, vec.z * t, vec.w * t};
+}
+
+template <typename T>
+Vec4<T> operator/(T t, const Vec4<T> &vec) {
+    return {vec.x / t, vec.y / t, vec.z / t, vec.w / t};
 }
 
 } // namespace renderel::math
