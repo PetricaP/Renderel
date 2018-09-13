@@ -1,5 +1,6 @@
 #include "Debug.hpp"
 #include "GL/glew.h"
+#include "GameEventHandler.hpp"
 #include "WindowGLFW.hpp"
 #include "graphics/BasicRenderer.hpp"
 #include "graphics/IndexBuffer.hpp"
@@ -26,8 +27,10 @@ using APIWindow = WindowGLFW;
 using APIWindowHandle = GLFWwindow *;
 
 int main() {
-	std::unique_ptr<Window> window =
-		std::make_unique<APIWindow>(WIDTH, HEIGHT, "Renderel");
+
+    EventHandler *gameEventHandler = new GameEventHandler();
+
+    Window *window = new APIWindow(WIDTH, HEIGHT, "Renderel", gameEventHandler);
 
 	Renderer::InitGraphics();
 	Renderer::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);

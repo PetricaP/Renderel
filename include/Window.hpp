@@ -1,6 +1,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include "EventHandler.hpp"
 #include <string>
 
 namespace renderel {
@@ -9,14 +10,15 @@ class Window {
   private:
 	int m_Width;
 	int m_Height;
+    const EventHandler *m_EventHandler = nullptr;
 
   protected:
-    Window(int width, int height);
+    Window(int width, int height, const EventHandler *eventHandler);
 
   public:
     virtual ~Window() = default;
 
-    // This method is only here for debugging
+    // TODO: This method is only here for debugging
     virtual void *GetAPIWindowHandle() = 0;
 
     virtual bool ShouldClose() const = 0;
