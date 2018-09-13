@@ -26,6 +26,8 @@ union Vec3 {
 	Vec3 &operator*=(const Vec3 &other);
 	Vec3 &operator/=(const Vec3 &other);
 
+    Vec3 operator-() const;
+
 	Vec3 &operator+=(T t);
 	Vec3 &operator-=(T t);
 	Vec3 &operator*=(T t);
@@ -34,6 +36,11 @@ union Vec3 {
 	T &operator[](unsigned int index);
 	T operator[](unsigned int index) const;
 };
+
+template <typename T>
+Vec3<T> Vec3<T>::operator-() const {
+    return Vec3<T>(-x, -y, -z);
+}
 
 template <typename T>
 T &Vec3<T>::operator[](unsigned int index) {

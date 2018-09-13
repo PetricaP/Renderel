@@ -21,10 +21,10 @@ template <typename T>
 void BasicRenderer<T>::Flush() {
     while (!m_RenderObjects.empty()) {
         const Renderable<T> &renderable = m_RenderObjects.front();
-        renderable.GetVA().Bind();
-        renderable.GetIB().Bind();
+        renderable.GetVA()->Bind();
+        renderable.GetIB()->Bind();
         renderable.GetShader().Bind();
-        GLCall(glDrawElements(GL_TRIANGLES, renderable.GetIB().GetCount(),
+        GLCall(glDrawElements(GL_TRIANGLES, renderable.GetIB()->GetCount(),
                               IndexBuffer<T>::GetType(), nullptr));
         m_RenderObjects.pop();
     }
