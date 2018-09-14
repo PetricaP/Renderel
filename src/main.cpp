@@ -27,7 +27,6 @@ using namespace graphics;
 #define HEIGHT 720
 
 int main() {
-    GameEventHandler testEventHandler;
     GameEventHandler gameEventHandler;
     InputControl horizontal;
     InputControl vertical;
@@ -42,13 +41,11 @@ int main() {
     gameEventHandler.AddKeyControl(GLFW_KEY_DOWN, vertical, -1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_UP, vertical, 1.0f);
 
-    Window *windowTest =
-        new WindowGLFW(WIDTH, HEIGHT, "Test", &testEventHandler);
     Window *window =
         new WindowGLFW(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
     Renderer<unsigned int>::InitGraphics();
-    Renderer<unsigned int>::SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
     BasicRenderer<unsigned int> renderer;
 
@@ -115,7 +112,7 @@ int main() {
     Mat4<> proj = Mat4<>::Ortho(-f, f, -1.0f, 1.0f, -1.0f, 1.0f);
     //    Mat4<> proj = Mat4<>::Perspective(70.0f, f, 0.01f, 1000.0f);
 
-    Texture texture("res/textures/cpp_logo.png");
+    Texture texture("res/textures/bricks.jpg");
 
 	float g = 0.0f;
 
@@ -127,17 +124,10 @@ int main() {
     float newTime = static_cast<float>(glfwGetTime());
     float deltaTime;
 
-    Vec3<> axis(1.0f, 0.0f, 0.0f);
-    Quaternion<> quaternion(axis, 90.0f);
-    Vec3<> target(0.0f, 1.0f, 0.0f);
-    Vec3<> result = quaternion * target;
-    std::cout << result << std::endl;
-
 	while (!window->ShouldClose()) {
         deltaTime = newTime - prevTime;
         prevTime = newTime;
 		window->PollEvents();
-        windowTest->PollEvents();
         Renderer<unsigned int>::Clear();
 
         Vec2<int> mousePos;
@@ -164,9 +154,9 @@ int main() {
         shader.SetUniformMat4f("u_Model", model);
 
 		texture.Bind();
-		shader.SetUniform1i("u_Texture", 0);
+        shader.SetUniform1i("u_Texture", 0);
 
-        renderer.Submit(renderable);
+        // renderer.Submit(renderable);
         renderer.Submit(renderable2);
 
         renderer.Flush();

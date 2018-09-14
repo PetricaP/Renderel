@@ -24,7 +24,7 @@ class Transform {
         math::Mat4<T> positionMatrix = math::Mat4<T>::Translation(m_Position);
         math::Mat4<T> scaleMatrix = math::Mat4<T>::Scale(m_Scale);
         math::Mat4<T> rotationMatrix = m_Rotation.ToRotationMatrix();
-        return scaleMatrix * rotationMatrix * positionMatrix;
+        return positionMatrix * rotationMatrix * scaleMatrix;
     }
 
     math::Vec3<T> &GetPosition() { return m_Position; }

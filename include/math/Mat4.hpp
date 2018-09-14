@@ -24,6 +24,8 @@ union Mat4 {
     static Mat4 Perspective(T fov, T aspectRatio, T near, T far);
     static Mat4 Translation(const Vec3<T> &amount);
 	static Mat4 Scale(const Vec3<T> &scale);
+    static Mat4 LookAt(const Vec3<T> &eye, const Vec3<T> &at,
+                       const Vec3<T> &up);
 };
 
 template <typename T>
@@ -34,6 +36,14 @@ Vec4<T> Mat4<T>::operator[](unsigned int index) const {
 template <typename T>
 Vec4<T> &Mat4<T>::operator[](unsigned int index) {
 	return vecs[index];
+}
+
+template <typename T>
+Mat4<T> Mat4<T>::LookAt(const Vec3<T> &eye, const Vec3<T> &at,
+                        const Vec3<T> &up) {
+    Vec3<> zAxis = (eye - at).Normalize();
+    Vec3<> xAxis = zAxis.Cross(up).Normalize();
+    Vec3<> yAxis = up.Normalize();
 }
 
 template <typename T>

@@ -1,6 +1,7 @@
 #ifndef MATH_VEC3_HPP
 #define MATH_VEC3_HPP
 
+#include <cmath>
 #include <iostream>
 
 namespace renderel::math {
@@ -33,9 +34,24 @@ union Vec3 {
 	Vec3 &operator*=(T t);
 	Vec3 &operator/=(T t);
 
+    Vec3 Cross(const Vec3 &other);
+
+    T Length() const;
+    Vec3 Normalize() const;
+
 	T &operator[](unsigned int index);
 	T operator[](unsigned int index) const;
 };
+
+template <typename T>
+Vec3<T> Vec3<T>::Normalize() const {
+    return *this / Length();
+}
+
+template <typename T>
+T Vec3<T>::Length() const {
+    return sqrt(x * x + y * y + z * z);
+}
 
 template <typename T>
 Vec3<T> Vec3<T>::operator-() const {
@@ -93,6 +109,12 @@ void Vec3<T>::div(const Vec3 &other) {
 	x /= other.x;
 	y /= other.y;
 	z /= other.z;
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::Cross(const Vec3<T> &other) {
+    return Vec3<T>(x * other.y - z * other.y, z * other.x - x * other.z,
+                   x * other.y - y * other.x);
 }
 
 template <typename T>
