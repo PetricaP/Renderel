@@ -27,4 +27,4 @@ class WindowGLFW final : public Window {
 
 } // namespace renderel
 
-#endif
+#endif // WINDOWGLFW_HPP
