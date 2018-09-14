@@ -1,6 +1,7 @@
 #ifndef MATH_HPP
 #define MATH_HPP
 
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 namespace renderel::math {
