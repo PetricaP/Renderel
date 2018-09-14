@@ -11,11 +11,11 @@
 #endif
 
 #define ASSERT(x)                                                              \
-    if (!(x))                                                                  \
-        BREAK;
+	if (!(x))                                                                  \
+		BREAK;
 #define GLCall(x)                                                              \
-    GLClearError();                                                            \
-    x;                                                                         \
+	GLClearError();                                                            \
+	x;                                                                         \
 	ASSERT(GLLogCall(#x, __FILE__, __LINE__))
 
 void GLClearError();

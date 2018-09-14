@@ -11,9 +11,9 @@ namespace renderel {
 
 // TODO: Add codes for events and keys
 enum Action {
-    KEYUP = GLFW_RELEASE,
-    PRESS = GLFW_PRESS,
-    KEYREPEAT = GLFW_REPEAT,
+	KEYUP = GLFW_RELEASE,
+	PRESS = GLFW_PRESS,
+	KEYREPEAT = GLFW_REPEAT,
 };
 
 enum Type { KEY, MOUSEBUTTON, MOUSEMOTION };
@@ -22,47 +22,47 @@ enum Type { KEY, MOUSEBUTTON, MOUSEMOTION };
 #define MOUSE_BUTTON_RIGHT GLFW_MOUSE_BUTTON_RIGHT
 
 struct KeyboardEvent {
-    unsigned int key;
-    unsigned int action;
+	unsigned int key;
+	unsigned int action;
 };
 
 struct MouseButtonEvent {
-    unsigned int button;
-    unsigned int action;
+	unsigned int button;
+	unsigned int action;
 };
 
 struct MouseMotionEvent {
-    int xPos;
-    int yPos;
+	int xPos;
+	int yPos;
 };
 
 struct Event {
 	Type type;
-    union {
-        KeyboardEvent keyEvent;
-        MouseButtonEvent mouseButtonEvent;
-        MouseMotionEvent mouseMotionEvent;
-    };
+	union {
+		KeyboardEvent keyEvent;
+		MouseButtonEvent mouseButtonEvent;
+		MouseMotionEvent mouseMotionEvent;
+	};
 };
 
 struct WindowEventData {
-    EventHandler *eventHandler;
-    std::queue<Event> events;
+	EventHandler *eventHandler;
+	std::queue<Event> events;
 };
 
 class GlobalGLFWEventHandler {
   private:
-    static std::unordered_map<GLFWwindow *, WindowEventData> m_EventPoll;
+	static std::unordered_map<GLFWwindow *, WindowEventData> m_EventPoll;
 
   public:
-    static void PollEvents(GLFWwindow *window);
-    static void PushEvent(GLFWwindow *window, const Event &event);
+	static void PollEvents(GLFWwindow *window);
+	static void PushEvent(GLFWwindow *window, const Event &event);
 
-    static auto &GetEventPoll() { return m_EventPoll; }
+	static auto &GetEventPoll() { return m_EventPoll; }
 
   private:
-    static void HandleEvents(WindowEventData &windowEventData);
-    static void HandleKeyEvent(EventHandler *handler, const Event &event);
+	static void HandleEvents(WindowEventData &windowEventData);
+	static void HandleKeyEvent(EventHandler *handler, const Event &event);
 };
 
 } // namespace renderel

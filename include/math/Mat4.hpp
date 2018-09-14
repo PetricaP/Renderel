@@ -16,18 +16,18 @@ union Mat4 {
 
 	Mat4();
 	Mat4(T diag);
-    Mat4(const Vec4<T> &row0, const Vec4<T> &row1, const Vec4<T> &row2,
-         const Vec4<T> &row3);
+	Mat4(const Vec4<T> &row0, const Vec4<T> &row1, const Vec4<T> &row2,
+		 const Vec4<T> &row3);
 
 	Vec4<T> operator[](unsigned int index) const;
 	Vec4<T> &operator[](unsigned int index);
 
-    static Mat4 Ortho(T left, T right, T bottom, T top, T near, T far);
-    static Mat4 Perspective(T fov, T aspectRatio, T near, T far);
-    static Mat4 Translation(const Vec3<T> &amount);
+	static Mat4 Ortho(T left, T right, T bottom, T top, T near, T far);
+	static Mat4 Perspective(T fov, T aspectRatio, T near, T far);
+	static Mat4 Translation(const Vec3<T> &amount);
 	static Mat4 Scale(const Vec3<T> &scale);
-    static Mat4 LookAt(const Vec3<T> &eye, const Vec3<T> &at,
-                       const Vec3<T> &up);
+	static Mat4 LookAt(const Vec3<T> &eye, const Vec3<T> &at,
+					   const Vec3<T> &up);
 };
 
 template <typename T>
@@ -42,15 +42,16 @@ Vec4<T> &Mat4<T>::operator[](unsigned int index) {
 
 template <typename T>
 Mat4<T> Mat4<T>::LookAt(const Vec3<T> &eye, const Vec3<T> &at,
-                        const Vec3<T> &up) {
-    Vec3<T> zAxis = (eye - at).Normalize();
-    Vec3<T> xAxis = zAxis.Cross(up).Normalize();
-    Vec3<T> yAxis = up.Normalize();
+						const Vec3<T> &up) {
+	Vec3<T> zAxis = (eye - at).Normalize();
+	Vec3<T> xAxis = zAxis.Cross(up).Normalize();
+	Vec3<T> yAxis = xAxis.Cross(zAxis).Normalize();
 
-    Mat4<T> viewMatrix(
-        Vec4<T>(xAxis, -xAxis.Dot(eye)), Vec4<T>(yAxis, -yAxis.Dot(eye)),
-        Vec4<T>(zAxis, -zAxis.Dot(eye)), Vec4<T>(0.0f, 0.0f, 0.0f, 1.0f));
-    return viewMatrix;
+	Mat4<T> viewMatrix(
+		Vec4<T>(xAxis, -xAxis.Dot(eye)), Vec4<T>(yAxis, -yAxis.Dot(eye)),
+		Vec4<T>(zAxis, -zAxis.Dot(eye)), Vec4<T>(0.0f, 0.0f, 0.0f, 1.0f));
+
+	return viewMatrix;
 }
 
 template <typename T>
@@ -87,14 +88,14 @@ Mat4<T> Mat4<T>::Ortho(T left, T right, T bottom, T top, T near, T far) {
 
 template <typename T>
 Mat4<T> Mat4<T>::Perspective(T fov, T aspectRatio, T near, T far) {
-    Mat4<T> mat;
-    float t = tanf(toRadians(fov) / 2);
-    mat[0][0] = 1.0f / (aspectRatio * t);
-    mat[1][1] = 1.0f / t;
-    mat[2][2] = -(far + near) / (far - near);
-    mat[3][2] = -1;
-    mat[2][3] = -(2.0f * far * near) / (far - near);
-    return mat;
+	Mat4<T> mat;
+	float t = tanf(toRadians(fov) / 2);
+	mat[0][0] = 1.0f / (aspectRatio * t);
+	mat[1][1] = 1.0f / t;
+	mat[2][2] = -(far + near) / (far - near);
+	mat[3][2] = -1;
+	mat[2][3] = -(2.0f * far * near) / (far - near);
+	return mat;
 }
 
 template <typename T>
@@ -175,26 +176,26 @@ Mat4<T>::Mat4(T diag) {
 
 template <typename T>
 Mat4<T>::Mat4(const Vec4<T> &row0, const Vec4<T> &row1, const Vec4<T> &row2,
-              const Vec4<T> &row3) {
-    elements[0][0] = row0.x;
-    elements[0][1] = row0.y;
-    elements[0][2] = row0.z;
-    elements[0][3] = row0.w;
+			  const Vec4<T> &row3) {
+	elements[0][0] = row0.x;
+	elements[0][1] = row0.y;
+	elements[0][2] = row0.z;
+	elements[0][3] = row0.w;
 
-    elements[1][0] = row1.x;
-    elements[1][1] = row1.y;
-    elements[1][2] = row1.z;
-    elements[1][3] = row1.w;
+	elements[1][0] = row1.x;
+	elements[1][1] = row1.y;
+	elements[1][2] = row1.z;
+	elements[1][3] = row1.w;
 
-    elements[2][0] = row2.x;
-    elements[2][1] = row2.y;
-    elements[2][2] = row2.z;
-    elements[2][3] = row2.w;
+	elements[2][0] = row2.x;
+	elements[2][1] = row2.y;
+	elements[2][2] = row2.z;
+	elements[2][3] = row2.w;
 
-    elements[3][0] = row3.x;
-    elements[3][1] = row3.y;
-    elements[3][2] = row3.z;
-    elements[3][3] = row3.w;
+	elements[3][0] = row3.x;
+	elements[3][1] = row3.y;
+	elements[3][2] = row3.z;
+	elements[3][3] = row3.w;
 }
 
 } // namespace renderel::math

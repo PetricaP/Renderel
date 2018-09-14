@@ -12,9 +12,9 @@ union Vec2 {
 	};
 	T elements[2];
 
-    Vec2();
-    Vec2(T t);
-    Vec2(T x, T y);
+	Vec2();
+	Vec2(T t);
+	Vec2(T x, T y);
 
 	void add(const Vec2 &other);
 	void sub(const Vec2 &other);
@@ -26,10 +26,10 @@ union Vec2 {
 	Vec2 &operator*=(const Vec2 &other);
 	Vec2 &operator/=(const Vec2 &other);
 
-    Vec2 &operator+=(T t);
-    Vec2 &operator-=(T t);
-    Vec2 &operator*=(T t);
-    Vec2 &operator/=(T t);
+	Vec2 &operator+=(T t);
+	Vec2 &operator-=(T t);
+	Vec2 &operator*=(T t);
+	Vec2 &operator/=(T t);
 
 	T &operator[](unsigned int index);
 	T operator[](unsigned int index) const;
@@ -47,8 +47,8 @@ T Vec2<T>::operator[](unsigned int index) const {
 
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Vec2<T> &vec) {
-    std::cout << "Vec2(" << vec.x << ", " << vec.y << ")";
-    return os;
+	std::cout << "Vec2(" << vec.x << ", " << vec.y << ")";
+	return os;
 }
 
 template <typename T>
@@ -87,52 +87,52 @@ void Vec2<T>::div(const Vec2<T> &other) {
 template <typename T>
 Vec2<T> &Vec2<T>::operator+=(const Vec2<T> &other) {
 	add(other);
-    return *this;
+	return *this;
 }
 
 template <typename T>
 Vec2<T> &Vec2<T>::operator-=(const Vec2<T> &other) {
 	sub(other);
-    return *this;
+	return *this;
 }
 
 template <typename T>
 Vec2<T> &Vec2<T>::operator*=(const Vec2<T> &other) {
 	mul(other);
-    return *this;
+	return *this;
 }
 
 template <typename T>
 Vec2<T> &Vec2<T>::operator/=(const Vec2<T> &other) {
 	div(other);
-    return *this;
+	return *this;
 }
 
 template <typename T>
 Vec2<T> &Vec2<T>::operator+=(T t) {
-    x += t;
-    y += t;
-    return *this;
+	x += t;
+	y += t;
+	return *this;
 }
 
 template <typename T>
 Vec2<T> &Vec2<T>::operator-=(T t) {
-    x -= t;
-    y -= t;
-    return *this;
+	x -= t;
+	y -= t;
+	return *this;
 }
 template <typename T>
 Vec2<T> &Vec2<T>::operator*=(T t) {
-    x *= t;
-    y *= t;
-    return *this;
+	x *= t;
+	y *= t;
+	return *this;
 }
 
 template <typename T>
 Vec2<T> &Vec2<T>::operator/=(T t) {
-    x /= t;
-    y /= t;
-    return *this;
+	x /= t;
+	y /= t;
+	return *this;
 }
 
 template <typename T>
@@ -157,42 +157,42 @@ Vec2<T> operator/(const Vec2<T> &first, const Vec2<T> &second) {
 
 template <typename T>
 Vec2<T> operator+(const Vec2<T> &vec, T t) {
-    return {vec.x + t, vec.y + t};
+	return {vec.x + t, vec.y + t};
 }
 
 template <typename T>
 Vec2<T> operator-(const Vec2<T> &vec, T t) {
-    return {vec.x - t, vec.y - t};
+	return {vec.x - t, vec.y - t};
 }
 
 template <typename T>
 Vec2<T> operator*(const Vec2<T> &vec, T t) {
-    return {vec.x * t, vec.y * t};
+	return {vec.x * t, vec.y * t};
 }
 
 template <typename T>
 Vec2<T> operator/(const Vec2<T> &vec, T t) {
-    return {vec.x / t, vec.y / t};
+	return {vec.x / t, vec.y / t};
 }
 
 template <typename T>
 Vec2<T> operator+(T t, const Vec2<T> &vec) {
-    return {vec.x + t, vec.y + t};
+	return {vec.x + t, vec.y + t};
 }
 
 template <typename T>
 Vec2<T> operator-(T t, const Vec2<T> &vec) {
-    return {t - vec.x, t - vec.y};
+	return {t - vec.x, t - vec.y};
 }
 
 template <typename T>
 Vec2<T> operator*(T t, const Vec2<T> &vec) {
-    return {vec.x * t, vec.y * t};
+	return {vec.x * t, vec.y * t};
 }
 
 template <typename T>
 Vec2<T> operator/(T t, const Vec2<T> &vec) {
-    return {vec.x / t, vec.y / t};
+	return {vec.x / t, vec.y / t};
 }
 
 } // namespace renderel::math
