@@ -1,3 +1,4 @@
+#include "Camera.hpp"
 #include "GameEventHandler.hpp"
 #include "InputControl.hpp"
 #include "Transform.hpp"
@@ -31,10 +32,15 @@ int main() {
     InputControl horizontal;
     InputControl vertical;
 
+    // FIXME: Going in the z direction causes model to disappear
+    InputControl zdirection;
+
     gameEventHandler.AddKeyControl(GLFW_KEY_A, horizontal, -1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_D, horizontal, 1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_S, vertical, -1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_W, vertical, 1.0f);
+    gameEventHandler.AddKeyControl(GLFW_KEY_T, zdirection, -1.0f);
+    gameEventHandler.AddKeyControl(GLFW_KEY_Y, zdirection, 1.0f);
 
     gameEventHandler.AddKeyControl(GLFW_KEY_LEFT, horizontal, -1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_RIGHT, horizontal, 1.0f);
@@ -57,7 +63,7 @@ int main() {
         -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, // 4
         0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, // 5
         -0.5f, 0.5f,  0.5f,  0.0f, 1.0f, // 6
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f  // 7
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f  // 7
     };
 
     unsigned int indices[] = {
@@ -109,8 +115,6 @@ int main() {
     Renderable<unsigned int> renderable2(va2, ib2, shader);
 
     float f = 1.0f * WIDTH / HEIGHT;
-    Mat4<> proj = Mat4<>::Ortho(-f, f, -1.0f, 1.0f, -1.0f, 1.0f);
-    //    Mat4<> proj = Mat4<>::Perspective(70.0f, f, 0.01f, 1000.0f);
 
     Texture texture("res/textures/bricks.jpg");
 
@@ -118,13 +122,19 @@ int main() {
 
     float xPos = 0.0f;
     float yPos = 0.0f;
+    float zPos = 0.0f;
 
     Renderable<unsigned int> renderable(va, ib, shader);
+
+    Camera camera(Vec3<>(0.0f, 0.0f, -3.0f), 70.0f,
+                  static_cast<float>(window->GetHeight()) / window->GetWidth(),
+                  0.01f, 10000.0f);
+
     float prevTime = 0;
     float newTime = static_cast<float>(glfwGetTime());
     float deltaTime;
 
-	while (!window->ShouldClose()) {
+    while (!window->ShouldClose()) {
         deltaTime = newTime - prevTime;
         prevTime = newTime;
 		window->PollEvents();
@@ -138,26 +148,32 @@ int main() {
         renderable.GetShader().SetUniform2f("u_LightPos", mousePosf.x,
                                             mousePosf.y);
 
+        Mat4<> proj = camera.GetProjection();
+        Mat4<> view = camera.GetView();
         renderable.GetShader().SetUniformMat4f("u_Proj", proj);
-		float s = sinf(g);
+        renderable.GetShader().SetUniformMat4f("u_View", view);
+        float s = sinf(g);
         renderable.GetShader().SetUniform4f("u_Color", 0.5f + s / 3, 0.3f,
                                             0.5f + cosf(g) / 3, 1.0f);
 
         xPos += horizontal.GetAmount() * deltaTime;
         yPos += vertical.GetAmount() * deltaTime;
-        Transform<> transform(
-            Vec3<>(xPos, yPos, 0.0f),
-            Quaternion<>(Vec3<>(0.0f, 0.0f, 1.0f), 0.0f + g * 20),
-            Vec3<>(0.2f + s / 8));
+        zPos += zdirection.GetAmount() * deltaTime;
+
+        camera.SetPosition(Vec3<>(xPos, yPos, zPos));
+
+        Transform<> transform(Vec3<>(0.0f, 0.0f, -5.0f),
+                              Quaternion<>(Vec3<>(0.0f, 1.0f, 0.0f), 0.0f),
+                              Vec3<>(0.4f + s / 30));
 
         Mat4<> model = transform.GetModel();
         shader.SetUniformMat4f("u_Model", model);
 
 		texture.Bind();
-        shader.SetUniform1i("u_Texture", 0);
+        shader.SetUniform1i("u_Sampler", 0);
 
-        // renderer.Submit(renderable);
-        renderer.Submit(renderable2);
+        renderer.Submit(renderable);
+        //        renderer.Submit(renderable2);
 
         renderer.Flush();
 

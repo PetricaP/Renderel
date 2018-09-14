@@ -1,6 +1,7 @@
 #ifndef MATH_VEC4_HPP
 #define MATH_VEC4_HPP
 
+#include "math/Vec3.hpp"
 #include <iostream>
 
 namespace renderel::math {
@@ -15,6 +16,7 @@ union Vec4 {
 	Vec4();
     Vec4(T t);
 	Vec4(T x, T y, T z, T w);
+    Vec4(Vec3<T> v, T w);
 
 	void add(const Vec4 &other);
 	void sub(const Vec4 &other);
@@ -57,6 +59,9 @@ Vec4<T>::Vec4() : x(0), y(0), z(0), w(0) {}
 
 template <typename T>
 Vec4<T>::Vec4(T t) : x(t), y(t), z(t), w(t) {}
+
+template <typename T>
+Vec4<T>::Vec4(Vec3<T> v, T w) : x(v.x), y(v.y), z(v.z), w(w) {}
 
 template <typename T>
 Vec4<T>::Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}

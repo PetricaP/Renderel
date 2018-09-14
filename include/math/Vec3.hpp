@@ -35,6 +35,7 @@ union Vec3 {
 	Vec3 &operator/=(T t);
 
     Vec3 Cross(const Vec3 &other);
+    T Dot(const Vec3 &other);
 
     T Length() const;
     Vec3 Normalize() const;
@@ -115,6 +116,11 @@ template <typename T>
 Vec3<T> Vec3<T>::Cross(const Vec3<T> &other) {
     return Vec3<T>(x * other.y - z * other.y, z * other.x - x * other.z,
                    x * other.y - y * other.x);
+}
+
+template <typename T>
+T Vec3<T>::Dot(const Vec3<T> &other) {
+    return x * other.x + y * other.y + z * other.z;
 }
 
 template <typename T>

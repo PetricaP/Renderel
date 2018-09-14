@@ -1,9 +1,9 @@
 #ifndef MATH_MAT4_HPP
 #define MATH_MAT4_HPP
 
+#include "math/Math.hpp"
 #include "math/Vec3.hpp"
 #include "math/Vec4.hpp"
-#include <cmath>
 #include <cstring>
 #include <iostream>
 
@@ -16,6 +16,8 @@ union Mat4 {
 
 	Mat4();
 	Mat4(T diag);
+    Mat4(const Vec4<T> &row0, const Vec4<T> &row1, const Vec4<T> &row2,
+         const Vec4<T> &row3);
 
 	Vec4<T> operator[](unsigned int index) const;
 	Vec4<T> &operator[](unsigned int index);
@@ -41,9 +43,14 @@ Vec4<T> &Mat4<T>::operator[](unsigned int index) {
 template <typename T>
 Mat4<T> Mat4<T>::LookAt(const Vec3<T> &eye, const Vec3<T> &at,
                         const Vec3<T> &up) {
-    Vec3<> zAxis = (eye - at).Normalize();
-    Vec3<> xAxis = zAxis.Cross(up).Normalize();
-    Vec3<> yAxis = up.Normalize();
+    Vec3<T> zAxis = (eye - at).Normalize();
+    Vec3<T> xAxis = zAxis.Cross(up).Normalize();
+    Vec3<T> yAxis = up.Normalize();
+
+    Mat4<T> viewMatrix(
+        Vec4<T>(xAxis, -xAxis.Dot(eye)), Vec4<T>(yAxis, -yAxis.Dot(eye)),
+        Vec4<T>(zAxis, -zAxis.Dot(eye)), Vec4<T>(0.0f, 0.0f, 0.0f, 1.0f));
+    return viewMatrix;
 }
 
 template <typename T>
@@ -164,6 +171,30 @@ Mat4<T>::Mat4(T diag) {
 	for (int i = 0; i < 4; ++i) {
 		elements[i][i] = diag;
 	}
+}
+
+template <typename T>
+Mat4<T>::Mat4(const Vec4<T> &row0, const Vec4<T> &row1, const Vec4<T> &row2,
+              const Vec4<T> &row3) {
+    elements[0][0] = row0.x;
+    elements[0][1] = row0.y;
+    elements[0][2] = row0.z;
+    elements[0][3] = row0.w;
+
+    elements[1][0] = row1.x;
+    elements[1][1] = row1.y;
+    elements[1][2] = row1.z;
+    elements[1][3] = row1.w;
+
+    elements[2][0] = row2.x;
+    elements[2][1] = row2.y;
+    elements[2][2] = row2.z;
+    elements[2][3] = row2.w;
+
+    elements[3][0] = row3.x;
+    elements[3][1] = row3.y;
+    elements[3][2] = row3.z;
+    elements[3][3] = row3.w;
 }
 
 } // namespace renderel::math

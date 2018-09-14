@@ -22,9 +22,10 @@ class Camera {
           m_Up(math::Vec3<>(0.0f, 1.0f, 0.0f)) {}
 
     math::Mat4<> GetView() const {
-        // return math::LookAt(pos, m_Position + m_Forward, m_Up);
-        return math::Mat4<>(1.0f);
+        return math::Mat4<>::LookAt(m_Position, m_Position + m_Forward, m_Up);
     }
+
+    void SetPosition(const math::Vec3<> &position) { m_Position = position; }
 
     math::Mat4<> GetProjection() const { return m_Perspective; }
 };
