@@ -162,7 +162,7 @@ int main() {
 
         camera.SetPosition(Vec3<>(xPos, yPos, zPos));
 
-        Transform<> transform(Vec3<>(0.0f, 0.0f, -5.0f),
+        Transform<> transform(Vec3<>(0.0f, 0.0f, -3.0f),
                               Quaternion<>(Vec3<>(0.0f, 1.0f, 0.0f), 0.0f),
                               Vec3<>(0.4f + s / 30));
 
@@ -172,8 +172,8 @@ int main() {
 		texture.Bind();
         shader.SetUniform1i("u_Sampler", 0);
 
-        renderer.Submit(renderable);
-        //        renderer.Submit(renderable2);
+        // renderer.Submit(renderable);
+        renderer.Submit(renderable2);
 
         renderer.Flush();
 
