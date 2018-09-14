@@ -38,9 +38,11 @@ struct MouseMotionEvent {
 
 struct Event {
 	Type type;
-    KeyboardEvent keyEvent;
-    MouseButtonEvent mouseButtonEvent;
-    MouseMotionEvent mouseMotionEvent;
+    union {
+        KeyboardEvent keyEvent;
+        MouseButtonEvent mouseButtonEvent;
+        MouseMotionEvent mouseMotionEvent;
+    };
 };
 
 struct WindowEventData {

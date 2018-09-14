@@ -11,6 +11,6 @@ in vec2 v_TexCoord;
 
 void main() {
         vec4 texColor = texture(u_Sampler, v_TexCoord);
-        float intensity = 1.0f / length(v_Pos.xy - u_LightPos) * 30.0f;
+		float intensity = 1.0f / length(v_Pos.xy - u_LightPos) * 0.20f;
         color = u_Color * intensity * 0.5 + texColor * 0.5;
 }

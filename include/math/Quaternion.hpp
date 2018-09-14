@@ -1,6 +1,7 @@
 #ifndef MATH_QUATERNION_HPP
 #define MATH_QUATERNION_HPP
 
+#include "math/Mat4.hpp"
 #include "math/Vec3.hpp"
 #include <iostream>
 
@@ -23,12 +24,39 @@ struct Quaternion {
     Quaternion(const Vec3<T> &axis, T angle);
     Quaternion Inverse() const;
     Quaternion operator^(T power) const;
+    Mat4<T> ToRotationMatrix() const;
+    // TODO: implement Slerp
     const Quaternion Slerp(const Quaternion &other, float t) const;
 };
 
 template <typename T>
 Quaternion<T> Quaternion<T>::operator^(T power) const {
     return Quaternion(v, w * power);
+}
+
+template <typename T>
+Mat4<T> Quaternion<T>::ToRotationMatrix() const {
+    Mat4<T> mat;
+    mat[0][0] = 1 - 2 * y * y - 2 * z * z;
+    mat[0][1] = 2 * x * y - 2 * z * w;
+    mat[0][2] = 2 * x * z + 2 * y * w;
+    mat[0][3] = 0;
+
+    mat[1][0] = 2 * x * y + 2 * z * w;
+    mat[1][1] = 1 - 2 * x * x - 2 * z * z;
+    mat[1][2] = 2 * y * z - 2 * x * 2;
+    mat[1][3] = 0;
+
+    mat[2][0] = 2 * x * z - 2 * y * w;
+    mat[2][1] = 2 * y * z + 2 * x * w;
+    mat[2][2] = 1 - 2 * x * x - 2 * y * y;
+    mat[2][3] = 0;
+
+    mat[3][0] = 0;
+    mat[3][1] = 0;
+    mat[3][2] = 0;
+    mat[3][3] = 1;
+    return mat;
 }
 
 template <typename T>
