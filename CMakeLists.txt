@@ -60,14 +60,43 @@ set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw)
 
+# Adding STB
+
+file(GLOB STB_HEADERS "lib/stb/stb_*.cpp")
+file(GLOB STB_SOURCES "lib/stb/stb_*.h")
+
+set(STB_FILES ${STB_HEADERS} ${STB_SOURCES})
+
+# Adding ImGui
+
+file(GLOB IMGUI_HEADERS "lib/imgui/im*.cpp"
+	"lib/imgui/examples/imgui_impl_glfw.h"
+	"lib/imgui/examples/imgui_impl_opengl2.h"
+	"lib/imgui/examples/imgui_impl_opengl3.h")
+file(GLOB IMGUI_SOURCES "lib/imgui/im*.h"
+	"lib/imgui/examples/imgui_impl_glfw.cpp"
+	"lib/imgui/examples/imgui_impl_opengl2.cpp"
+	"lib/imgui/examples/imgui_impl_opengl3.cpp")
+
+set(IMGUI_FILES ${IMGUI_HEADERS} ${IMGUI_SOURCES})
+
 #Adding Renderel
 
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.c*")
 file(GLOB_RECURSE PROJECT_HEADERS "include/*.h*")
-file(GLOB SHADERS shaders/*.frag shaders/*.vert shaders/*.glsl)
+file(GLOB SHADERS "shaders/*.frag" "shaders/*.vert" "shaders/*.glsl")
 
-add_executable(Renderel ${SHADERS} ${PROJECT_SOURCES} ${PROJECT_HEADERS})
+set(PROJECT_FILES ${PROJECT_HEADERS} ${PROJECT_SOURCES} ${SHADERS})
 
-target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include PUBLIC ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/include/vendor)
+add_executable(Renderel ${PROJECT_FILES} ${STB_FILES} ${IMGUI_FILES})
+
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glfw/include)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/glew/include)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/stb)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/imgui)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/lib/imgui/examples/)
+target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(Renderel glew_s glfw)
+
+target_compile_definitions(Renderel PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)

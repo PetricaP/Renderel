@@ -24,6 +24,7 @@ class Window {
 
     int GetWidth() const { return m_Width; }
     int GetHeight() const { return m_Width; }
+	virtual void *GetAPIHandle() const = 0;
 };
 
 } // namespace renderel
