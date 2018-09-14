@@ -28,29 +28,29 @@ using namespace graphics;
 #define HEIGHT 720
 
 int main() {
-    GameEventHandler gameEventHandler;
-    InputControl horizontal;
-    InputControl vertical;
+	GameEventHandler gameEventHandler;
+	InputControl horizontal;
+	InputControl vertical;
 
-    // FIXME: Going in the z direction causes model to disappear
-    InputControl zdirection;
+	// FIXME: Going in the z direction causes model to disappear
+	InputControl zdirection;
 
-    // FIXME: Rotation around x axis doesn't work like it should
+	// FIXME: Rotation around x axis doesn't work like it should
 	InputControl rotationX;
 	InputControl rotationY;
 	InputControl rotationZ;
 
-    gameEventHandler.AddKeyControl(GLFW_KEY_A, horizontal, -1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_D, horizontal, 1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_S, vertical, -1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_W, vertical, 1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_T, zdirection, -1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_Y, zdirection, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_A, horizontal, -1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_D, horizontal, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_S, vertical, -1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_W, vertical, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_T, zdirection, -1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_Y, zdirection, 1.0f);
 
-    gameEventHandler.AddKeyControl(GLFW_KEY_LEFT, horizontal, -1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_RIGHT, horizontal, 1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_DOWN, vertical, -1.0f);
-    gameEventHandler.AddKeyControl(GLFW_KEY_UP, vertical, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_LEFT, horizontal, -1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_RIGHT, horizontal, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_DOWN, vertical, -1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_UP, vertical, 1.0f);
 
 	gameEventHandler.AddKeyControl(GLFW_KEY_Q, rotationX, 1.0f);
 	gameEventHandler.AddKeyControl(GLFW_KEY_E, rotationX, -1.0f);
@@ -59,149 +59,150 @@ int main() {
 	gameEventHandler.AddKeyControl(GLFW_KEY_C, rotationZ, 1.0f);
 	gameEventHandler.AddKeyControl(GLFW_KEY_V, rotationZ, -1.0f);
 
-    Window *window =
-        new WindowGLFW(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
+	Window *window =
+		new WindowGLFW(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
-    Renderer<unsigned int>::InitGraphics();
-    Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	Renderer<unsigned int>::InitGraphics();
+	Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-    BasicRenderer<unsigned int> renderer;
+	BasicRenderer<unsigned int> renderer;
 
 	float vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // 0
-        0.5f,  -0.5f, -0.5f, 1.0f, 0.0f, // 2
-        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f, // 1
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, // 3
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, // 4
-        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, // 5
-        -0.5f, 0.5f,  0.5f,  0.0f, 1.0f, // 6
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f  // 7
-    };
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // 0
+		0.5f,  -0.5f, -0.5f, 1.0f, 0.0f, // 2
+		-0.5f, 0.5f,  -0.5f, 0.0f, 1.0f, // 1
+		0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, // 3
+		-0.5f, -0.5f, 0.5f,  0.0f, 0.0f, // 4
+		0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, // 5
+		-0.5f, 0.5f,  0.5f,  0.0f, 1.0f, // 6
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f  // 7
+	};
 
-    unsigned int indices[] = {
-        // Back face
-        0, 1, 2, //
-        1, 2, 3, //
-        // Front face
-        4, 5, 6, //
-        5, 6, 7, //
-        // Left face
-        0, 2, 4, //
-        2, 4, 6, //
-        // Right face
-        1, 3, 5, //
-        3, 5, 7, //
-        // Top face
-        2, 3, 6, //
-        3, 6, 7, //
-        // Bottom face
-        0, 1, 4, //
-        1, 4, 5  //
-    };
+	unsigned int indices[] = {
+		// Back face
+		0, 1, 2, //
+		1, 2, 3, //
+		// Front face
+		4, 5, 6, //
+		5, 6, 7, //
+		// Left face
+		0, 2, 4, //
+		2, 4, 6, //
+		// Right face
+		1, 3, 5, //
+		3, 5, 7, //
+		// Top face
+		2, 3, 6, //
+		3, 6, 7, //
+		// Bottom face
+		0, 1, 4, //
+		1, 4, 5  //
+	};
 
-    VertexArray *va = new VertexArray();
+	VertexArray *va = new VertexArray();
 
-    VertexBuffer *vb = new VertexBuffer(vertices, sizeof(vertices));
+	VertexBuffer *vb = new VertexBuffer(vertices, sizeof(vertices));
 
-    VertexBufferLayout layout;
-    layout.Push<float>(3);
+	VertexBufferLayout layout;
+	layout.Push<float>(3);
 	layout.Push<float>(2);
 
-    va->AddBuffer(vb, layout);
+	va->AddBuffer(vb, layout);
 
-    IndexBuffer<unsigned int> *ib = new IndexBuffer<unsigned int>(
-        indices, sizeof(indices) / sizeof(indices[0]));
+	IndexBuffer<unsigned int> *ib = new IndexBuffer<unsigned int>(
+		indices, sizeof(indices) / sizeof(indices[0]));
 
-    VertexArray *va2 = nullptr;
-    IndexBuffer<unsigned int> *ib2 = nullptr;
+	VertexArray *va2 = nullptr;
+	IndexBuffer<unsigned int> *ib2 = nullptr;
 
-    if (!OBJLoader::Load<>("res/models/munk.obj", ib2, va2)) {
-        std::cerr << "Failed to load OBJ! file" << std::endl;
-        return 1;
-    }
+	if (!OBJLoader::Load<>("res/models/munk.obj", ib2, va2)) {
+		std::cerr << "Failed to load OBJ! file" << std::endl;
+		return 1;
+	}
 
-    Shader shader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
+	Shader shader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
 	shader.Bind();
 
-    Renderable<unsigned int> renderable2(va2, ib2, shader);
+	Renderable<unsigned int> renderable2(va2, ib2, shader);
 
-    float f = 1.0f * WIDTH / HEIGHT;
+	float f = 1.0f * WIDTH / HEIGHT;
 
-    Texture texture("res/textures/bricks.jpg");
+	Texture texture("res/textures/bricks.jpg");
 
 	float g = 0.0f;
 
-    float xPos = 0.0f;
-    float yPos = 0.0f;
-    float zPos = 0.0f;
+	float xPos = 0.0f;
+	float yPos = 0.0f;
+	float zPos = 0.0f;
 
 	float xRot = 0.0f;
 	float yRot = 0.0f;
 	float zRot = 0.0f;
 
-    Renderable<unsigned int> renderable(va, ib, shader);
+	Renderable<unsigned int> renderable(va, ib, shader);
 
-    Camera camera(Vec3<>(0.0f, 0.0f, -3.0f), 70.0f,
-                  static_cast<float>(window->GetHeight()) / window->GetWidth(),
-                  0.01f, 10000.0f);
+	Camera camera(Vec3<>(0.0f, 0.0f, -3.0f), 70.0f,
+				  static_cast<float>(window->GetHeight()) / window->GetWidth(),
+				  0.01f, 10000.0f);
 
-    float prevTime = 0;
-    float newTime = static_cast<float>(glfwGetTime());
-    float deltaTime;
+	float prevTime = 0;
+	float newTime = static_cast<float>(glfwGetTime());
+	float deltaTime;
 
-    while (!window->ShouldClose()) {
-        deltaTime = newTime - prevTime;
-        prevTime = newTime;
+	while (!window->ShouldClose()) {
+		deltaTime = newTime - prevTime;
+		prevTime = newTime;
 		window->PollEvents();
-        Renderer<unsigned int>::Clear();
+		Renderer<unsigned int>::Clear();
 
-        Vec2<int> mousePos;
-        gameEventHandler.GetMousePosition(mousePos);
-        Vec2<> mousePosf = Vec2<>(map(mousePos.x, 0, WIDTH, -f, f),
-                                  map(mousePos.y, HEIGHT, 0, -1.0f, 1.0f));
+		Vec2<int> mousePos;
+		gameEventHandler.GetMousePosition(mousePos);
+		Vec2<> mousePosf = Vec2<>(map(mousePos.x, 0, WIDTH, -f, f),
+								  map(mousePos.y, HEIGHT, 0, -1.0f, 1.0f));
 
-        renderable.GetShader().SetUniform2f("u_LightPos", mousePosf.x,
-                                            mousePosf.y);
+		renderable.GetShader().SetUniform2f("u_LightPos", mousePosf.x,
+											mousePosf.y);
 
-        Mat4<> proj = camera.GetProjection();
-        Mat4<> view = camera.GetView();
-        renderable.GetShader().SetUniformMat4f("u_Proj", proj);
-        renderable.GetShader().SetUniformMat4f("u_View", view);
-        float s = sinf(g);
-        renderable.GetShader().SetUniform4f("u_Color", 0.5f + s / 3, 0.3f,
-                                            0.5f + cosf(g) / 3, 1.0f);
+		Mat4<> proj = camera.GetProjection();
+		Mat4<> view = camera.GetView();
+		renderable.GetShader().SetUniformMat4f("u_Proj", proj);
+		renderable.GetShader().SetUniformMat4f("u_View", view);
 
-        xPos += horizontal.GetAmount() * deltaTime;
-        yPos += vertical.GetAmount() * deltaTime;
-        zPos += zdirection.GetAmount() * deltaTime;
+		float s = sinf(g);
+		renderable.GetShader().SetUniform4f("u_Color", 0.5f + s / 3, 0.3f,
+											0.5f + cosf(g) / 3, 1.0f);
 
-        camera.SetPosition(Vec3<>(xPos, yPos, zPos));
+		xPos += horizontal.GetAmount() * deltaTime;
+		yPos += vertical.GetAmount() * deltaTime;
+		zPos += zdirection.GetAmount() * deltaTime;
+
+		camera.SetPosition(Vec3<>(xPos, yPos, zPos));
 
 		xRot += rotationX.GetAmount() * deltaTime * 150;
 		yRot += rotationY.GetAmount() * deltaTime * 150;
 		zRot += rotationZ.GetAmount() * deltaTime * 150;
 
-        Transform<> transform(Vec3<>(0.0f, 0.0f, -3.0f),
+		Transform<> transform(Vec3<>(0.0f, 0.0f, -3.0f),
 							  Quaternion<>(Vec3<>(1.0f, 0.0f, 0.0f), xRot) *
 								  Quaternion<>(Vec3<>(0.0f, 1.0f, 0.0f), yRot) *
 								  Quaternion<>(Vec3<>(0.0f, 0.0f, 1.0f), zRot),
-                              Vec3<>(0.4f + s / 30));
+							  Vec3<>(0.4f + s / 30));
 
-        Mat4<> model = transform.GetModel();
-        shader.SetUniformMat4f("u_Model", model);
+		Mat4<> model = transform.GetModel();
+		shader.SetUniformMat4f("u_Model", model);
 
 		texture.Bind();
-        shader.SetUniform1i("u_Sampler", 0);
+		shader.SetUniform1i("u_Sampler", 0);
 
-        // renderer.Submit(renderable);
-        renderer.Submit(renderable2);
+		// renderer.Submit(renderable);
+		renderer.Submit(renderable2);
 
-        renderer.Flush();
+		renderer.Flush();
 
-        window->SwapBuffers();
+		window->SwapBuffers();
 
-        g += 0.05;
-        newTime = static_cast<float>(glfwGetTime());
-    }
+		g += 0.05;
+		newTime = static_cast<float>(glfwGetTime());
+	}
 }

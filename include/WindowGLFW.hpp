@@ -13,13 +13,13 @@ class WindowGLFW final : public Window {
 	GLFWwindow *m_GLFWwindow = nullptr;
 
   public:
-    WindowGLFW(int width, int height, std::string title,
-               EventHandler *eventHandler);
-    virtual ~WindowGLFW() override;
+	WindowGLFW(int width, int height, std::string title,
+			   EventHandler *eventHandler);
+	virtual ~WindowGLFW() override;
 
 	virtual bool ShouldClose() const override;
 	virtual void SwapBuffers() const override;
-    virtual void PollEvents() const override;
+	virtual void PollEvents() const override;
 };
 
 } // namespace renderel
