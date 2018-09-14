@@ -11,6 +11,9 @@ union Vec4 {
 	struct {
 		T x, y, z, w;
 	};
+	struct {
+		T r, g, b, a;
+	};
 	T elements[4];
 
 	Vec4();

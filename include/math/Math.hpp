@@ -7,6 +7,12 @@
 
 #include <cmath>
 
+#ifdef M_PI
+#undef M_PI
+#endif // M_PI
+
+#define M_PI 3.14
+
 namespace renderel::math {
 
 inline float clamp(float x, float min, float max) {
