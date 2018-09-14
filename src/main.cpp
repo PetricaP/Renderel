@@ -35,6 +35,7 @@ int main() {
     // FIXME: Going in the z direction causes model to disappear
     InputControl zdirection;
 
+    // FIXME: Rotation around x axis doesn't work like it should
 	InputControl rotationX;
 	InputControl rotationY;
 	InputControl rotationZ;
