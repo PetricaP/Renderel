@@ -35,6 +35,10 @@ int main() {
     // FIXME: Going in the z direction causes model to disappear
     InputControl zdirection;
 
+	InputControl rotationX;
+	InputControl rotationY;
+	InputControl rotationZ;
+
     gameEventHandler.AddKeyControl(GLFW_KEY_A, horizontal, -1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_D, horizontal, 1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_S, vertical, -1.0f);
@@ -46,6 +50,13 @@ int main() {
     gameEventHandler.AddKeyControl(GLFW_KEY_RIGHT, horizontal, 1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_DOWN, vertical, -1.0f);
     gameEventHandler.AddKeyControl(GLFW_KEY_UP, vertical, 1.0f);
+
+	gameEventHandler.AddKeyControl(GLFW_KEY_Q, rotationX, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_E, rotationX, -1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_Z, rotationY, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_X, rotationY, -1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_C, rotationZ, 1.0f);
+	gameEventHandler.AddKeyControl(GLFW_KEY_V, rotationZ, -1.0f);
 
     Window *window =
         new WindowGLFW(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
@@ -124,6 +135,10 @@ int main() {
     float yPos = 0.0f;
     float zPos = 0.0f;
 
+	float xRot = 0.0f;
+	float yRot = 0.0f;
+	float zRot = 0.0f;
+
     Renderable<unsigned int> renderable(va, ib, shader);
 
     Camera camera(Vec3<>(0.0f, 0.0f, -3.0f), 70.0f,
@@ -162,8 +177,14 @@ int main() {
 
         camera.SetPosition(Vec3<>(xPos, yPos, zPos));
 
+		xRot += rotationX.GetAmount() * deltaTime * 150;
+		yRot += rotationY.GetAmount() * deltaTime * 150;
+		zRot += rotationZ.GetAmount() * deltaTime * 150;
+
         Transform<> transform(Vec3<>(0.0f, 0.0f, -3.0f),
-                              Quaternion<>(Vec3<>(0.0f, 1.0f, 0.0f), 0.0f),
+							  Quaternion<>(Vec3<>(1.0f, 0.0f, 0.0f), xRot) *
+								  Quaternion<>(Vec3<>(0.0f, 1.0f, 0.0f), yRot) *
+								  Quaternion<>(Vec3<>(0.0f, 0.0f, 1.0f), zRot),
                               Vec3<>(0.4f + s / 30));
 
         Mat4<> model = transform.GetModel();
