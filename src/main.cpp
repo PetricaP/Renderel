@@ -121,7 +121,7 @@ int main() {
 	VertexArray *va2 = nullptr;
 	IndexBuffer<unsigned int> *ib2 = nullptr;
 
-	if (!OBJLoader::Load<>("res/models/munk.obj", ib2, va2)) {
+	if (!OBJLoader::Load<>("res/models/monkey.obj", ib2, va2)) {
 		std::cerr << "Failed to load OBJ! file" << std::endl;
 		return 1;
 	}
@@ -148,7 +148,7 @@ int main() {
 
 	Renderable<unsigned int> renderable(va, ib, shader);
 
-	Camera camera(Vec3<>(0.0f, 0.0f, -3.0f), 70.0f,
+	Camera camera(Vec3<>(0.0f, 0.0f, 0.0f), 70.0f,
 				  static_cast<float>(window->GetHeight()) / window->GetWidth(),
 				  0.01f, 10000.0f);
 
@@ -161,7 +161,6 @@ int main() {
 	currentTest = testMenu;
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
-
 
 	const char *glsl_version = "#version 130";
 	ImGui::CreateContext();
@@ -185,10 +184,10 @@ int main() {
 		renderable.GetShader().SetUniform2f("u_LightPos", mousePosf.x,
 											mousePosf.y);
 
-		Mat4<> proj = camera.GetProjection();
+		Mat4<> proj = Mat4<>::SimplePerspective();
 		Mat4<> view = camera.GetView();
 		renderable.GetShader().SetUniformMat4f("u_Proj", proj);
-		renderable.GetShader().SetUniformMat4f("u_View", view);
+		// renderable.GetShader().SetUniformMat4f("u_View", view);
 		float s = sinf(g);
 		renderable.GetShader().SetUniform4f("u_Color", 0.5f + s / 3, 0.3f,
 											0.5f + cosf(g) / 3, 1.0f);
@@ -203,7 +202,7 @@ int main() {
 		yRot += rotationY.GetAmount() * deltaTime * 150;
 		zRot += rotationZ.GetAmount() * deltaTime * 150;
 
-		Transform<> transform(Vec3<>(0.0f, 0.0f, -3.0f),
+		Transform<> transform(Vec3<>(0.0f, 0.0f, -5.0f - zPos),
 							  Quaternion<>(Vec3<>(1.0f, 0.0f, 0.0f), xRot) *
 								  Quaternion<>(Vec3<>(0.0f, 1.0f, 0.0f), yRot) *
 								  Quaternion<>(Vec3<>(0.0f, 0.0f, 1.0f), zRot),
@@ -243,7 +242,7 @@ int main() {
 
 		window->SwapBuffers();
 
-		g += 0.05;
+		g += 0.005;
 		newTime = static_cast<float>(glfwGetTime());
 	}
 

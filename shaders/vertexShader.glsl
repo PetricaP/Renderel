@@ -5,9 +5,9 @@
 layout(location = 0) in vec3 i_Position;
 layout(location = 1) in vec2 i_TexCoord;
 
-uniform mat4 u_Proj;
-uniform mat4 u_Model;
-uniform mat4 u_View;
+uniform mat4 u_Proj = mat4(1.0f);
+uniform mat4 u_Model = mat4(1.0f);
+uniform mat4 u_View = mat4(1.0f);
 
 out vec4 v_Pos;
 out vec2 v_TexCoord;
