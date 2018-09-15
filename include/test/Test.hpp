@@ -9,24 +9,24 @@ class Test {
 	Test() = default;
 	virtual ~Test() = default;
 
-	virtual void OnUpdate(float deltaTime) {}
+	virtual void OnUpdate(float) {}
 	virtual void OnRender() {}
 	virtual void OnGUIRender() {}
 };
 
-struct TestWithName {
+struct TestFunctionAndName {
 	std::string name;
-	std::function<Test*()> function;
+	std::function<Test *()> function;
 };
 
 class TestMenu : public Test {
   private:
 	Test *&m_CurrentTest;
-	std::vector<TestWithName> m_Tests;
+	std::vector<TestFunctionAndName> m_Tests;
 
   public:
 	TestMenu(Test *&currentTest);
-	~TestMenu();
+	~TestMenu() override = default;
 
 	void OnUpdate(float deltaTime) override;
 	void OnRender() override;
@@ -35,7 +35,7 @@ class TestMenu : public Test {
 	template <typename T>
 	void RegisterTest(const std::string &testName) {
 
-		TestWithName t = {testName, []() { return new T(); }};
+		TestFunctionAndName t = {testName, []() { return new T(); }};
 
 		m_Tests.push_back(t);
 	}

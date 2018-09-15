@@ -1,7 +1,7 @@
 #pragma once
 
-#include "test/Test.hpp"
 #include "math/Vec4.hpp"
+#include "test/Test.hpp"
 
 namespace renderel::test {
 
@@ -12,7 +12,7 @@ class TestClearColor : public Test {
 
   public:
 	TestClearColor();
-	~TestClearColor();
+	~TestClearColor() override;
 
 	void OnUpdate(float deltaTime) override;
 	void OnRender() override;

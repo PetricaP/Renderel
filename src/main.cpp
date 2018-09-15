@@ -36,10 +36,9 @@ using namespace graphics;
 
 int main() {
 	GameEventHandler gameEventHandler;
+
 	InputControl horizontal;
 	InputControl vertical;
-
-	// FIXME: Going in the z direction causes model to disappear
 	InputControl zdirection;
 
 	InputControl rotationX;
@@ -52,11 +51,6 @@ int main() {
 	gameEventHandler.AddKeyControl(GLFW_KEY_W, vertical, 1.0f);
 	gameEventHandler.AddKeyControl(GLFW_KEY_T, zdirection, -1.0f);
 	gameEventHandler.AddKeyControl(GLFW_KEY_Y, zdirection, 1.0f);
-
-	gameEventHandler.AddKeyControl(GLFW_KEY_LEFT, horizontal, -1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_RIGHT, horizontal, 1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_DOWN, vertical, -1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_UP, vertical, 1.0f);
 
 	gameEventHandler.AddKeyControl(GLFW_KEY_Q, rotationX, 1.0f);
 	gameEventHandler.AddKeyControl(GLFW_KEY_E, rotationX, -1.0f);
@@ -148,9 +142,7 @@ int main() {
 
 	Renderable<unsigned int> renderable(va, ib, shader);
 
-	Camera camera(Vec3<>(0.0f, 0.0f, 0.0f), 70.0f,
-				  static_cast<float>(window->GetHeight()) / window->GetWidth(),
-				  0.01f, 10000.0f);
+	Camera camera(Vec3<>(-3.0f, 0.0f, -3.0f), 70.0f, aspectRatio, 0.1f, 100.0f);
 
 	float prevTime = 0;
 	float newTime = static_cast<float>(glfwGetTime());
@@ -164,8 +156,8 @@ int main() {
 
 	const char *glsl_version = "#version 130";
 	ImGui::CreateContext();
-	ImGui_ImplGlfw_InitForOpenGL((APIWindowHandleGLFW)window->GetAPIHandle(),
-								 false);
+	ImGui_ImplGlfw_InitForOpenGL(
+		static_cast<APIWindowHandleGLFW>(window->GetAPIHandle()), false);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	ImGui::StyleColorsDark();
 
@@ -185,13 +177,9 @@ int main() {
 		renderable.GetShader().SetUniform2f("u_LightPos", mousePosf.x,
 											mousePosf.y);
 
-		Mat4<> proj = Mat4<>::SimplePerspective(aspectRatio);
-		// Mat4<> view = camera.GetView();
-		renderable.GetShader().SetUniformMat4f("u_Proj", proj);
-		// renderable.GetShader().SetUniformMat4f("u_View", view);
 		float s = sinf(g);
 		renderable.GetShader().SetUniform4f("u_Color", 0.5f + s / 3, 0.3f,
-											0.5f + cosf(g) / 3, 1.0f);
+											0.5f + cosf(g) / 3, 0.1f);
 
 		xPos += horizontal.GetAmount() * deltaTime;
 		yPos += vertical.GetAmount() * deltaTime;
@@ -203,14 +191,20 @@ int main() {
 		yRot += rotationY.GetAmount() * deltaTime * 150;
 		zRot += rotationZ.GetAmount() * deltaTime * 150;
 
-		Transform<> transform(Vec3<>(0.0f, 0.0f, -5.0f - zPos),
+		Transform<> transform(Vec3<>(0.0f, 0.0f, 5.0f),
 							  Quaternion<>(Vec3<>(1.0f, 0.0f, 0.0f), xRot) *
 								  Quaternion<>(Vec3<>(0.0f, 1.0f, 0.0f), yRot) *
 								  Quaternion<>(Vec3<>(0.0f, 0.0f, 1.0f), zRot),
-							  Vec3<>(0.4f + s / 30));
+							  Vec3<>(1.0f));
 
 		Mat4<> model = transform.GetModel();
 		shader.SetUniformMat4f("u_Model", model);
+
+		Mat4<> view = camera.GetView();
+		renderable.GetShader().SetUniformMat4f("u_View", view);
+
+		Mat4<> proj = camera.GetProjection();
+		renderable.GetShader().SetUniformMat4f("u_Proj", proj);
 
 		texture.Bind();
 		shader.SetUniform1i("u_Sampler", 0);
@@ -246,10 +240,15 @@ int main() {
 		g += 0.005;
 		newTime = static_cast<float>(glfwGetTime());
 	}
-
-	// TODO: delete currentTest;
-
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+
+	delete va;
+	delete ib;
+	// TODO delete vb
+	delete va2;
+	delete ib2;
+	delete testMenu;
+	delete window;
 }

@@ -14,7 +14,7 @@ out vec2 v_TexCoord;
 
 void main() {
 	vec4 position4 = vec4(i_Position, 1.0f);
-	gl_Position = u_View * u_Proj * u_Model * position4;
+	gl_Position = u_Proj * u_View * u_Model * position4;
 	v_Pos = u_Model * position4;
 	v_TexCoord = i_TexCoord;
 }

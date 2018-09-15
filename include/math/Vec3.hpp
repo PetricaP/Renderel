@@ -114,7 +114,7 @@ void Vec3<T>::div(const Vec3 &other) {
 
 template <typename T>
 Vec3<T> Vec3<T>::Cross(const Vec3<T> &other) {
-	return Vec3<T>(x * other.y - z * other.y, z * other.x - x * other.z,
+	return Vec3<T>(y * other.z - z * other.y, z * other.x - x * other.z,
 				   x * other.y - y * other.x);
 }
 

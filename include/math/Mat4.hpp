@@ -93,9 +93,9 @@ Mat4<T> Mat4<T>::Perspective(T fov, T aspectRatio, T near, T far) {
 	float t = 1 / tanf(toRadians(fov) / 2);
 	mat[0][0] = t / aspectRatio;
 	mat[1][1] = t;
-	mat[2][2] = -(far + near) / (far - near);
+	mat[2][2] = (far + near) / (near - far);
+	mat[2][3] = (2.0f * far * near) / (near - far);
 	mat[3][2] = -1;
-	mat[2][3] = -(2.0f * far * near) / (far - near);
 	return mat;
 }
 

@@ -28,12 +28,15 @@ void Renderer<T>::InitGraphics() {
 	}
 
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	GLCall(glDepthFunc(GL_LESS));
 	GLCall(glEnable(GL_BLEND));
+	GLCall(glEnable(GL_DEPTH_TEST));
 }
 
 template <typename T>
 void Renderer<T>::Clear() {
-	glClear(GL_COLOR_BUFFER_BIT);
+	// TODO: GL_STENCIL_BIT
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 template <typename T>

@@ -10,7 +10,7 @@ TestClearColor::TestClearColor() : m_Color{0.75f, 0.75f, 0.75f, 1.0f} {}
 
 TestClearColor::~TestClearColor() {}
 
-void TestClearColor::OnUpdate(float deltaTime) {}
+void TestClearColor::OnUpdate(float) {}
 
 void TestClearColor::OnRender() {
 	graphics::Renderer<>::SetClearColor(m_Color.r, m_Color.g, m_Color.b,
