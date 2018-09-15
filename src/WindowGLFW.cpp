@@ -7,11 +7,7 @@
 
 namespace renderel {
 
-// TODO: Methods practically the same, something is not right
-// Consider using inheritance here
 static void key_callback(GLFWwindow *window, int key, int, int action, int) {
-	static int calls = 0;
-	calls++;
 	Event event;
 	event.type = KEY;
 	event.keyEvent.key = static_cast<unsigned int>(key);
@@ -21,8 +17,6 @@ static void key_callback(GLFWwindow *window, int key, int, int action, int) {
 
 static void mouse_button_callback(GLFWwindow *window, int button, int action,
 								  int) {
-	static int calls = 0;
-	calls++;
 	Event event;
 	event.type = MOUSEBUTTON;
 	event.mouseButtonEvent.button = static_cast<unsigned int>(button);
@@ -32,8 +26,6 @@ static void mouse_button_callback(GLFWwindow *window, int button, int action,
 
 static void cursor_position_callback(GLFWwindow *window, double xPos,
 									 double yPos) {
-	static int calls = 0;
-	calls++;
 	Event event;
 	event.type = MOUSEMOTION;
 	event.mouseMotionEvent.xPos = static_cast<int>(xPos);
@@ -41,7 +33,6 @@ static void cursor_position_callback(GLFWwindow *window, double xPos,
 	GlobalGLFWEventHandler::PushEvent(window, event);
 }
 
-// TODO: Add mouse input management
 WindowGLFW::WindowGLFW(int width, int height, std::string title,
 					   EventHandler *eventHandler)
 	: Window(width, height, eventHandler) {
