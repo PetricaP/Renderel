@@ -156,7 +156,12 @@ int main() {
 	float newTime = static_cast<float>(glfwGetTime());
 	float deltaTime;
 
-	test::Test *testClearColor = new test::TestClearColor();
+	test::Test *currentTest = nullptr;
+	test::TestMenu *testMenu = new test::TestMenu(currentTest);
+	currentTest = testMenu;
+
+	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
+
 
 	const char *glsl_version = "#version 130";
 	ImGui::CreateContext();
@@ -169,12 +174,8 @@ int main() {
 		deltaTime = newTime - prevTime;
 		prevTime = newTime;
 
-		testClearColor->OnUpdate(deltaTime);
-
 		window->PollEvents();
 		Renderer<>::Clear();
-
-		testClearColor->OnRender();
 
 		Vec2<int> mousePos;
 		gameEventHandler.GetMousePosition(mousePos);
@@ -222,7 +223,21 @@ int main() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		testClearColor->OnGUIRender();
+
+		if (currentTest) {
+			currentTest->OnUpdate(deltaTime);
+			currentTest->OnRender();
+			ImGui::Begin("Test");
+			currentTest->OnGUIRender();
+
+			if (currentTest != testMenu && ImGui::Button("| <-- |")) {
+				delete currentTest;
+				currentTest = testMenu;
+			}
+
+			ImGui::End();
+		}
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -232,7 +247,7 @@ int main() {
 		newTime = static_cast<float>(glfwGetTime());
 	}
 
-	delete testClearColor;
+	// TODO: delete currentTest;
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

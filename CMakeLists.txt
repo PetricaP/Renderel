@@ -100,3 +100,7 @@ target_include_directories(Renderel PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(Renderel glew_s glfw)
 
 target_compile_definitions(Renderel PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	target_compile_definitions(Renderel PUBLIC _CRT_SECURE_NO_WARNINGS)
+endif()
