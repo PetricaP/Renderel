@@ -15,12 +15,6 @@
 #include "math/Quaternion.hpp"
 #include "math/Vec2.hpp"
 #include "math/Vec3.hpp"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <cmath>
-#include <iostream>
-#include <memory>
-
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
 
