@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 #include "GameEventHandler.hpp"
+#include "ImGUI.hpp"
 #include "InputControl.hpp"
 #include "Transform.hpp"
 #include "WindowGLFW.hpp"
@@ -19,10 +20,6 @@
 #include <cmath>
 #include <iostream>
 #include <memory>
-
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
 
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
@@ -154,12 +151,7 @@ int main() {
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 
-	const char *glsl_version = "#version 130";
-	ImGui::CreateContext();
-	ImGui_ImplGlfw_InitForOpenGL(
-		static_cast<APIWindowHandleGLFW>(window->GetAPIHandle()), false);
-	ImGui_ImplOpenGL3_Init(glsl_version);
-	ImGui::StyleColorsDark();
+	GUI *gui = new ImGUI(window->GetAPIHandle(), "#version 130");
 
 	while (!window->ShouldClose()) {
 		deltaTime = newTime - prevTime;
@@ -209,40 +201,34 @@ int main() {
 		texture.Bind();
 		shader.SetUniform1i("u_Sampler", 0);
 
-		// renderer.Submit(renderable);
-		renderer.Submit(renderable2);
+		renderer.Submit(renderable);
+		// renderer.Submit(renderable2);
 
 		renderer.Flush();
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		gui->Init();
 
 		if (currentTest) {
 			currentTest->OnUpdate(deltaTime);
 			currentTest->OnRender();
-			ImGui::Begin("Test");
+			gui->Begin("Test");
 			currentTest->OnGUIRender();
 
-			if (currentTest != testMenu && ImGui::Button("| <-- |")) {
+			if (currentTest != testMenu && gui->Button("| <-- |")) {
 				delete currentTest;
 				currentTest = testMenu;
 			}
 
-			ImGui::End();
+			gui->End();
 		}
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		gui->Render();
 
 		window->SwapBuffers();
 
 		g += 0.005;
 		newTime = static_cast<float>(glfwGetTime());
 	}
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
 
 	delete va;
 	delete ib;
@@ -250,5 +236,6 @@ int main() {
 	delete va2;
 	delete ib2;
 	delete testMenu;
+	delete gui;
 	delete window;
 }
