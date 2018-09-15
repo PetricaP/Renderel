@@ -44,7 +44,7 @@ Mat4<T> Quaternion<T>::ToRotationMatrix() const {
 
 	mat[1][0] = 2 * x * y + 2 * z * w;
 	mat[1][1] = 1 - 2 * x * x - 2 * z * z;
-	mat[1][2] = 2 * y * z - 2 * x * 2;
+	mat[1][2] = 2 * y * z - 2 * x * w;
 	mat[1][3] = 0;
 
 	mat[2][0] = 2 * x * z - 2 * y * w;
