@@ -24,7 +24,7 @@ union Mat4 {
 
 	static Mat4 Ortho(T left, T right, T bottom, T top, T near, T far);
 	static Mat4 Perspective(T fov, T aspectRatio, T near, T far);
-	static Mat4 SimplePerspective();
+	static Mat4 SimplePerspective(T aspectRatio);
 	static Mat4 Translation(const Vec3<T> &amount);
 	static Mat4 Scale(const Vec3<T> &scale);
 	static Mat4 LookAt(const Vec3<T> &eye, const Vec3<T> &at,
@@ -91,7 +91,7 @@ template <typename T>
 Mat4<T> Mat4<T>::Perspective(T fov, T aspectRatio, T near, T far) {
 	Mat4<T> mat;
 	float t = 1 / tanf(toRadians(fov) / 2);
-	mat[0][0] = t;
+	mat[0][0] = t / aspectRatio;
 	mat[1][1] = t;
 	mat[2][2] = -(far + near) / (far - near);
 	mat[3][2] = -1;
@@ -100,8 +100,9 @@ Mat4<T> Mat4<T>::Perspective(T fov, T aspectRatio, T near, T far) {
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::SimplePerspective() {
+Mat4<T> Mat4<T>::SimplePerspective(T aspectRatio) {
 	Mat4<T> view(1.0f);
+	view[0][0] = 1.0f / aspectRatio;
 	view[3][3] = 0.0f;
 	view[3][2] = -1.0f;
 	return view;

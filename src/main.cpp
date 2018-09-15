@@ -132,7 +132,7 @@ int main() {
 
 	Renderable<unsigned int> renderable2(va2, ib2, shader);
 
-	float f = 1.0f * WIDTH / HEIGHT;
+	float aspectRatio = 1.0f * WIDTH / HEIGHT;
 
 	Texture texture("res/textures/bricks.jpg");
 
@@ -178,14 +178,15 @@ int main() {
 
 		Vec2<int> mousePos;
 		gameEventHandler.GetMousePosition(mousePos);
-		Vec2<> mousePosf = Vec2<>(map(mousePos.x, 0, WIDTH, -f, f),
-								  map(mousePos.y, HEIGHT, 0, -1.0f, 1.0f));
+		Vec2<> mousePosf =
+			Vec2<>(map(mousePos.x, 0, WIDTH, -aspectRatio, aspectRatio),
+				   map(mousePos.y, HEIGHT, 0, -1.0f, 1.0f));
 
 		renderable.GetShader().SetUniform2f("u_LightPos", mousePosf.x,
 											mousePosf.y);
 
-		Mat4<> proj = Mat4<>::SimplePerspective();
-		Mat4<> view = camera.GetView();
+		Mat4<> proj = Mat4<>::SimplePerspective(aspectRatio);
+		// Mat4<> view = camera.GetView();
 		renderable.GetShader().SetUniformMat4f("u_Proj", proj);
 		// renderable.GetShader().SetUniformMat4f("u_View", view);
 		float s = sinf(g);
