@@ -76,6 +76,8 @@ class TestTexturedCube : public Test {
 	graphics::Renderer<> *renderer;
 	graphics::Shader *shader;
 	graphics::Texture *texture;
+
+	math::Vec3<> rotation;
 	Transform<> transform;
 
 	math::Mat4<> model;
