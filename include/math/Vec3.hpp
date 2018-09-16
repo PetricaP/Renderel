@@ -195,6 +195,11 @@ Vec3<T> operator*(const Vec3<T> &first, const Vec3<T> &second) {
 }
 
 template <typename T>
+Vec3<T> operator*(const Vec3<T> &vec, T scalar) {
+	return {vec.x * scalar, vec.y * scalar, vec.z * scalar};
+}
+
+template <typename T>
 Vec3<T> operator/(const Vec3<T> &first, const Vec3<T> &second) {
 	return {first.x / second.x, first.y / second.y, first.z / second.z};
 }
@@ -207,11 +212,6 @@ Vec3<T> operator+(const Vec3<T> &vec, T t) {
 template <typename T>
 Vec3<T> operator-(const Vec3<T> &vec, T t) {
 	return {vec.x - t, vec.y - t, vec.z - t};
-}
-
-template <typename T>
-Vec3<T> operator*(const Vec3<T> &vec, T t) {
-	return {vec.x * t, vec.y * t, vec.z * t};
 }
 
 template <typename T>

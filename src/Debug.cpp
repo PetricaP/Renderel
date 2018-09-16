@@ -23,10 +23,9 @@ bool GLLogCall(const char *function, const char *file, int line) {
 										   "GL_TABLE_TOO_LARGE"};
 
 	GLenum error;
-	std::stringstream ss;
 	while ((error = glGetError())) {
+		std::stringstream ss;
 		ss << std::hex << error;
-		std::cout << error << '\n';
 		fprintf(stderr, "[OpenGL Error] (0x%s : %s): %s %s: %d\n",
 				ss.str().c_str(), GLErrors[error - 1280].c_str(), function,
 				file, line);

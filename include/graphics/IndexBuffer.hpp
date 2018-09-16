@@ -15,6 +15,7 @@ class IndexBuffer {
 
   public:
 	IndexBuffer(void *data, unsigned int count);
+	IndexBuffer(const void *data, unsigned int count);
 
 	~IndexBuffer();
 	void Bind() const;
@@ -46,6 +47,15 @@ class IndexBuffer {
 
 template <typename T>
 IndexBuffer<T>::IndexBuffer(void *data, unsigned int count) : m_Count(count) {
+	GLCall(glGenBuffers(1, &m_RendererID));
+	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(T), data,
+						GL_STATIC_DRAW));
+}
+
+template <typename T>
+IndexBuffer<T>::IndexBuffer(const void *data, unsigned int count)
+	: m_Count(count) {
 	GLCall(glGenBuffers(1, &m_RendererID));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(T), data,

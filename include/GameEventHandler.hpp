@@ -20,8 +20,7 @@ struct InputPart {
 class GameEventHandler final : public EventHandler {
   private:
 	std::unordered_map<unsigned int, std::vector<InputPart>> m_Inputs;
-	int m_MouseX = 0;
-	int m_MouseY = 0;
+	math::Vec2<int> m_MousePosition;
 
   public:
 	// TODO: Finish the input management system benny-style
@@ -39,10 +38,7 @@ class GameEventHandler final : public EventHandler {
 	void AddMouseControl(unsigned int mouseButton, InputControl &inputControl,
 						 float weight = 1.0f);
 
-	void GetMousePosition(math::Vec2<int> &position) {
-		position.x = m_MouseX;
-		position.y = m_MouseY;
-	}
+	math::Vec2<int> GetMousePosition() { return m_MousePosition; }
 
   private:
 	void updateInput(unsigned int inputCode, float direction, bool isRepeat);
