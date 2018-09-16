@@ -43,7 +43,7 @@ int main() {
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
-	testMenu->RegisterTest<test::TestOBJLoader>("Textured obj loader");
+	testMenu->RegisterTest<test::TestOBJLoader>("Test obj loader");
 
 	GUI *gui = new ImGUI(window->GetAPIHandle(), "#version 130");
 
