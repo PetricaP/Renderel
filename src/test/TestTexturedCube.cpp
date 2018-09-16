@@ -51,8 +51,6 @@ TestTexturedCube::~TestTexturedCube() {
 	delete shader;
 	delete va;
 	delete ib;
-	// TODO: see why deleting the vertex buffer results in double free
-	// delete vb;
 	delete renderer;
 }
 
