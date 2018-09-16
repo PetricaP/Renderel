@@ -16,16 +16,16 @@ class Test {
 
 struct TestFunctionAndName {
 	std::string name;
-	std::function<Test *()> function;
+	std::function<std::shared_ptr<Test>()> function;
 };
 
 class TestMenu : public Test {
   private:
-	Test *&m_CurrentTest;
+	std::shared_ptr<Test> &m_CurrentTest;
 	std::vector<TestFunctionAndName> m_Tests;
 
   public:
-	TestMenu(Test *&currentTest);
+	TestMenu(std::shared_ptr<Test> &currentTest);
 	~TestMenu() override = default;
 
 	void OnUpdate(float deltaTime) override;
@@ -35,7 +35,8 @@ class TestMenu : public Test {
 	template <typename T>
 	void RegisterTest(const std::string &testName) {
 
-		TestFunctionAndName t = {testName, []() { return new T(); }};
+		TestFunctionAndName t = {testName,
+								 []() { return std::shared_ptr<Test>(new T); }};
 
 		m_Tests.push_back(t);
 	}

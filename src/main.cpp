@@ -29,21 +29,22 @@ using namespace renderel;
 int main() {
 	GameEventHandler gameEventHandler;
 
-	std::unique_ptr<Window> window =
-		std::make_unique<WindowGLFW>(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
+	std::unique_ptr<Window> window = std::make_unique<WindowGLFW>(
+		WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
 	graphics::Renderer<unsigned int>::InitGraphics();
 	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-	test::Test *currentTest = nullptr;
-	test::TestMenu *testMenu = new test::TestMenu(currentTest);
+	std::shared_ptr<test::Test> currentTest = nullptr;
+	auto testMenu = std::make_shared<test::TestMenu>(currentTest);
 	currentTest = testMenu;
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
 	testMenu->RegisterTest<test::TestOBJLoader>("Test obj loader");
 
-	std::unique_ptr<GUI> gui = std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
+	std::unique_ptr<GUI> gui =
+		std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
 
 	float prevTime = 0;
 	float newTime = static_cast<float>(glfwGetTime());

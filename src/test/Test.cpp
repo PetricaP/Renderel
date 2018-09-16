@@ -4,7 +4,8 @@
 
 namespace renderel::test {
 
-TestMenu::TestMenu(Test *&currentTest) : m_CurrentTest(currentTest) {}
+TestMenu::TestMenu(std::shared_ptr<Test> &currentTest)
+	: m_CurrentTest(currentTest) {}
 
 void TestMenu::OnUpdate(float) {}
 
