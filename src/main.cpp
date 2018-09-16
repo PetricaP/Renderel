@@ -18,6 +18,7 @@
 #include "math/Vec3.hpp"
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
+#include "test/TestOBJLoader.hpp"
 #include "test/TestTexturedCube.hpp"
 
 using namespace renderel;
@@ -64,6 +65,7 @@ int main() {
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
+	testMenu->RegisterTest<test::TestOBJLoader>("Textured obj loader");
 
 	GUI *gui = new ImGUI(window->GetAPIHandle(), "#version 130");
 
