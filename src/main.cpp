@@ -66,7 +66,6 @@ int main() {
 			currentTest->OnGUIRender();
 
 			if (currentTest != testMenu && gui->Button("| <-- |")) {
-				delete currentTest;
 				currentTest = testMenu;
 			}
 
@@ -79,7 +78,4 @@ int main() {
 
 		newTime = static_cast<float>(glfwGetTime());
 	}
-
-	// TODO: use smart pointers
-	delete testMenu;
 }
