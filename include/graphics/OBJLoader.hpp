@@ -31,7 +31,12 @@ struct Vertex {
 
 template <typename U = float>
 bool Vertex<U>::operator==(const Vertex<U> &other) const {
-	return false;
+	// TODO: Vec2, Vec3, Vec4 operator==
+	return this->position.x == other.position.x &&
+		   this->position.y == other.position.y &&
+		   this->position.z == other.position.z &&
+		   this->texCoords.u == other.texCoords.u &&
+		   this->texCoords.v == other.texCoords.v;
 }
 
 /*
