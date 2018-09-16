@@ -77,12 +77,15 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 				fscanf(objFile, "%u/%u/%u ", &vertIndex[i], &texCoordIndex[i],
 					   &normalIndex[i]);
 
+				// Create a vertex
 				Vertex v;
 				v.position = vertexPositions[vertIndex[i] - 1];
 				v.texCoords = textures[texCoordIndex[i] - 1];
 
+				// Check if it already exists
 				auto position = std::find(vertices.begin(), vertices.end(), v);
 
+				// Add it if needed, and add index to it
 				if (position == vertices.end()) {
 					vertices.push_back(v);
 					indices.push_back(vertices.size() - 1);
