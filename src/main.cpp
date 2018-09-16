@@ -22,8 +22,6 @@
 #include "test/TestTexturedCube.hpp"
 
 using namespace renderel;
-using namespace math;
-using namespace graphics;
 
 #define WIDTH 1080
 #define HEIGHT 720
@@ -34,8 +32,8 @@ int main() {
 	Window *window =
 		new WindowGLFW(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
-	Renderer<unsigned int>::InitGraphics();
-	Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	graphics::Renderer<unsigned int>::InitGraphics();
+	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	test::Test *currentTest = nullptr;
 	test::TestMenu *testMenu = new test::TestMenu(currentTest);
@@ -56,7 +54,7 @@ int main() {
 		prevTime = newTime;
 
 		window->PollEvents();
-		Renderer<>::Clear();
+		graphics::Renderer<>::Clear();
 
 		gui->Init();
 

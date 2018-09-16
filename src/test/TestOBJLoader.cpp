@@ -35,7 +35,7 @@ TestOBJLoader::TestOBJLoader()
 
 	float aspectRatio = 1.0f * WIDTH / HEIGHT;
 	math::Mat4<> proj =
-		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
+		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 40.0f);
 	shader->SetUniformMat4f("u_Proj", proj);
 }
 
@@ -64,7 +64,7 @@ void TestOBJLoader::OnUpdate(float) {
 }
 
 void TestOBJLoader::OnGUIRender() {
-	ImGui::SliderFloat3("Position", &transform.GetPosition().x, -5.0f, 5.0f);
+	ImGui::SliderFloat3("Position", &transform.GetPosition().x, -50.0f, 5.0f);
 	ImGui::SliderFloat3("Rotation", &rotation.x, -180.0f, 180.0f);
 	ImGui::SliderFloat3("Scale", &transform.GetScale().x, 0.0f, 10.0f);
 
@@ -78,8 +78,7 @@ void TestOBJLoader::OnGUIRender() {
 }
 
 void TestOBJLoader::OnRender() {
-	graphics::Renderer<>::SetClearColor(m_Color.r, m_Color.g, m_Color.b,
-										m_Color.a);
+
 	graphics::Renderer<>::Clear();
 	renderer->Submit(graphics::Renderable(va, ib, *shader));
 	renderer->Flush();
