@@ -1,10 +1,11 @@
 #ifndef TESTTEXTUREDCUBE_HPP
 #define TESTTEXTUREDCUBE_HPP
 
-#include "Test.hpp"
+#include "Transform.hpp"
 #include "graphics/BasicRenderer.hpp"
 #include "graphics/Texture.hpp"
 #include "math/Vec4.hpp"
+#include "test/Test.hpp"
 
 namespace renderel::test {
 
@@ -75,6 +76,7 @@ class TestTexturedCube : public Test {
 	graphics::Renderer<> *renderer;
 	graphics::Shader *shader;
 	graphics::Texture *texture;
+	Transform<> transform;
 
 	math::Mat4<> model;
 	math::Mat4<> proj;
@@ -83,6 +85,8 @@ class TestTexturedCube : public Test {
 	TestTexturedCube();
 	~TestTexturedCube() override;
 	void OnRender() override;
+	void OnGUIRender() override;
+	void OnUpdate(float) override;
 };
 
 } // namespace renderel::test

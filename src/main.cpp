@@ -101,6 +101,7 @@ int main() {
 		newTime = static_cast<float>(glfwGetTime());
 	}
 
+	// TODO: use unique pointers
 	delete testMenu;
 	delete gui;
 	delete window;
