@@ -8,8 +8,17 @@ namespace renderel::math {
 
 template <typename T = float>
 union Vec3 {
+	// Position
 	struct {
 		T x, y, z;
+	};
+	// Color
+	struct {
+		T r, g, b;
+	};
+	// Texture
+	struct {
+		T u, v, w;
 	};
 	T elements[3];
 

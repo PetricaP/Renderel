@@ -8,9 +8,11 @@ namespace renderel::math {
 
 template <typename T = float>
 union Vec4 {
+	// Position
 	struct {
 		T x, y, z, w;
 	};
+	// Color
 	struct {
 		T r, g, b, a;
 	};

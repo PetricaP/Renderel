@@ -7,8 +7,13 @@ namespace renderel::math {
 
 template <typename T = float>
 union Vec2 {
+	// Position
 	struct {
 		T x, y;
+	};
+	// Texture
+	struct {
+		T u, v;
 	};
 	T elements[2];
 
