@@ -22,11 +22,11 @@ TestOBJLoader::TestOBJLoader()
 
 	renderer = new graphics::BasicRenderer();
 	shader = new graphics::Shader("shaders/vertexShader.glsl",
-								  "shaders/fragmentShader.glsl");
+								  "shaders/fragmentShaderTexture.glsl");
 
 	shader->Bind();
 
-	texture = new graphics::Texture("res/textures/bricks.jpg");
+	texture = new graphics::Texture("res/textures/monkey_baked.png");
 	texture->Bind();
 	shader->SetUniform1i("u_Sampler", 0);
 
