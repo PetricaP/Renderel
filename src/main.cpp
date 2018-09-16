@@ -31,28 +31,6 @@ using namespace graphics;
 int main() {
 	GameEventHandler gameEventHandler;
 
-	InputControl horizontal;
-	InputControl vertical;
-	InputControl zdirection;
-
-	InputControl rotationX;
-	InputControl rotationY;
-	InputControl rotationZ;
-
-	gameEventHandler.AddKeyControl(GLFW_KEY_A, horizontal, -1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_D, horizontal, 1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_S, vertical, -1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_W, vertical, 1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_T, zdirection, -1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_Y, zdirection, 1.0f);
-
-	gameEventHandler.AddKeyControl(GLFW_KEY_Q, rotationX, 1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_E, rotationX, -1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_Z, rotationY, 1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_X, rotationY, -1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_C, rotationZ, 1.0f);
-	gameEventHandler.AddKeyControl(GLFW_KEY_V, rotationZ, -1.0f);
-
 	Window *window =
 		new WindowGLFW(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
