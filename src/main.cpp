@@ -29,8 +29,8 @@ using namespace renderel;
 int main() {
 	GameEventHandler gameEventHandler;
 
-	Window *window =
-		new WindowGLFW(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
+	std::unique_ptr<Window> window =
+		std::make_unique<WindowGLFW>(WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
 	graphics::Renderer<unsigned int>::InitGraphics();
 	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -43,7 +43,7 @@ int main() {
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
 	testMenu->RegisterTest<test::TestOBJLoader>("Test obj loader");
 
-	GUI *gui = new ImGUI(window->GetAPIHandle(), "#version 130");
+	std::unique_ptr<GUI> gui = std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
 
 	float prevTime = 0;
 	float newTime = static_cast<float>(glfwGetTime());
@@ -79,8 +79,6 @@ int main() {
 		newTime = static_cast<float>(glfwGetTime());
 	}
 
-	// TODO: use unique pointers
+	// TODO: use smart pointers
 	delete testMenu;
-	delete gui;
-	delete window;
 }
