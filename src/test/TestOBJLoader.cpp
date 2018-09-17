@@ -26,7 +26,7 @@ TestOBJLoader::TestOBJLoader()
 
 	shader->Bind();
 
-	texture = new graphics::Texture("res/textures/monkey_baked.png");
+	texture = new graphics::Texture("res/textures/bricks.jpg");
 	texture->Bind();
 	shader->SetUniform1i("u_Sampler", 0);
 

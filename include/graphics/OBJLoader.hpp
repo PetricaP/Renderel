@@ -29,14 +29,9 @@ struct Vertex {
 	bool operator==(const Vertex &other) const;
 };
 
-template <typename U = float>
+template <typename U>
 bool Vertex<U>::operator==(const Vertex<U> &other) const {
-	// TODO: Vec2, Vec3, Vec4 operator==
-	return this->position.x == other.position.x &&
-		   this->position.y == other.position.y &&
-		   this->position.z == other.position.z &&
-		   this->texCoords.u == other.texCoords.u &&
-		   this->texCoords.v == other.texCoords.v;
+	return position == other.position && texCoords == other.texCoords;
 }
 
 /*
@@ -78,7 +73,7 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 					   &normalIndex[i]);
 
 				// Create a vertex
-				Vertex v;
+				Vertex<U> v;
 				v.position = vertexPositions[vertIndex[i] - 1];
 				v.texCoords = textures[texCoordIndex[i] - 1];
 
@@ -90,11 +85,10 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 					vertices.push_back(v);
 					indices.push_back(vertices.size() - 1);
 				} else {
-					T pos = (T)(position - vertices.begin());
+					T pos = static_cast<T>(position - vertices.begin());
 					indices.push_back(pos);
 				}
 			}
-			// BECAUSE OBJ INDEXES START FROM  !!!!!!!!!!!!!!!111!!!!1!!!!!!
 		} else if (strcmp(begin, TEXTURE) == 0) {
 			math::Vec2<> coord;
 			fscanf(objFile, "%f %f\n", &coord.x, &coord.y);
@@ -119,9 +113,8 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 
 	va->AddBuffer(vb, vbl);
 
-	ib = new IndexBuffer<T>(
-		indices.data(), static_cast<unsigned int>(
-							indices.size()));
+	ib = new IndexBuffer<T>(indices.data(),
+							static_cast<unsigned int>(indices.size()));
 	fclose(objFile);
 
 	return true;

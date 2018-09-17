@@ -36,6 +36,8 @@ union Vec3 {
 	Vec3 &operator*=(const Vec3 &other);
 	Vec3 &operator/=(const Vec3 &other);
 
+	bool operator==(const Vec3 &other) const;
+
 	Vec3 operator-() const;
 
 	Vec3 &operator+=(T t);
@@ -130,6 +132,11 @@ Vec3<T> Vec3<T>::Cross(const Vec3<T> &other) {
 template <typename T>
 T Vec3<T>::Dot(const Vec3<T> &other) {
 	return x * other.x + y * other.y + z * other.z;
+}
+
+template <typename T>
+bool Vec3<T>::operator==(const Vec3<T> &other) const {
+	return x == other.x && y == other.y && z == other.z;
 }
 
 template <typename T>

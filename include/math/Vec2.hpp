@@ -31,6 +31,8 @@ union Vec2 {
 	Vec2 &operator*=(const Vec2 &other);
 	Vec2 &operator/=(const Vec2 &other);
 
+	bool operator==(const Vec2 &other) const;
+
 	Vec2 &operator+=(T t);
 	Vec2 &operator-=(T t);
 	Vec2 &operator*=(T t);
@@ -93,6 +95,11 @@ template <typename T>
 Vec2<T> &Vec2<T>::operator+=(const Vec2<T> &other) {
 	add(other);
 	return *this;
+}
+
+template <typename T>
+bool Vec2<T>::operator==(const Vec2<T> &other) const {
+	return x == other.x && y == other.y;
 }
 
 template <typename T>

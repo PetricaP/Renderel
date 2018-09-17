@@ -33,6 +33,8 @@ union Vec4 {
 	Vec4 &operator*=(const Vec4 &other);
 	Vec4 &operator/=(const Vec4 &other);
 
+	bool operator==(const Vec4 &other) const;
+
 	Vec4 &operator+=(T t);
 	Vec4 &operator-=(T t);
 	Vec4 &operator*=(T t);
@@ -101,6 +103,11 @@ void Vec4<T>::div(const Vec4 &other) {
 	y /= other.y;
 	z /= other.z;
 	w /= other.w;
+}
+
+template <typename T>
+bool Vec4<T>::operator==(const Vec4<T> &other) const {
+	return x == other.x && y == other.y && z == other.z && w == other.w;
 }
 
 template <typename T>

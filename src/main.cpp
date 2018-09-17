@@ -20,6 +20,7 @@
 #include "test/TestClearColor.hpp"
 #include "test/TestOBJLoader.hpp"
 #include "test/TestTexturedCube.hpp"
+#include <memory>
 
 using namespace renderel;
 
@@ -36,8 +37,8 @@ int main() {
 	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	std::shared_ptr<test::Test> currentTest = nullptr;
-	auto testMenu = std::make_shared<test::TestMenu>(currentTest);
-	currentTest = testMenu;
+	std::shared_ptr<test::TestMenu> testMenu(new test::TestMenu(currentTest));
+	currentTest = static_cast<std::shared_ptr<test::Test>>(testMenu);
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
