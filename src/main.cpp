@@ -26,8 +26,8 @@
 
 using namespace renderel;
 
-#define WIDTH 1080
-#define HEIGHT 720
+const int WIDTH = 1080;
+const int HEIGHT = 720;
 
 int main() {
 	GameEventHandler gameEventHandler;
