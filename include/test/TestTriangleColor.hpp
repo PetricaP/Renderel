@@ -7,6 +7,11 @@
 
 namespace renderel::test {
 
+struct VertexI {
+	float x, y, z;
+	int index;
+};
+
 class TestTriangleColor : public Test {
 
   private:
@@ -14,10 +19,10 @@ class TestTriangleColor : public Test {
 
 	static constexpr float size = 0.5f;
 
-	static constexpr float m_Vertices[] = {
-		0.0f,  size,  0.0f, 0.0f, // First corner
-		-size, -size, 0.0f, 1.0f, // Second corner
-		size,  -size, 0.0f, 2.0f  // Third corner
+	static constexpr VertexI m_Vertices[] = {
+		{0.0f, size, 0.0f, 0},   // First corner
+		{-size, -size, 0.0f, 1}, // Second corner
+		{size, -size, 0.0f, 2}   // Third corner
 	};
 
 	static constexpr int m_Indices[] = {0, 1, 2};

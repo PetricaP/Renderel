@@ -4,11 +4,9 @@
 namespace renderel::test {
 
 TestTriangleColor::TestTriangleColor(const std::shared_ptr<Window> window)
-	: Test(window), m_Colors{
-		  math::Vec4<float>(1.0f, 0.0f, 0.0f, 1.0f),
-		  math::Vec4<float>(0.0f, 0.0f, 1.0f, 1.0f),
-		  math::Vec4<float>(0.0f, 1.0f, 0.0f, 1.0f)
-	  } {
+	: Test(window), m_Colors{math::Vec4<float>(1.0f, 0.0f, 0.0f, 1.0f),
+							 math::Vec4<float>(0.0f, 0.0f, 1.0f, 1.0f),
+							 math::Vec4<float>(0.0f, 1.0f, 0.0f, 1.0f)} {
 
 	va = new graphics::VertexArray();
 
@@ -16,7 +14,7 @@ TestTriangleColor::TestTriangleColor(const std::shared_ptr<Window> window)
 
 	graphics::VertexBufferLayout vbl;
 	vbl.Push<float>(3);
-	vbl.Push<float>(1);
+	vbl.Push<int>(1);
 
 	va->AddBuffer(vb, vbl);
 
@@ -39,7 +37,8 @@ TestTriangleColor::~TestTriangleColor() {
 }
 
 void TestTriangleColor::OnUpdate(float deltaTime) {
-	math::Mat4<float> colorMatrix(m_Colors[0], m_Colors[1], m_Colors[2], math::Vec4<float>(1.0f));
+	math::Mat4<float> colorMatrix(m_Colors[0], m_Colors[1], m_Colors[2],
+								  math::Vec4<float>(1.0f));
 	shader->SetUniformMat4f("u_ColorMatrix", colorMatrix);
 }
 

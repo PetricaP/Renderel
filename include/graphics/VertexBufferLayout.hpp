@@ -18,6 +18,8 @@ struct VertexBufferElement {
 			return 4;
 		case GL_UNSIGNED_INT:
 			return 4;
+		case GL_INT:
+			return 4;
 		case GL_UNSIGNED_BYTE:
 			return 1;
 		}
@@ -47,6 +49,12 @@ template <>
 inline void VertexBufferLayout::Push<float>(unsigned int count) {
 	m_Elements.push_back({GL_FLOAT, count, GL_FALSE});
 	m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
+}
+
+template <>
+inline void VertexBufferLayout::Push<int>(unsigned int count) {
+	m_Elements.push_back({GL_FLOAT, count, GL_FALSE});
+	m_Stride += count * VertexBufferElement::GetSizeOfType(GL_INT);
 }
 
 template <>
