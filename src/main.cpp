@@ -18,10 +18,10 @@
 #include "math/Vec3.hpp"
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
-#include "test/TestTriangleColor.hpp"
-#include "test/TestTexturedCube.hpp"
-#include "test/TestOBJLoader.hpp"
 #include "test/TestInput.hpp"
+#include "test/TestOBJLoader.hpp"
+#include "test/TestTexturedCube.hpp"
+#include "test/TestTriangleColor.hpp"
 #include <memory>
 
 using namespace renderel;
@@ -73,6 +73,9 @@ int main() {
 
 			if (currentTest != testMenu && gui->Button("| <-- |")) {
 				currentTest = testMenu;
+			}
+			if (gui->Button("Exit")) {
+				window->Close();
 			}
 
 			gui->End();

@@ -23,6 +23,9 @@ class WindowGLFW final : public Window {
 	void SwapBuffers() const override;
 	void PollEvents() const override;
 	void *GetAPIHandle() const override { return m_GLFWwindow; }
+	void Close() const override {
+		glfwSetWindowShouldClose(m_GLFWwindow, GLFW_TRUE);
+	}
 };
 
 } // namespace renderel

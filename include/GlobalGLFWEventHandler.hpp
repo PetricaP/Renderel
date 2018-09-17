@@ -68,7 +68,8 @@ class GlobalGLFWEventHandler {
 
   private:
 	static void HandleEvents(WindowEventData &windowEventData);
-	static void HandleKeyEvent(EventHandler *handler, const Event &event);
+	static void HandleKeyEvent(WindowGLFW *window, const Event &event);
+	static void HandleFullScreen(WindowGLFW *window);
 };
 
 } // namespace renderel

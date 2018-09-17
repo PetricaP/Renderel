@@ -22,6 +22,7 @@ class Window {
 	virtual void SwapBuffers() const = 0;
 	virtual void PollEvents() const = 0;
 	virtual void *GetAPIHandle() const = 0;
+	virtual void Close() const = 0;
 
 	void SetWidth(int width) { m_Width = width; }
 	void SetHeight(int height) { m_Height = height; }
