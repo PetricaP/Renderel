@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEST_HPP
+#define TEST_HPP
 
 #include <functional>
 #include <memory>
@@ -44,3 +45,5 @@ class TestMenu : public Test {
 };
 
 } // namespace renderel::test
+
+#endif // !TEST_HPP

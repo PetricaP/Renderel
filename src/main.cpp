@@ -20,6 +20,7 @@
 #include "test/TestClearColor.hpp"
 #include "test/TestOBJLoader.hpp"
 #include "test/TestTexturedCube.hpp"
+#include "test/TestTriangleColor.hpp"
 #include <memory>
 
 using namespace renderel;
@@ -42,7 +43,8 @@ int main() {
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
-	testMenu->RegisterTest<test::TestOBJLoader>("Test obj loader");
+	testMenu->RegisterTest<test::TestOBJLoader>("Obj loader test");
+	testMenu->RegisterTest<test::TestTriangleColor>("Triangle color test");
 
 	std::unique_ptr<GUI> gui =
 		std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TESTCLEARCOLOR_HPP
+#define TESTCLEARCOLOR_HPP
 
 #include "math/Vec4.hpp"
 #include "test/Test.hpp"
@@ -20,3 +21,5 @@ class TestClearColor : public Test {
 };
 
 } // namespace renderel::test
+
+#endif // !TESTCLEARCOLOR_HPP
