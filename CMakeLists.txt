@@ -5,7 +5,7 @@ project(Renderel)
 
 # Setting up some flags
 
-if ( CMAKE_BUILD_TYPE STREQUAL "" )
+if ( NOT DEFINED CMAKE_BUILD_TYPE )
         # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
         # differentiation between debug and release builds.
         set(
@@ -15,31 +15,31 @@ if ( CMAKE_BUILD_TYPE STREQUAL "" )
                         "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
                 FORCE
         )
-endif ( CMAKE_BUILD_TYPE STREQUAL "" )
+endif (  NOT DEFINED CMAKE_BUILD_TYPE )
 
-if ( CMAKE_BUILD_TYPE STREQUAL "Release" )
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+if ( CMAKE_BUILD_TYPE MATCHES "Release" )
+	if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
         add_definitions( /O2 )
-    else()
+    else(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
         add_definitions( -O3 )
-    endif()
-endif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
+    endif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+endif ( CMAKE_BUILD_TYPE MATCHES "Release" )
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # using Clang
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions  -Wall -Wextra -g")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   # using GCC
     set(ignoreMe "${QT_QMAKE_EXECUTABLE}")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     set(OpenGL_GL_PREFERENCE LEGACY)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wall -Wextra -g")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "Intel")
   # using Intel C++ 
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   # using Visual Studio C++
-  	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif()
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
@@ -101,6 +101,6 @@ target_link_libraries(Renderel glew_s glfw)
 
 target_compile_definitions(Renderel PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 	target_compile_definitions(Renderel PUBLIC _CRT_SECURE_NO_WARNINGS)
 endif()
