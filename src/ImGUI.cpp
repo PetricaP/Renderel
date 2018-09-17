@@ -5,7 +5,7 @@ namespace renderel {
 ImGUI::ImGUI(void *windowHandle, const std::string &glslVersion) {
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow *>(windowHandle),
-	false);
+								 false);
 	ImGui_ImplOpenGL3_Init(glslVersion.c_str());
 	ImGui::StyleColorsDark();
 }
@@ -35,4 +35,4 @@ void ImGUI::Render() {
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-}
+} // namespace renderel

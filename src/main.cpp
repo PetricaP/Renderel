@@ -18,6 +18,7 @@
 #include "math/Vec3.hpp"
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
+#include "test/TestInput.hpp"
 #include "test/TestOBJLoader.hpp"
 #include "test/TestTexturedCube.hpp"
 #include <memory>
@@ -30,19 +31,21 @@ using namespace renderel;
 int main() {
 	GameEventHandler gameEventHandler;
 
-	std::unique_ptr<Window> window = std::make_unique<WindowGLFW>(
+	std::shared_ptr<Window> window = std::make_shared<WindowGLFW>(
 		WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
 	graphics::Renderer<unsigned int>::InitGraphics();
 	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	std::shared_ptr<test::Test> currentTest = nullptr;
-	std::shared_ptr<test::TestMenu> testMenu(new test::TestMenu(currentTest));
+	std::shared_ptr<test::TestMenu> testMenu(
+		new test::TestMenu(window, currentTest));
 	currentTest = static_cast<std::shared_ptr<test::Test>>(testMenu);
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
 	testMenu->RegisterTest<test::TestOBJLoader>("Test obj loader");
+	testMenu->RegisterTest<test::TestInput>("Test input");
 
 	std::unique_ptr<GUI> gui =
 		std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Window.hpp"
 #include "math/Vec4.hpp"
 #include "test/Test.hpp"
 
@@ -11,7 +12,7 @@ class TestClearColor : public Test {
 	math::Vec4<> m_Color;
 
   public:
-	TestClearColor();
+	TestClearColor(const std::shared_ptr<Window> window);
 	~TestClearColor() override;
 
 	void OnUpdate(float deltaTime) override;

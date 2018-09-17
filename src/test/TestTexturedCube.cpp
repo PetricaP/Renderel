@@ -8,8 +8,8 @@
 
 namespace renderel::test {
 
-TestTexturedCube::TestTexturedCube()
-	: m_Color{0.1f, 0.1f, 0.2f, 1.0f}, rotation(0.0f, 0.0f, 0.0f),
+TestTexturedCube::TestTexturedCube(const std::shared_ptr<Window> window)
+	: Test(window), m_Color{0.1f, 0.1f, 0.2f, 1.0f}, rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -5.0f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *

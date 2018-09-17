@@ -28,7 +28,7 @@ class TestOBJLoader : public Test {
 	float g = 0.0f;
 
   public:
-	TestOBJLoader();
+	TestOBJLoader(const std::shared_ptr<Window> window);
 	~TestOBJLoader() override;
 	void OnRender() override;
 	void OnGUIRender() override;
