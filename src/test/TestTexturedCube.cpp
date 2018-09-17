@@ -3,9 +3,6 @@
 #include "math/Quaternion.hpp"
 #include <imgui.h>
 
-#define WIDTH 1080
-#define HEIGHT 720
-
 namespace renderel::test {
 
 TestTexturedCube::TestTexturedCube(const std::shared_ptr<Window> window)
@@ -43,11 +40,6 @@ TestTexturedCube::TestTexturedCube(const std::shared_ptr<Window> window)
 
 	math::Mat4<> model = transform.GetModel();
 	shader->SetUniformMat4f("u_Model", model);
-
-	float aspectRatio = 1.0f * WIDTH / HEIGHT;
-	math::Mat4<> proj =
-		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
-	shader->SetUniformMat4f("u_Proj", proj);
 }
 
 TestTexturedCube::~TestTexturedCube() {
@@ -58,6 +50,10 @@ TestTexturedCube::~TestTexturedCube() {
 }
 
 void TestTexturedCube::OnUpdate(float) {
+	float aspectRatio = 1.0f * m_Window->GetWidth() / m_Window->GetHeight();
+	math::Mat4<> proj =
+		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
+	shader->SetUniformMat4f("u_Proj", proj);
 
 	math::Quaternion<> qX(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x);
 	math::Quaternion<> qY(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y);

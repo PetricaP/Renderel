@@ -46,12 +46,6 @@ TestInput::TestInput(const std::shared_ptr<Window> window)
 
 	shader = new graphics::Shader("shaders/vertexShaderBasic2D.glsl",
 								  "shaders/fragmentShaderBasic2D.glsl");
-	float aspectRatio =
-		static_cast<float>(window->GetWidth()) / window->GetHeight();
-	shader->Bind();
-	math::Mat4<> proj =
-		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
-	shader->SetUniformMat4f("u_Proj", proj);
 }
 
 TestInput::~TestInput() {
@@ -69,6 +63,13 @@ void TestInput::OnRender() {
 }
 
 void TestInput::OnUpdate(float deltaTime) {
+	float aspectRatio =
+		static_cast<float>(m_Window->GetWidth()) / m_Window->GetHeight();
+	shader->Bind();
+	math::Mat4<> proj =
+		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
+	shader->SetUniformMat4f("u_Proj", proj);
+
 	static float x = 0.0f;
 	static float y = 0.0f;
 	static float z = 0.0f;

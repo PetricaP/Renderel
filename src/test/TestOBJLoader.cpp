@@ -4,9 +4,6 @@
 #include "math/Quaternion.hpp"
 #include <imgui.h>
 
-#define WIDTH 1080
-#define HEIGHT 720
-
 namespace renderel::test {
 
 TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
@@ -32,11 +29,6 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
 
 	math::Mat4<> model = transform.GetModel();
 	shader->SetUniformMat4f("u_Model", model);
-
-	float aspectRatio = 1.0f * WIDTH / HEIGHT;
-	math::Mat4<> proj =
-		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 40.0f);
-	shader->SetUniformMat4f("u_Proj", proj);
 }
 
 TestOBJLoader::~TestOBJLoader() {
@@ -47,6 +39,11 @@ TestOBJLoader::~TestOBJLoader() {
 }
 
 void TestOBJLoader::OnUpdate(float) {
+
+	float aspectRatio = 1.0f * m_Window->GetWidth() / m_Window->GetHeight();
+	math::Mat4<> proj =
+		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 40.0f);
+	shader->SetUniformMat4f("u_Proj", proj);
 
 	g += 0.01f;
 

@@ -1,7 +1,7 @@
 #ifndef GLOBALGLFWEVENTHANDLER_HPP
 #define GLOBALGLFWEVENTHANDLER_HPP
 
-#include "EventHandler.hpp"
+#include "WindowGLFW.hpp"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <queue>
@@ -16,10 +16,15 @@ enum Action {
 	KEYREPEAT = GLFW_REPEAT,
 };
 
-enum Type { KEY, MOUSEBUTTON, MOUSEMOTION };
+enum Type { KEY, MOUSEBUTTON, MOUSEMOTION, WINDOWRESIZE };
 
 #define MOUSE_BUTTON_LEFT GLFW_MOUSE_BUTTON_LEFT
 #define MOUSE_BUTTON_RIGHT GLFW_MOUSE_BUTTON_RIGHT
+
+struct WindowResizeEvent {
+	int width;
+	int height;
+};
 
 struct KeyboardEvent {
 	unsigned int key;
@@ -42,11 +47,12 @@ struct Event {
 		KeyboardEvent keyEvent;
 		MouseButtonEvent mouseButtonEvent;
 		MouseMotionEvent mouseMotionEvent;
+		WindowResizeEvent windowEvent;
 	};
 };
 
 struct WindowEventData {
-	EventHandler *eventHandler;
+	WindowGLFW *windowGLFW;
 	std::queue<Event> events;
 };
 

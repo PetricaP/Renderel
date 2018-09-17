@@ -33,6 +33,14 @@ static void cursor_position_callback(GLFWwindow *window, double xPos,
 	GlobalGLFWEventHandler::PushEvent(window, event);
 }
 
+static void window_resize_callback(GLFWwindow *window, int width, int height) {
+	Event event;
+	event.type = WINDOWRESIZE;
+	event.windowEvent.width = width;
+	event.windowEvent.height = height;
+	GlobalGLFWEventHandler::PushEvent(window, event);
+}
+
 WindowGLFW::WindowGLFW(int width, int height, std::string title,
 					   EventHandler *eventHandler)
 	: Window(width, height, eventHandler) {
@@ -43,7 +51,6 @@ WindowGLFW::WindowGLFW(int width, int height, std::string title,
 		exit(1);
 	}
 
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -60,9 +67,12 @@ WindowGLFW::WindowGLFW(int width, int height, std::string title,
 	glfwSetKeyCallback(m_GLFWwindow, key_callback);
 	glfwSetMouseButtonCallback(m_GLFWwindow, mouse_button_callback);
 	glfwSetCursorPosCallback(m_GLFWwindow, cursor_position_callback);
+	glfwSetWindowSizeCallback(m_GLFWwindow, window_resize_callback);
 
-	GlobalGLFWEventHandler::GetEventPoll()[m_GLFWwindow].eventHandler =
-		eventHandler;
+	GlobalGLFWEventHandler::GetEventPoll()[m_GLFWwindow].windowGLFW = this;
+
+	GlobalGLFWEventHandler::GetEventPoll()[m_GLFWwindow]
+		.windowGLFW->SetEventHandler(eventHandler);
 
 	glfwMakeContextCurrent(m_GLFWwindow);
 	glfwSwapInterval(1);
