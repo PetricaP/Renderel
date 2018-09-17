@@ -6,7 +6,8 @@
 
 namespace renderel::test {
 
-TestClearColor::TestClearColor() : m_Color{0.75f, 0.75f, 0.75f, 1.0f} {}
+TestClearColor::TestClearColor(const std::shared_ptr<Window> window)
+	: Test(window), m_Color{0.75f, 0.75f, 0.75f, 1.0f} {}
 
 TestClearColor::~TestClearColor() {}
 

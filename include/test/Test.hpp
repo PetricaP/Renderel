@@ -1,14 +1,18 @@
 #ifndef TEST_HPP
 #define TEST_HPP
 
+#include "Window.hpp"
 #include <functional>
 #include <memory>
 
 namespace renderel::test {
 
 class Test {
+  protected:
+	const std::shared_ptr<Window> m_Window;
+
   public:
-	Test() = default;
+	Test(const std::shared_ptr<Window> window) : m_Window(window) {}
 	virtual ~Test() = default;
 
 	virtual void OnUpdate(float) {}
@@ -27,7 +31,8 @@ class TestMenu : public Test {
 	std::vector<TestFunctionAndName> m_Tests;
 
   public:
-	TestMenu(std::shared_ptr<Test> &currentTest);
+	TestMenu(const std::shared_ptr<Window> window,
+			 std::shared_ptr<Test> &currentTest);
 	~TestMenu() override = default;
 
 	void OnUpdate(float deltaTime) override;
@@ -37,8 +42,9 @@ class TestMenu : public Test {
 	template <typename T>
 	void RegisterTest(const std::string &testName) {
 
-		TestFunctionAndName t = {testName,
-								 []() { return std::shared_ptr<Test>(new T); }};
+		TestFunctionAndName t = {
+			testName,
+			[this]() { return std::shared_ptr<Test>(new T(m_Window)); }};
 
 		m_Tests.push_back(t);
 	}

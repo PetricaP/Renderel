@@ -9,8 +9,8 @@
 
 namespace renderel::test {
 
-TestOBJLoader::TestOBJLoader()
-	: m_Color{0.1f, 0.1f, 0.1f, 0.5f}, rotation(0.0f, 0.0f, 0.0f),
+TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
+	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f}, rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.5f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *

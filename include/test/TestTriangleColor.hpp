@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TESTTRIANGLECOLOR_HPP
+#define TESTTRIANGLECOLOR_HPP
 
 #include "graphics/BasicRenderer.hpp"
 #include "math/Vec4.hpp"
@@ -28,7 +29,7 @@ class TestTriangleColor : public Test {
 	graphics::Shader *shader;
 
   public:
-	TestTriangleColor();
+	TestTriangleColor(const std::shared_ptr<Window> window);
 	~TestTriangleColor() override;
 
 	void OnUpdate(float deltaTime) override;
@@ -37,3 +38,5 @@ class TestTriangleColor : public Test {
 };
 
 } // namespace renderel::test
+
+#endif // TESTTRIANGLECOLOR_HPP

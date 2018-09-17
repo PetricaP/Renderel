@@ -23,7 +23,6 @@ class GameEventHandler final : public EventHandler {
 	math::Vec2<int> m_MousePosition;
 
   public:
-	// TODO: Finish the input management system benny-style
 	GameEventHandler() = default;
 
 	void OnKeyDown(unsigned int keyCode, bool isRepeat) override;

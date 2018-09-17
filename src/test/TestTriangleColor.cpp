@@ -3,8 +3,8 @@
 
 namespace renderel::test {
 
-TestTriangleColor::TestTriangleColor()
-	: m_Colors{
+TestTriangleColor::TestTriangleColor(const std::shared_ptr<Window> window)
+	: Test(window), m_Colors{
 		  math::Vec4<float>(1.0f, 0.0f, 0.0f, 1.0f),
 		  math::Vec4<float>(0.0f, 0.0f, 1.0f, 1.0f),
 		  math::Vec4<float>(0.0f, 1.0f, 0.0f, 1.0f)
