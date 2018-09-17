@@ -75,6 +75,7 @@ int main() {
 				if (gui->Button("| <-- |")) {
 					currentTest = testMenu;
 				}
+			} else {
 				if (gui->Button("Exit")) {
 					window->Close();
 				}
