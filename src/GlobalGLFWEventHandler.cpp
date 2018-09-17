@@ -1,4 +1,6 @@
 #include "GlobalGLFWEventHandler.hpp"
+#include "Debug.hpp"
+#include <GL/glew.h>
 
 namespace renderel {
 
@@ -30,7 +32,7 @@ void GlobalGLFWEventHandler::HandleKeyEvent(EventHandler *handler,
 }
 
 void GlobalGLFWEventHandler::HandleEvents(WindowEventData &windowEventData) {
-	EventHandler *handler = windowEventData.eventHandler;
+	EventHandler *handler = windowEventData.windowGLFW->GetEventHandler();
 	std::queue<Event> &queue = windowEventData.events;
 
 	unsigned char numRightDownClicks = 0;
@@ -68,6 +70,11 @@ void GlobalGLFWEventHandler::HandleEvents(WindowEventData &windowEventData) {
 		case MOUSEMOTION:
 			handler->OnMouseMove(event.mouseMotionEvent.xPos,
 								 event.mouseMotionEvent.yPos);
+			break;
+		case WINDOWRESIZE:
+			windowEventData.windowGLFW->SetWidth(event.windowEvent.width);
+			windowEventData.windowGLFW->SetHeight(event.windowEvent.height);
+			glViewport(0, 0, event.windowEvent.width, event.windowEvent.height);
 			break;
 		}
 

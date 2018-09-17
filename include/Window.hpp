@@ -7,7 +7,7 @@
 namespace renderel {
 
 class Window {
-  private:
+  protected:
 	int m_Width;
 	int m_Height;
 	EventHandler *m_EventHandler = nullptr;
@@ -23,9 +23,12 @@ class Window {
 	virtual void PollEvents() const = 0;
 	virtual void *GetAPIHandle() const = 0;
 
+	void SetWidth(int width) { m_Width = width; }
+	void SetHeight(int height) { m_Height = height; }
 	int GetWidth() const { return m_Width; }
-	int GetHeight() const { return m_Width; }
+	int GetHeight() const { return m_Height; }
 	EventHandler *GetEventHandler() const { return m_EventHandler; }
+	void SetEventHandler(EventHandler *handler) { m_EventHandler = handler; }
 };
 
 } // namespace renderel
