@@ -12,7 +12,7 @@ namespace renderel::test {
 TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
 	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f}, rotation(0.0f, 0.0f, 0.0f),
 	  transform(
-		  math::Vec3<>(0.0f, 0.0f, -5.0f),
+		  math::Vec3<>(0.0f, 0.0f, -2.5f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *
 			  math::Quaternion<>(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y) *
 			  math::Quaternion<>(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z),
@@ -26,7 +26,7 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
 
 	shader->Bind();
 
-	texture = new graphics::Texture("res/textures/bricks.jpg");
+	texture = new graphics::Texture("res/textures/monkey_baked.png");
 	texture->Bind();
 	shader->SetUniform1i("u_Sampler", 0);
 
@@ -69,7 +69,7 @@ void TestOBJLoader::OnGUIRender() {
 	ImGui::SliderFloat3("Scale", &transform.GetScale().x, 0.0f, 10.0f);
 
 	if (ImGui::Button("Reset to defaults")) {
-		transform.SetPosition(math::Vec3<>(0.0f, 0.0f, -5.0f));
+		transform.SetPosition(math::Vec3<>(0.0f, 0.0f, -2.5f));
 		rotation.x = 0;
 		rotation.y = 0;
 		rotation.z = 0;
