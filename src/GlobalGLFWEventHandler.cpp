@@ -16,18 +16,44 @@ void GlobalGLFWEventHandler::PushEvent(GLFWwindow *window, const Event &event) {
 	m_EventPoll[window].events.push(event);
 }
 
-void GlobalGLFWEventHandler::HandleKeyEvent(EventHandler *handler,
+void GlobalGLFWEventHandler::HandleKeyEvent(WindowGLFW *window,
 											const Event &event) {
 	switch (event.keyEvent.action) {
 	case PRESS:
-		handler->OnKeyDown(event.keyEvent.key, false);
+		if (event.keyEvent.key == GLFW_KEY_F11) {
+			HandleFullScreen(window);
+		} else {
+			window->GetEventHandler()->OnKeyDown(event.keyEvent.key, false);
+		}
 		break;
 	case KEYUP:
-		handler->OnKeyUp(event.keyEvent.key, false);
+		window->GetEventHandler()->OnKeyUp(event.keyEvent.key, false);
 		break;
 	case KEYREPEAT:
-		handler->OnKeyDown(event.keyEvent.key, true);
+		window->GetEventHandler()->OnKeyDown(event.keyEvent.key, true);
 		break;
+	}
+}
+
+void GlobalGLFWEventHandler::HandleFullScreen(WindowGLFW *window) {
+	static int prevWidth = 0;
+	static int prevHeight = 0;
+	if (!glfwGetWindowMonitor(
+			static_cast<GLFWwindow *>(window->GetAPIHandle()))) {
+
+		GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode *videoMode = glfwGetVideoMode(monitor);
+
+		prevWidth = window->GetWidth();
+		prevHeight = window->GetHeight();
+
+		glfwSetWindowMonitor(static_cast<GLFWwindow *>(window->GetAPIHandle()),
+							 glfwGetPrimaryMonitor(), 0, 0, videoMode->width,
+							 videoMode->height, GLFW_DONT_CARE);
+	} else {
+		glfwSetWindowMonitor(static_cast<GLFWwindow *>(window->GetAPIHandle()),
+							 nullptr, 0, 0, prevWidth, prevHeight,
+							 GLFW_DONT_CARE);
 	}
 }
 
@@ -44,7 +70,7 @@ void GlobalGLFWEventHandler::HandleEvents(WindowEventData &windowEventData) {
 		Event &event = queue.front();
 		switch (event.type) {
 		case KEY:
-			HandleKeyEvent(handler, event);
+			HandleKeyEvent(windowEventData.windowGLFW, event);
 			break;
 
 		case MOUSEBUTTON:
