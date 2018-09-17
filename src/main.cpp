@@ -1,4 +1,3 @@
-#include "Camera.hpp"
 #include "GameEventHandler.hpp"
 #include "ImGUI.hpp"
 #include "InputControl.hpp"
@@ -17,6 +16,7 @@
 #include "math/Vec2.hpp"
 #include "math/Vec3.hpp"
 #include "test/Test.hpp"
+#include "test/TestCamera.hpp"
 #include "test/TestClearColor.hpp"
 #include "test/TestInput.hpp"
 #include "test/TestOBJLoader.hpp"
@@ -48,6 +48,7 @@ int main() {
 	testMenu->RegisterTest<test::TestTexturedCube>("Textured cube test");
 	testMenu->RegisterTest<test::TestOBJLoader>("Obj loader test");
 	testMenu->RegisterTest<test::TestInput>("Input test");
+	testMenu->RegisterTest<test::TestCamera>("Camera test");
 
 	std::unique_ptr<GUI> gui =
 		std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
