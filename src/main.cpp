@@ -71,11 +71,13 @@ int main() {
 			gui->Begin("Test");
 			currentTest->OnGUIRender();
 
-			if (currentTest != testMenu && gui->Button("| <-- |")) {
-				currentTest = testMenu;
-			}
-			if (gui->Button("Exit")) {
-				window->Close();
+			if (currentTest != testMenu) {
+				if (gui->Button("| <-- |")) {
+					currentTest = testMenu;
+				}
+				if (gui->Button("Exit")) {
+					window->Close();
+				}
 			}
 
 			gui->End();
