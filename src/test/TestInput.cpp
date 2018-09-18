@@ -1,7 +1,6 @@
 #include "test/TestInput.hpp"
 #include "Debug.hpp"
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <imgui.h>
 
 namespace renderel::test {
@@ -14,23 +13,23 @@ TestInput::TestInput(const std::shared_ptr<Window> window)
 					  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),
 					  math::Vec3<>(1.0f))) {
 
-	handler->AddKeyControl(GLFW_KEY_W, yAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_S, yAxis, -1.0f);
+	handler->AddKeyControl(KEY_W, yAxis, 1.0f);
+	handler->AddKeyControl(KEY_S, yAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_D, xAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_A, xAxis, -1.0f);
+	handler->AddKeyControl(KEY_D, xAxis, 1.0f);
+	handler->AddKeyControl(KEY_A, xAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_R, zAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_F, zAxis, -1.0f);
+	handler->AddKeyControl(KEY_R, zAxis, 1.0f);
+	handler->AddKeyControl(KEY_F, zAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_Q, xRotation, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_E, xRotation, -1.0f);
+	handler->AddKeyControl(KEY_Q, xRotation, 1.0f);
+	handler->AddKeyControl(KEY_E, xRotation, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_Z, yRotation, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_X, yRotation, -1.0f);
+	handler->AddKeyControl(KEY_Z, yRotation, 1.0f);
+	handler->AddKeyControl(KEY_X, yRotation, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_C, zRotation, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_V, zRotation, -1.0f);
+	handler->AddKeyControl(KEY_C, zRotation, 1.0f);
+	handler->AddKeyControl(KEY_V, zRotation, -1.0f);
 
 	va = new graphics::VertexArray();
 
