@@ -2,10 +2,12 @@
 #define TESTCAMERA_HPP
 
 #include "Camera.hpp"
+#include "GameEventHandler.hpp"
 #include "InputControl.hpp"
 #include "Transform.hpp"
 #include "graphics/BasicRenderer.hpp"
 #include "graphics/Texture.hpp"
+#include "math/EulerAngle.hpp"
 #include "math/Vec4.hpp"
 #include "test/Test.hpp"
 
@@ -76,6 +78,14 @@ class TestCamera : public Test {
 	InputControl yAxis;
 	InputControl zAxis;
 	InputControl xRotation;
+	InputControl pause;
+
+	float rotationSensitivity = 1.0f;
+	float movementSensitivity = 0.2f;
+	bool paused = false;
+
+	math::EulerAngle<> eulerAngle;
+	GameEventHandler *handler = nullptr;
 
 	graphics::VertexArray *va = nullptr;
 	graphics::VertexBuffer *vb = nullptr;
