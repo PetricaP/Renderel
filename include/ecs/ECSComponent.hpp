@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <vector>
 
+namespace renderel {
+
 /* The component shouldn't really know anything
  * about the entity it's attached to, but should
  * have a way to reference it. */
@@ -43,7 +45,7 @@ struct BaseECSComponent {
 	static unsigned int
 	RegisterComponentType(ECSComponentCreateFunction createFunction,
 						  ECSComponentFreeFunction freeFunction, size_t size);
-	EntityHandle entityID = NULL_ENTITY_HANDLE;
+	EntityHandle entityHandle = NULL_ENTITY_HANDLE;
 
 	static ECSComponentCreateFunction GetTypeCreateFunction(unsigned int id) {
 		return m_ComponentTypes[id].createFunction;
@@ -55,6 +57,10 @@ struct BaseECSComponent {
 
 	static size_t GetTypeSize(unsigned int id) {
 		return m_ComponentTypes[id].size;
+	}
+
+	static bool IsTypeValid(unsigned int id) {
+		return id < m_ComponentTypes.size();
 	}
 };
 
@@ -110,5 +116,7 @@ struct TestComponent : public ECSComponent<TestComponent> {
 	float y;
 };
 */
+
+} // namespace renderel
 
 #endif // ECSCOMPONENT_HPP

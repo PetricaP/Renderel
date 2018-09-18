@@ -1,5 +1,7 @@
 #include "ecs/ECSComponent.hpp"
 
+namespace renderel {
+
 std::vector<BaseECSComponentData> BaseECSComponent::m_ComponentTypes;
 
 unsigned int BaseECSComponent::RegisterComponentType(
@@ -14,3 +16,5 @@ unsigned int BaseECSComponent::RegisterComponentType(
 
 	return componentID;
 }
+
+} // namespace renderel
