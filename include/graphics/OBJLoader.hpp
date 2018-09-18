@@ -5,6 +5,7 @@
 #include "graphics/VertexArray.hpp"
 #include "math/Vec2.hpp"
 #include "math/Vec3.hpp"
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>

@@ -7,15 +7,14 @@
 namespace renderel::test {
 
 TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
-	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f}, rotation(0.0f, 0.0f, 0.0f),
+	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f},
+	  mesh("res/models/monkey.obj"), rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.5f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *
 			  math::Quaternion<>(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y) *
 			  math::Quaternion<>(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z),
 		  math::Vec3<>(1.0f)) {
-
-	graphics::OBJLoader::Load<>("res/models/monkey.obj", ib, va);
 
 	renderer = new graphics::BasicRenderer();
 	shader = new graphics::Shader("shaders/vertexShader.glsl",
@@ -33,13 +32,10 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
 
 TestOBJLoader::~TestOBJLoader() {
 	delete shader;
-	delete va;
-	delete ib;
 	delete renderer;
 }
 
 void TestOBJLoader::OnUpdate(float) {
-
 	float aspectRatio = 1.0f * m_Window->GetWidth() / m_Window->GetHeight();
 	math::Mat4<> proj =
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 40.0f);
@@ -75,9 +71,8 @@ void TestOBJLoader::OnGUIRender() {
 }
 
 void TestOBJLoader::OnRender() {
-
 	graphics::Renderer<>::Clear();
-	renderer->Submit(graphics::Renderable(va, ib, *shader));
+	renderer->Submit(graphics::Renderable(mesh, *shader));
 	renderer->Flush();
 }
 
