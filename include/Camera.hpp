@@ -21,12 +21,18 @@ class Camera {
 		  m_Position(position), m_Forward(math::Vec3<>(0.0f, 0.0f, 1.0f)),
 		  m_Up(math::Vec3<>(0.0f, 1.0f, 0.0f)) {}
 
-	// FIXME: View matrix doesn't work
 	math::Mat4<> GetView() const {
 		return math::Mat4<>::LookAt(m_Position, m_Position + m_Forward, m_Up);
 	}
 
+	void SetUp(math::Vec3<> &up) { m_Up = up; }
+	math::Vec3<> GetUp() { return m_Up; }
+
+	void SetForward(const math::Vec3<> &forward) { m_Forward = forward; }
+	math::Vec3<> GetForward() { return m_Forward; }
+
 	void SetPosition(const math::Vec3<> &position) { m_Position = position; }
+	math::Vec3<> GetPosition() { return m_Position; }
 
 	math::Mat4<> GetProjection() const { return m_Perspective; }
 };
