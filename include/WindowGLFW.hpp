@@ -24,10 +24,10 @@ class WindowGLFW final : public Window {
 	void PollEvents() const override;
 	void *GetAPIHandle() const override { return m_GLFWwindow; }
 	void DisableMouse() const override {
-		glfwSetInputMode(m_GLFWwindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetInputMode(m_GLFWwindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 	void EnableMouse() const override {
-		glfwSetInputMode(m_GLFWwindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetInputMode(m_GLFWwindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 	void Close() const override {
 		glfwSetWindowShouldClose(m_GLFWwindow, GLFW_TRUE);
