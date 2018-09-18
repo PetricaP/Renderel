@@ -74,15 +74,19 @@ class TestCamera : public Test {
 		21, 22, 23  //
 	};
 
+	const math::Vec3<> defaultCameraPosition;
+
 	InputControl xAxis;
 	InputControl yAxis;
 	InputControl zAxis;
 	InputControl xRotation;
 	InputControl pause;
 
-	float rotationSensitivity = 1.0f;
-	float movementSensitivity = 0.01f;
-	bool paused = false;
+	static constexpr float defaultRotationSensitivity = 1000.0f;
+	float rotationSensitivity = defaultRotationSensitivity;
+
+	static constexpr float defaultMovementSensitivity = 10.0f;
+	float movementSensitivity = defaultMovementSensitivity;
 
 	math::EulerAngle<> eulerAngle;
 	GameEventHandler *handler = nullptr;
@@ -95,7 +99,6 @@ class TestCamera : public Test {
 	graphics::Texture *texture = nullptr;
 
 	float aspectRatio;
-	math::Vec3<> position;
 	Transform<> transform;
 	Camera camera;
 

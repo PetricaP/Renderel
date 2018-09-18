@@ -4,6 +4,8 @@
 #include "ECSComponent.hpp"
 #include <vector>
 
+namespace renderel {
+
 class BaseECSSystem {
   private:
 	std::vector<unsigned int> m_ComponentTypes;
@@ -18,5 +20,7 @@ class BaseECSSystem {
 		return m_ComponentTypes;
 	}
 };
+
+} // namespace renderel
 
 #endif // ECSSYSTEM_HPP

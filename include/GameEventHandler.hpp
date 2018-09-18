@@ -37,7 +37,7 @@ class GameEventHandler final : public EventHandler {
 	void AddMouseControl(unsigned int mouseButton, InputControl &inputControl,
 						 float weight = 1.0f);
 
-	math::Vec2<int> GetMousePosition() { return m_MousePosition; }
+	math::Vec2<int> GetMousePosition() const { return m_MousePosition; }
 
   private:
 	void updateInput(unsigned int inputCode, float direction, bool isRepeat);

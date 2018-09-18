@@ -10,13 +10,15 @@ namespace renderel::test {
 
 TestCamera::TestCamera(const std::shared_ptr<Window> window)
 	: Test(window), m_Color(0.2f, 0.2f, 0.2f, 1.0f),
+	  defaultCameraPosition(0.0f, 0.0f, -3.0f),
 
 	  eulerAngle(0.0f, math::toRadians(90.0f), 0.0f),
 	  aspectRatio(static_cast<float>(window->GetWidth()) / window->GetHeight()),
 	  transform(math::Vec3<>(0.0f, 0.0f, 5.0f),
 				math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),
 				math::Vec3<>(1.0f)),
-	  camera(Camera(position, 70.0f, aspectRatio, 0.1f, 100.0f)) {
+
+	  camera(Camera(defaultCameraPosition, 70.0f, aspectRatio, 0.1f, 100.0f)) {
 
 	handler = static_cast<GameEventHandler *>(window->GetEventHandler());
 
@@ -31,7 +33,6 @@ TestCamera::TestCamera(const std::shared_ptr<Window> window)
 	handler->AddKeyControl(KEY_F, zAxis, -1.0f);
 
 	handler->AddKeyControl(KEY_P, pause, 1.0f);
-	handler->AddKeyControl(KEY_U, pause, -1.0f);
 
 	va = new graphics::VertexArray();
 	va = new graphics::VertexArray();
@@ -74,21 +75,50 @@ TestCamera::~TestCamera() {
 	m_Window->EnableMouse();
 }
 
-void TestCamera::OnUpdate(float deltaTime) {
+static void ResetCursorPosition(const std::shared_ptr<Window> window,
+								const GameEventHandler *handler,
+								math::Vec2<> &lastPositionf) {
+	math::Vec2<int> newPosition = handler->GetMousePosition();
+	math::Vec2<> newPositionf(
+		static_cast<float>(newPosition.x) / window->GetWidth(),
+		static_cast<float>(newPosition.y) / window->GetHeight());
+	lastPositionf = newPositionf;
+}
 
+void TestCamera::OnUpdate(float deltaTime) {
+	static bool first = true;
+	static bool isPausable = true;
+	static bool paused = false;
+
+	static math::Vec2<> lastPositionf(0.5f);
+	static math::Vec3<> lastForward;
+
+	/* TODO: Not an elegant solution */
 	if (pause.GetAmount() == 1.0f) {
-		paused = true;
-	} else if (pause.GetAmount() == -1.0f) {
-		paused = false;
+		if (isPausable) {
+			if (!paused) {
+				lastForward = camera.GetForward();
+				paused = true;
+			} else {
+				camera.SetForward(lastForward);
+				ResetCursorPosition(m_Window, handler, lastPositionf);
+				paused = false;
+			}
+			isPausable = false;
+		}
+	} else if (pause.GetAmount() == 0.0f) {
+		isPausable = true;
+	}
+
+	if (first) {
+		first = false;
+		ResetCursorPosition(m_Window, handler, lastPositionf);
 	}
 
 	if (paused) {
 		m_Window->EnableMouse();
 	} else {
 		m_Window->DisableMouse();
-
-		transform.SetPosition(math::Vec3<>(0.0f, 0.0f, 4.0f));
-		static math::Vec2<> lastPositionf(0.5f);
 
 		math::Vec2<int> newPosition = handler->GetMousePosition();
 		math::Vec2<> newPositionf(
@@ -98,8 +128,8 @@ void TestCamera::OnUpdate(float deltaTime) {
 		math::Vec2<> deltaPosition = lastPositionf - newPositionf;
 		lastPositionf = newPositionf;
 
-		eulerAngle.pitch += deltaPosition.y * rotationSensitivity;
-		eulerAngle.yaw += deltaPosition.x * rotationSensitivity;
+		eulerAngle.pitch += deltaPosition.y * rotationSensitivity * deltaTime;
+		eulerAngle.yaw += deltaPosition.x * rotationSensitivity * deltaTime;
 
 		eulerAngle.Normalize();
 
@@ -107,16 +137,17 @@ void TestCamera::OnUpdate(float deltaTime) {
 		shader->Bind();
 		shader->SetUniformMat4f("u_View", view);
 
-		position.x += xAxis.GetAmount() * deltaTime * 5.0f;
-		position.y += yAxis.GetAmount() * deltaTime * 5.0f;
-		position.z += zAxis.GetAmount() * deltaTime * 5.0f;
+		math::Vec3<> yVec =
+			yAxis.GetAmount() * movementSensitivity * camera.GetForward();
 
-		camera.SetPosition(
-			camera.GetPosition() +
-			yAxis.GetAmount() * movementSensitivity * camera.GetForward() -
-			xAxis.GetAmount() * movementSensitivity *
-				camera.GetForward().Cross(camera.GetUp()) +
-			zAxis.GetAmount() * movementSensitivity * camera.GetUp());
+		math::Vec3<> xVec = xAxis.GetAmount() * movementSensitivity *
+							camera.GetForward().Cross(camera.GetUp());
+		math::Vec3<> zVec =
+			zAxis.GetAmount() * movementSensitivity * camera.GetUp();
+
+		camera.SetPosition(camera.GetPosition() +
+						   deltaTime * (yVec - xVec + zVec));
+
 		camera.SetForward(eulerAngle.ToVector());
 	}
 }
@@ -128,18 +159,17 @@ void TestCamera::OnGUIRender() {
 	ImGui::Text("A - Left");
 	ImGui::Text("R/Space - Up");
 	ImGui::Text("F - Down");
-	ImGui::Text("P - Pause");
-	ImGui::Text("U - Unpause");
+	ImGui::Text("P - Pause/Unpause");
 	ImGui::Text("---------------");
 
 	ImGui::SliderFloat("Rotation sensitivity", &rotationSensitivity, 0.0f,
-					   2.0f);
+					   3000.0f);
 	ImGui::SliderFloat("Movement sensitivity", &movementSensitivity, 0.0f,
-					   1.0f);
+					   30.0f);
+
 	if (ImGui::Button("Reset to defaults")) {
-		position = math::Vec3<>(0.0f, 0.0f, -3.0f);
-		movementSensitivity = 0.2f;
-		rotationSensitivity = 1.0f;
+		movementSensitivity = defaultMovementSensitivity;
+		rotationSensitivity = defaultRotationSensitivity;
 		eulerAngle.pitch = 0.0f;
 		eulerAngle.yaw = math::toRadians(90.0f);
 		eulerAngle.pitch = 0.0f;
