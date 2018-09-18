@@ -1,9 +1,8 @@
 #ifndef RENDERABLE_HPP
 #define RENDERABLE_HPP
 
-#include "graphics/IndexBuffer.hpp"
+#include "graphics/Mesh.hpp"
 #include "graphics/Shader.hpp"
-#include "graphics/VertexArray.hpp"
 
 namespace renderel::graphics {
 
@@ -17,6 +16,9 @@ class Renderable {
   public:
 	Renderable(const VertexArray *va, const IndexBuffer<T> *ib, Shader &shader)
 		: m_VA(va), m_IB(ib), m_Shader(shader) {}
+	Renderable(const Mesh<T> &mesh, Shader &shader)
+		: m_VA(mesh.GetVertexArray()), m_IB(mesh.GetIndexBuffer()),
+		  m_Shader(shader) {}
 	~Renderable() = default;
 
 	const VertexArray *GetVA() const { return m_VA; }
