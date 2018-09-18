@@ -135,9 +135,9 @@ void TestCamera::OnGUIRender() {
 	ImGui::Text("P - Pause");
 	ImGui::Text("U - Unpause");
 	ImGui::Text("---------------");
-	// TODO: add slider for rotation sensitivity (buggy)
-	// ImGui::SliderFloat("Rotation sensitivity", &rotationSensitivity, 0.0f,
-	// 2.0f);
+
+	ImGui::SliderFloat("Rotation sensitivity", &rotationSensitivity, 0.0f,
+					   2.0f);
 	ImGui::SliderFloat("Movement sensitivity", &movementSensitivity, 0.0f,
 					   3.0f);
 	if (ImGui::Button("Reset to defaults")) {
