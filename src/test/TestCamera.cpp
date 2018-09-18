@@ -11,28 +11,27 @@ namespace renderel::test {
 TestCamera::TestCamera(const std::shared_ptr<Window> window)
 	: Test(window), m_Color(0.2f, 0.2f, 0.2f, 1.0f),
 
+	  eulerAngle(0.0f, math::toRadians(90.0f), 0.0f),
+	  aspectRatio(static_cast<float>(window->GetWidth()) / window->GetHeight()),
 	  transform(math::Vec3<>(0.0f, 0.0f, 5.0f),
 				math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),
 				math::Vec3<>(1.0f)),
-	  eulerAngle(0.0f, math::toRadians(90.0f), 0.0f),
-	  aspectRatio(static_cast<float>(window->GetWidth()) / window->GetHeight()),
-	  position(math::Vec3<>(0.0f, 0.0f, -3.0f)),
 	  camera(Camera(position, 70.0f, aspectRatio, 0.1f, 100.0f)) {
 
 	handler = static_cast<GameEventHandler *>(window->GetEventHandler());
 
-	handler->AddKeyControl(GLFW_KEY_W, yAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_S, yAxis, -1.0f);
+	handler->AddKeyControl(KEY_W, yAxis, 1.0f);
+	handler->AddKeyControl(KEY_S, yAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_D, xAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_A, xAxis, -1.0f);
+	handler->AddKeyControl(KEY_D, xAxis, 1.0f);
+	handler->AddKeyControl(KEY_A, xAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_R, zAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_SPACE, zAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_F, zAxis, -1.0f);
+	handler->AddKeyControl(KEY_R, zAxis, 1.0f);
+	handler->AddKeyControl(KEY_SPACE, zAxis, 1.0f);
+	handler->AddKeyControl(KEY_F, zAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_P, pause, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_U, pause, -1.0f);
+	handler->AddKeyControl(KEY_P, pause, 1.0f);
+	handler->AddKeyControl(KEY_U, pause, -1.0f);
 
 	va = new graphics::VertexArray();
 	va = new graphics::VertexArray();
@@ -72,8 +71,7 @@ TestCamera::~TestCamera() {
 	delete ib;
 	delete texture;
 	delete renderer;
-	glfwSetInputMode(static_cast<GLFWwindow *>(m_Window->GetAPIHandle()),
-					 GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	m_Window->EnableMouse();
 }
 
 void TestCamera::OnUpdate(float deltaTime) {
@@ -85,11 +83,9 @@ void TestCamera::OnUpdate(float deltaTime) {
 	}
 
 	if (paused) {
-		glfwSetInputMode(static_cast<GLFWwindow *>(m_Window->GetAPIHandle()),
-						 GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		m_Window->EnableMouse();
 	} else {
-		glfwSetInputMode(static_cast<GLFWwindow *>(m_Window->GetAPIHandle()),
-						 GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		m_Window->DisableMouse();
 
 		transform.SetPosition(math::Vec3<>(0.0f, 0.0f, 4.0f));
 		static math::Vec2<> lastPositionf(0.5f);
@@ -139,7 +135,7 @@ void TestCamera::OnGUIRender() {
 	ImGui::SliderFloat("Rotation sensitivity", &rotationSensitivity, 0.0f,
 					   2.0f);
 	ImGui::SliderFloat("Movement sensitivity", &movementSensitivity, 0.0f,
-					   3.0f);
+					   1.0f);
 	if (ImGui::Button("Reset to defaults")) {
 		position = math::Vec3<>(0.0f, 0.0f, -3.0f);
 		movementSensitivity = 0.2f;

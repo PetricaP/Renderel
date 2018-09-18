@@ -29,7 +29,7 @@ class TestCamera : public Test {
 		-size, -size,  size, 0.0f, 0.0f, // 4
 		 size, -size,  size, 1.0f, 0.0f, // 5
 		-size,  size,  size, 0.0f, 1.0f, // 6
-		 size,  size,  size, 1.0f, 1.0f,  // 7
+		 size,  size,  size, 1.0f, 1.0f, // 7
 		// Left face
 		-size, -size, -size, 0.0f, 0.0f, // 8
 		-size, -size,  size, 1.0f, 0.0f, // 9
@@ -81,7 +81,7 @@ class TestCamera : public Test {
 	InputControl pause;
 
 	float rotationSensitivity = 1.0f;
-	float movementSensitivity = 0.2f;
+	float movementSensitivity = 0.01f;
 	bool paused = false;
 
 	math::EulerAngle<> eulerAngle;
@@ -94,9 +94,9 @@ class TestCamera : public Test {
 	graphics::Shader *shader = nullptr;
 	graphics::Texture *texture = nullptr;
 
+	float aspectRatio;
 	math::Vec3<> position;
 	Transform<> transform;
-	float aspectRatio;
 	Camera camera;
 
 	math::Mat4<> model;
