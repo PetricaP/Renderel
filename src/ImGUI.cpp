@@ -8,6 +8,16 @@ ImGUI::ImGUI(void *windowHandle, const std::string &glslVersion) {
 								 false);
 	ImGui_ImplOpenGL3_Init(glslVersion.c_str());
 	ImGui::StyleColorsDark();
+	ImGuiStyle *style = &ImGui::GetStyle();
+	ImVec4 *colors = style->Colors;
+
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+	colors[ImGuiCol_TitleBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
+	colors[ImGuiCol_Button] = ImVec4(0.1f, 0.1f, 0.1f, 0.5f);
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+	colors[ImGuiCol_ButtonHovered] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+	colors[ImGuiCol_WindowBg] = ImVec4(0.05f, 0.05f, 0.05f, 0.25f);
+	// TODO
 }
 
 void ImGUI::Init() {

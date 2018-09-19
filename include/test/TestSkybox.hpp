@@ -28,6 +28,7 @@ class TestSkybox : public TestOBJLoader {
 	InputControl yAxis;
 	InputControl zAxis;
 	InputControl xRotation;
+	InputControl toggleMouse;
 
   public:
 	TestSkybox(const std::shared_ptr<Window> window);

@@ -19,7 +19,8 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window,
 			  math::Quaternion<>(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z),
 		  math::Vec3<>(1.0f)) {
 
-	graphics::OBJLoader::Load<>(objPath.c_str(), ib, va);
+	// graphics::OBJLoader::Load<>(objPath.c_str(), ib, va);
+	mesh = new graphics::Mesh<>(objPath.c_str());
 
 	renderer = new graphics::BasicRenderer();
 	shader = new graphics::Shader(vertexShaderPath.c_str(),
@@ -37,8 +38,7 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window,
 
 TestOBJLoader::~TestOBJLoader() {
 	delete shader;
-	delete va;
-	delete ib;
+	delete mesh;
 	delete renderer;
 }
 
@@ -76,7 +76,7 @@ void TestOBJLoader::OnGUIRender() {
 void TestOBJLoader::OnRender() {
 
 	// graphics::Renderer<>::Clear();
-	renderer->Submit(graphics::Renderable(va, ib, *shader));
+	renderer->Submit(graphics::Renderable(*mesh, *shader));
 	renderer->Flush();
 }
 
