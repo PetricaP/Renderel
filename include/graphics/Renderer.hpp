@@ -28,7 +28,7 @@ void Renderer<T>::InitGraphics() {
 	}
 
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-	GLCall(glDepthFunc(GL_LESS));
+	GLCall(glDepthFunc(GL_LEQUAL));
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glEnable(GL_DEPTH_TEST));
 }

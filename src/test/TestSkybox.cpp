@@ -9,23 +9,25 @@ namespace renderel::test {
 
 TestSkybox::TestSkybox(const std::shared_ptr<Window> window)
 	: TestOBJLoader(window),
-	  m_Camera(math::Vec3<>(0.0f, -3.0f, 0.0f), 70.0f, 1.21f, 0.001f, 100.0f),
-	  eulerAngle(0.0f, 90.0f, 0.0f) {
+	  m_Camera(math::Vec3<>(0.0f, 0.0f, 0.0f), 70.0f, 1.21f, 0.001f, 100.0f),
+	  eulerAngle(0.0f, -90.0f, 0.0f) {
 
 	handler = static_cast<GameEventHandler *>(window->GetEventHandler());
 
 	std::vector<std::string> faces;
 	std::vector<std::string> shaders;
 
-	handler->AddKeyControl(GLFW_KEY_W, yAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_S, yAxis, -1.0f);
+	handler->AddKeyControl(KEY_W, yAxis, 1.0f);
+	handler->AddKeyControl(KEY_S, yAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_D, xAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_A, xAxis, -1.0f);
+	handler->AddKeyControl(KEY_D, xAxis, 1.0f);
+	handler->AddKeyControl(KEY_A, xAxis, -1.0f);
 
-	handler->AddKeyControl(GLFW_KEY_R, zAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_SPACE, zAxis, 1.0f);
-	handler->AddKeyControl(GLFW_KEY_F, zAxis, -1.0f);
+	handler->AddKeyControl(KEY_R, zAxis, 1.0f);
+	handler->AddKeyControl(KEY_SPACE, zAxis, 1.0f);
+	handler->AddKeyControl(KEY_F, zAxis, -1.0f);
+
+	handler->AddKeyControl(KEY_Q, toggleMouse, 1.0f);
 
 	// faces.push_back("res/textures/cm/cm_right.jpg");
 	// faces.push_back("res/textures/cm/cm_left.jpg");
@@ -48,38 +50,47 @@ TestSkybox::TestSkybox(const std::shared_ptr<Window> window)
 	// faces.push_back("res/textures/cm/lake_front.jpg");
 	// faces.push_back("res/textures/cm/lake_back.jpg");
 
-	shaders.push_back("shaders/cubemap.vert");
-	shaders.push_back("shaders/cubemap.frag");
-
-	m_Cubemap = new graphics::Cubemap(faces, shaders);
+	m_Cubemap = new graphics::Cubemap(faces, "shaders/cubemap.vert",
+									  "shaders/cubemap.frag");
 }
 
 TestSkybox::~TestSkybox() { delete m_Cubemap; }
 
 void TestSkybox::OnRender() {
-	glDisable(GL_DEPTH_TEST);
-	m_Cubemap->Draw();
-	glEnable(GL_DEPTH_TEST);
 
 	TestOBJLoader::OnRender();
+
+	m_Cubemap->Draw();
 }
 
 void TestSkybox::OnGUIRender() {
 
+	ImGui::Text("Q - Toggle Mouse");
 	ImGui::Text("Euler angle yaw: %f", eulerAngle.yaw);
 	ImGui::Text("Euler angle pitci: %f", eulerAngle.pitch);
 	ImGui::Text("Euler angle roll: %f", eulerAngle.roll);
-	ImGui::Text("Camera position: %.1f, %.1f, %.1f", m_Camera.GetPosition().x,
-				m_Camera.GetPosition().y, m_Camera.GetPosition().z);
+	ImGui::Text("Camera position:\n\t%.1f\n\t%.1f\n\t%.1f",
+				m_Camera.GetPosition().x, m_Camera.GetPosition().y,
+				m_Camera.GetPosition().z);
 }
 
 void TestSkybox::OnUpdate(float deltaTime) {
 
-	// TODO: m_Cubemap->SetProjectionMatrix() and m_Cubemap->SetViewMatrix()
-	// TODO: or implement SetRotation(yaw, pitch) and SetFov in Cubemap
-
-	glfwSetInputMode((GLFWwindow *)m_Window->GetAPIHandle(), GLFW_CURSOR,
-					 GLFW_CURSOR_DISABLED);
+	static bool hasCursor = true;
+	static bool canChangeMouse = true; // to prevent flickering
+	if (toggleMouse.GetAmount()) {
+		if (canChangeMouse) {
+			if (hasCursor) {
+				m_Window->DisableMouse();
+			} else {
+				m_Window->EnableMouse();
+			}
+			hasCursor = !hasCursor; // reverse hasCursor
+			canChangeMouse = false;
+		}
+	} else {
+		canChangeMouse = true;
+	}
 
 	math::Vec3<> yVec =
 		yAxis.GetAmount() * movementSensitivity * m_Camera.GetForward();
@@ -103,8 +114,14 @@ void TestSkybox::OnUpdate(float deltaTime) {
 	math::Vec2<> deltaPosition = lastPositionf - newPositionf;
 	lastPositionf = newPositionf;
 
-	eulerAngle.pitch += deltaPosition.y * rotationSensitivity * deltaTime;
-	eulerAngle.yaw += deltaPosition.x * rotationSensitivity * deltaTime;
+	// Ignore first update because it rotates the camera a lot
+	static bool inputReady = false;
+	if (inputReady) {
+		eulerAngle.pitch += deltaPosition.y * rotationSensitivity * deltaTime;
+		eulerAngle.yaw += deltaPosition.x * rotationSensitivity * deltaTime;
+	} else {
+		inputReady = true;
+	}
 
 	eulerAngle.Normalize();
 

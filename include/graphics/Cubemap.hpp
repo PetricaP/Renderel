@@ -70,14 +70,10 @@ class Cubemap {
   public:
 	// faces are {right, left, top, bottom, front, back}
 	Cubemap(const std::vector<std::string> &faces,
-			const std::vector<std::string> &shaders);
+			const std::string &vertexShaderPath,
+			const std::string &fragmentShaderPath);
 	~Cubemap();
 
-	unsigned int getTextureID() { return m_TextureID; }
-	void UseShader() const;
-	void UnuseShader() const;
-	void BindTexture() const;
-	void UnbindTexture() const;
 	void Draw() const;
 	void SetViewMatrix(const math::Mat4<float> &mat);
 	void SetProjectionMatrix(const math::Mat4<float> &mat);
