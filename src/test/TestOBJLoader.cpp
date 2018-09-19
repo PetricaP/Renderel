@@ -6,7 +6,11 @@
 
 namespace renderel::test {
 
-TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
+TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window,
+							 const std::string objPath,
+							 const std::string texturePath,
+							 const std::string vertexShaderPath,
+							 const std::string fragmentShaderPath)
 	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f}, rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.5f),
@@ -15,15 +19,15 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window)
 			  math::Quaternion<>(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z),
 		  math::Vec3<>(1.0f)) {
 
-	graphics::OBJLoader::Load<>("res/models/monkey.obj", ib, va);
+	graphics::OBJLoader::Load<>(objPath.c_str(), ib, va);
 
 	renderer = new graphics::BasicRenderer();
-	shader = new graphics::Shader("shaders/vertexShader.glsl",
-								  "shaders/fragmentShaderTexture.glsl");
+	shader = new graphics::Shader(vertexShaderPath.c_str(),
+								  fragmentShaderPath.c_str());
 
 	shader->Bind();
 
-	texture = new graphics::Texture("res/textures/monkey_baked.png");
+	texture = new graphics::Texture(texturePath.c_str());
 	texture->Bind();
 	shader->SetUniform1i("u_Sampler", 0);
 
@@ -45,8 +49,6 @@ void TestOBJLoader::OnUpdate(float) {
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 40.0f);
 	shader->SetUniformMat4f("u_Proj", proj);
 
-	g += 0.01f;
-
 	math::Quaternion<> qX(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x);
 	math::Quaternion<> qY(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y);
 	math::Quaternion<> qZ(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z);
@@ -55,9 +57,6 @@ void TestOBJLoader::OnUpdate(float) {
 
 	math::Mat4<> model = transform.GetModel();
 	shader->SetUniformMat4f("u_Model", model);
-
-	shader->SetUniform4f("u_Color", 0.5f + sinf(g) / 2.0f,
-						 0.5f + cosf(g) / 2.0f, 1.0f, 0.5f);
 }
 
 void TestOBJLoader::OnGUIRender() {
@@ -76,7 +75,7 @@ void TestOBJLoader::OnGUIRender() {
 
 void TestOBJLoader::OnRender() {
 
-	graphics::Renderer<>::Clear();
+	// graphics::Renderer<>::Clear();
 	renderer->Submit(graphics::Renderable(va, ib, *shader));
 	renderer->Flush();
 }

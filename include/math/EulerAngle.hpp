@@ -22,9 +22,9 @@ template <typename T>
 Vec3<T> EulerAngle<T>::ToVector() const {
 	Vec3<T> result;
 
-	result.x = cos(yaw) * cos(pitch);
-	result.y = sin(pitch);
-	result.z = sin(yaw) * cos(pitch);
+	result.x = cos(toRadians(yaw)) * cos(toRadians(pitch));
+	result.y = sin(toRadians(pitch));
+	result.z = sin(toRadians(yaw)) * cos(toRadians(pitch));
 
 	return result;
 }

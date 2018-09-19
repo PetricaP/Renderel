@@ -18,8 +18,10 @@
 #include "test/Test.hpp"
 #include "test/TestCamera.hpp"
 #include "test/TestClearColor.hpp"
+#include "test/TestFaceCulling.hpp"
 #include "test/TestInput.hpp"
 #include "test/TestOBJLoader.hpp"
+#include "test/TestSkybox.hpp"
 #include "test/TestTexturedCube.hpp"
 #include "test/TestTriangleColor.hpp"
 #include <memory>
@@ -49,6 +51,8 @@ int main() {
 	testMenu->RegisterTest<test::TestOBJLoader>("Obj loader test");
 	testMenu->RegisterTest<test::TestInput>("Input test");
 	testMenu->RegisterTest<test::TestCamera>("Camera test");
+	testMenu->RegisterTest<test::TestFaceCulling>("Face culling test");
+	testMenu->RegisterTest<test::TestSkybox>("Skybox test");
 
 	std::unique_ptr<GUI> gui =
 		std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");

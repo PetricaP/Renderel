@@ -28,18 +28,18 @@ endif ( CMAKE_BUILD_TYPE MATCHES "Release" )
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # using Clang
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions  -Wall -Wextra -g")
+    add_definitions("-std=c++1z -fms-extensions  -Wall -Wextra -g")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   # using GCC
     set(ignoreMe "${QT_QMAKE_EXECUTABLE}")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     set(OpenGL_GL_PREFERENCE LEGACY)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wall -Wextra -g")
+    add_definitions("-std=c++1z -fms-extensions -Wall -Wextra -g")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Intel")
   # using Intel C++ 
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   # using Visual Studio C++
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+	add_definitions("/std:c++17")
 endif()
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)

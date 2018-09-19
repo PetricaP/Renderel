@@ -29,6 +29,7 @@ union Mat4 {
 	static Mat4 Scale(const Vec3<T> &scale);
 	static Mat4 LookAt(const Vec3<T> &eye, const Vec3<T> &at,
 					   const Vec3<T> &up);
+	Mat4 &StripTranslation();
 };
 
 template <typename T>
@@ -53,6 +54,16 @@ Mat4<T> Mat4<T>::LookAt(const Vec3<T> &eye, const Vec3<T> &at,
 		Vec4<T>(zAxis, -zAxis.Dot(eye)), Vec4<T>(0.0f, 0.0f, 0.0f, 1.0f));
 
 	return viewMatrix;
+}
+
+template <typename T>
+Mat4<T> &Mat4<T>::StripTranslation() {
+	for (auto i = 0; i < 3; ++i) {
+		elements[3][i] = 0;
+		elements[i][3] = 0;
+	}
+	elements[3][3] = 1;
+	return *this;
 }
 
 template <typename T>
