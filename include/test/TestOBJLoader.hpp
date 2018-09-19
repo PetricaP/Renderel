@@ -10,7 +10,7 @@
 namespace renderel::test {
 
 class TestOBJLoader : public Test {
-  private:
+  protected:
 	math::Vec4<> m_Color;
 
 	graphics::Mesh<> mesh;
@@ -24,10 +24,14 @@ class TestOBJLoader : public Test {
 	math::Mat4<> model;
 	math::Mat4<> proj;
 
-	float g = 0.0f;
-
   public:
-	TestOBJLoader(const std::shared_ptr<Window> window);
+	TestOBJLoader(
+		const std::shared_ptr<Window> window,
+		const std::string objPath = "res/models/monkey.obj",
+		const std::string texturePath = "res/textures/monkey_baked.png",
+		const std::string vertexShaderPath = "shaders/vertexShader.glsl",
+		const std::string fragmentShaderPath =
+			"shaders/fragmentShaderTexture.glsl");
 	~TestOBJLoader() override;
 	void OnRender() override;
 	void OnGUIRender() override;
