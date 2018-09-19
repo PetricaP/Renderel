@@ -163,7 +163,7 @@ void TestCamera::OnGUIRender() {
 	ImGui::Text("---------------");
 
 	ImGui::SliderFloat("Rotation sensitivity", &rotationSensitivity, 0.0f,
-					   3000.0f);
+					   300000.0f);
 	ImGui::SliderFloat("Movement sensitivity", &movementSensitivity, 0.0f,
 					   30.0f);
 

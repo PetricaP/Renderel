@@ -82,7 +82,7 @@ class TestCamera : public Test {
 	InputControl xRotation;
 	InputControl pause;
 
-	static constexpr float defaultRotationSensitivity = 1000.0f;
+	static constexpr float defaultRotationSensitivity = 100000.0f;
 	float rotationSensitivity = defaultRotationSensitivity;
 
 	static constexpr float defaultMovementSensitivity = 10.0f;
