@@ -29,7 +29,9 @@ struct EntityData {
 
 class ECS {
   private:
-	std::vector<BaseECSSystem *> m_Systems;
+	/* Map containing components, each component type will be a key
+	 * into this map, the value at each key will be the memory containing
+	 * all of the components of this particular type (id) */
 	std::unordered_map<unsigned int, ComponentMemory> m_Components;
 	std::vector<EntityData *> m_Entities;
 
@@ -38,10 +40,35 @@ class ECS {
 	~ECS();
 
 	/* Entity methods */
-	EntityHandle MakeEntity(BaseECSComponent components[],
-							const unsigned int componentIDs[],
+	EntityHandle MakeEntity(BaseECSComponent **entityComponents,
+							const unsigned int *entityComponentIDs,
 							size_t numComponents);
 	void RemoveEntity(EntityHandle handle);
+
+	/* TODO: Not sure if this actually works */
+	template <class A, class... Args>
+	EntityHandle MakeEntity(A &c, Args &... args) {
+		static BaseECSComponent **components = nullptr;
+		static unsigned int *componentIDs = nullptr;
+		static int index = 0;
+		if (components == nullptr) {
+			size_t numComponents = (sizeof...(args) + sizeof(c)) / sizeof(c);
+			components = new BaseECSComponent *[numComponents];
+			componentIDs = new unsigned int[numComponents];
+		} else {
+			if constexpr (sizeof...(args) == 0) {
+				EntityHandle handle = MakeEntity(
+					components, componentIDs, static_cast<size_t>(index + 1));
+				components = nullptr;
+				componentIDs = nullptr;
+				return handle;
+			} else {
+				components[index++] = &c;
+				return MakeEntity(args...);
+			}
+		}
+		return nullptr;
+	}
 
 	/* Component methods */
 	template <class Component>
@@ -57,14 +84,13 @@ class ECS {
 
 	template <class Component>
 	Component *GetComponent(EntityHandle handle) {
-		return GetComponentInternal(HandleToEntity(handle),
-									m_Components[Component::ID], Component::ID);
+		return static_cast<Component *>(
+			GetComponentInternal(HandleToEntity(handle),
+								 m_Components[Component::ID], Component::ID));
 	}
 
 	/* System methods */
-	void AddSystem(BaseECSSystem *system) { m_Systems.push_back(system); }
-	bool RemoveSystem(BaseECSSystem &system);
-	void UpdateSystems(float deltaTime);
+	void UpdateSystems(ECSSystemList &ecsSystemList, float deltaTime);
 
   private:
 	EntityData *HandleToRawType(EntityHandle handle) {
@@ -87,14 +113,18 @@ class ECS {
 							  BaseECSComponent *component);
 
 	BaseECSComponent *GetComponentInternal(Entity &entity,
-										   std::vector<byte> &memory,
+										   ComponentMemory &memory,
 										   unsigned int componentID);
 
 	void UpdateSystemWithMultipleComponents(
-		unsigned int index, float deltaTime,
+		unsigned int index, ECSSystemList &ecsSystemList, float deltaTime,
 		const std::vector<unsigned int> &componentTypes,
 		std::vector<BaseECSComponent *> &componentParam,
-		std::vector<std::vector<byte> *> &componentArrays);
+		std::vector<ComponentMemory *> &componentArrays);
+
+	unsigned int
+	FindLeastCommonComponent(const std::vector<unsigned int> &componentTypes,
+							 const std::vector<unsigned int> &componentFlags);
 
 	/* No copying allowed */
 	ECS(const ECS &other) = delete;

@@ -3,6 +3,7 @@
 #include "InputControl.hpp"
 #include "Transform.hpp"
 #include "WindowGLFW.hpp"
+#include "ecs/ECS.hpp"
 #include "graphics/BasicRenderer.hpp"
 #include "graphics/IndexBuffer.hpp"
 #include "graphics/OBJLoader.hpp"

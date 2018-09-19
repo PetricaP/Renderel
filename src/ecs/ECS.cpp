@@ -25,7 +25,7 @@ ECS::~ECS() {
 	}
 }
 
-EntityHandle ECS::MakeEntity(BaseECSComponent entityComponents[],
+EntityHandle ECS::MakeEntity(BaseECSComponent *entityComponents[],
 							 const unsigned int entityComponentIDs[],
 							 size_t numComponents) {
 	EntityData *entityData = new EntityData;
@@ -42,7 +42,7 @@ EntityHandle ECS::MakeEntity(BaseECSComponent entityComponents[],
 		}
 
 		AddComponentInternal(handle, entityData->entity, id,
-							 &entityComponents[i]);
+							 entityComponents[i]);
 	}
 
 	/* The entity is placed in the last cell of the entity array
@@ -69,6 +69,8 @@ void ECS::RemoveEntity(EntityHandle handle) {
 	delete m_Entities[destIndex];
 
 	m_Entities[destIndex] = m_Entities[srcIndex];
+	m_Entities[destIndex]->indexInEntityArray = destIndex;
+
 	m_Entities.pop_back();
 }
 
@@ -90,7 +92,7 @@ void ECS::AddComponentInternal(EntityHandle handle, Entity &entity,
 void ECS::DeleteComponent(unsigned int componentID, unsigned int index) {
 
 	/* Get the block of memory in which the component is located */
-	std::vector<byte> &memory = m_Components[componentID];
+	ComponentMemory &memory = m_Components[componentID];
 
 	ECSComponentFreeFunction freeFunction =
 		BaseECSComponent::GetTypeFreeFunction(componentID);
@@ -151,7 +153,7 @@ bool ECS::RemoveComponentInternal(EntityHandle handle,
 }
 
 BaseECSComponent *ECS::GetComponentInternal(Entity &entity,
-											std::vector<byte> &memory,
+											ComponentMemory &memory,
 											unsigned int componentID) {
 	for (const auto &component : entity) {
 		if (componentID == component.componentType) {
@@ -162,51 +164,57 @@ BaseECSComponent *ECS::GetComponentInternal(Entity &entity,
 	return nullptr;
 }
 
-bool ECS::RemoveSystem(BaseECSSystem &system) {
-	for (unsigned int i = 0; i < m_Systems.size(); ++i) {
-		if (&system == m_Systems[i]) {
-			m_Systems.erase(m_Systems.begin() + i);
-			return true;
-		}
-	}
-	return false;
-}
-
 /* No idea what's going on really */
-void ECS::UpdateSystems(float deltaTime) {
+void ECS::UpdateSystems(ECSSystemList &ecsSystemList, float deltaTime) {
 
 	std::vector<BaseECSComponent *> componentParam;
-	std::vector<std::vector<byte> *> componentArrays;
+	std::vector<ComponentMemory *> componentArrays;
 
-	for (unsigned int i = 0; i < m_Systems.size(); ++i) {
+	for (unsigned int i = 0; i < ecsSystemList.size(); ++i) {
 		const std::vector<unsigned int> &componentTypes =
-			m_Systems[i]->GetComponentTypes();
+			ecsSystemList[i]->GetComponentTypes();
 		/* If there is only one component */
 		if (componentTypes.size() == 1) {
 
+			/* Get it's type */
 			unsigned int id = componentTypes[0];
 			size_t typeSize = BaseECSComponent::GetTypeSize(id);
-			std::vector<byte> &memory = m_Components[id];
 
+			/* The location in memory of the components of this type*/
+			ComponentMemory &memory = m_Components[id];
+
+			/* Go through every component in the array */
 			for (unsigned int j = 0; j < memory.size(); j += typeSize) {
 
+				/* Get the component at index j and update it */
 				BaseECSComponent *component =
 					reinterpret_cast<BaseECSComponent *>(memory[j]);
 
-				m_Systems[i]->UpdateComponents(deltaTime, &component);
+				ecsSystemList[i]->UpdateComponents(deltaTime, &component);
 			}
 		} else {
-			UpdateSystemWithMultipleComponents(i, deltaTime, componentTypes,
-											   componentParam, componentArrays);
+			/* There are more */
+			UpdateSystemWithMultipleComponents(i, ecsSystemList, deltaTime,
+											   componentTypes, componentParam,
+											   componentArrays);
 		}
 	}
 }
 
+/* Component types are the types of the components from the system
+ * Component params is just a location for all the components in a system
+ * just so we don't need to reallocate this for every system we update */
 void ECS::UpdateSystemWithMultipleComponents(
-	unsigned int index, float deltaTime,
+	unsigned int index, ECSSystemList &ecsSystemList, float deltaTime,
 	const std::vector<unsigned int> &componentTypes,
 	std::vector<BaseECSComponent *> &componentParam,
-	std::vector<std::vector<byte> *> &componentArrays) {
+	std::vector<ComponentMemory *> &componentArrays) {
+
+	const std::vector<unsigned int> &componentFlags =
+		ecsSystemList[index]->GetComponentFlags();
+
+	/* Make sure these arrays are big enough for holding all of our component
+	 * data */
 
 	componentParam.resize(
 		math::max(componentParam.size(), componentTypes.size()));
@@ -219,35 +227,74 @@ void ECS::UpdateSystemWithMultipleComponents(
 	}
 
 	unsigned int id = componentTypes[0];
-	size_t typeSize = BaseECSComponent::GetTypeSize(id);
+	unsigned int minCountIndex =
+		FindLeastCommonComponent(componentTypes, componentFlags);
 
-	for (unsigned int i = 0; i < (*componentArrays[0]).size(); i += typeSize) {
+	size_t typeSize = BaseECSComponent::GetTypeSize(id);
+	ComponentMemory &memory = *componentArrays[minCountIndex];
+
+	/* Look for all the entities that have this component and check if
+	 * it also has the other components the system needs */
+	for (unsigned int i = 0; i < memory.size(); i += typeSize) {
 
 		BaseECSComponent *component =
-			reinterpret_cast<BaseECSComponent *>(&componentArrays[0][i]);
+			reinterpret_cast<BaseECSComponent *>(&memory[i]);
 
-		componentParam[0] = component;
+		componentParam[minCountIndex] = component;
 
 		Entity &entity = HandleToEntity(component->entityHandle);
 
+		/* If an entity doesn't have all the components we need,
+		 * don't update it */
 		bool isValid = true;
 		for (unsigned int j = 0; j < componentTypes.size(); ++j) {
-			if (j == 0) {
+			if (j == minCountIndex) {
 				continue;
 			}
 			componentParam[j] = GetComponentInternal(
 				entity, *(componentArrays[j]), componentTypes[j]);
 
-			if (componentParam[j] == nullptr) {
+			if (componentParam[j] == nullptr &&
+				(componentFlags[j] & BaseECSSystem::FLAG_OPTIONAL) == 0) {
 				isValid = false;
 				break;
 			}
 		}
 
+		/* We found an entity that has our component and also has some more */
 		if (isValid) {
-			m_Systems[index]->UpdateComponents(deltaTime, &componentParam[0]);
+			ecsSystemList[index]->UpdateComponents(
+				deltaTime, &componentParam[minCountIndex]);
 		}
 	}
+}
+
+/* This is so if we only have 2 components of one of the types the system needs,
+ * and 10000 of another type, we only check 2 entities */
+unsigned int
+ECS::FindLeastCommonComponent(const std::vector<unsigned int> &componentTypes,
+							  const std::vector<unsigned int> &componentFlags) {
+
+	/* The number of components of the m_Components[0] type */
+	unsigned int minCount = static_cast<unsigned int>(-1);
+
+	unsigned int minIndex = 0;
+
+	for (unsigned int i = 0; i < componentTypes.size(); ++i) {
+		if ((componentFlags[i] & BaseECSSystem::FLAG_OPTIONAL) != 0) {
+			continue;
+		}
+		size_t typeSize = BaseECSComponent::GetTypeSize(componentTypes[i]);
+		/* The number of components of that type */
+		unsigned int count =
+			static_cast<unsigned int>(m_Components[i].size()) / typeSize;
+		if (count <= minCount) {
+			minCount = count;
+			minIndex = i;
+		}
+	}
+
+	return minIndex;
 }
 
 } // namespace renderel

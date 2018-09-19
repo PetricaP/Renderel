@@ -2,16 +2,21 @@
 
 namespace renderel {
 
-std::vector<BaseECSComponentData> BaseECSComponent::m_ComponentTypes;
+/* Defaults to nullptr */
+std::vector<BaseECSComponentData> *BaseECSComponent::m_ComponentTypes;
 
 unsigned int BaseECSComponent::RegisterComponentType(
 	ECSComponentCreateFunction createFunction,
 	ECSComponentFreeFunction freeFunction, size_t size) {
 
-	unsigned int componentID =
-		static_cast<unsigned int>(m_ComponentTypes.size());
+	if (m_ComponentTypes == nullptr) {
+		m_ComponentTypes = new std::vector<BaseECSComponentData>;
+	}
 
-	m_ComponentTypes.push_back(
+	unsigned int componentID =
+		static_cast<unsigned int>(m_ComponentTypes->size());
+
+	m_ComponentTypes->push_back(
 		BaseECSComponentData(createFunction, freeFunction, size));
 
 	return componentID;

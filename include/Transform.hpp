@@ -15,9 +15,6 @@ class Transform {
 	math::Vec3<T> m_Scale;
 
   public:
-	Transform()
-		: m_Position(0.0f), m_Rotation(1.0f, 0.0f, 0.0f, 0.0f), m_Scale(1.0f) {}
-
 	Transform(const math::Vec3<T> &position = math::Vec3<T>(),
 			  const math::Quaternion<T> &rotation = math::Quaternion<T>(),
 			  const math::Vec3<T> &scale = math::Vec3<T>(1.0f))

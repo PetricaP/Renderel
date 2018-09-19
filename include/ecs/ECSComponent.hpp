@@ -39,7 +39,7 @@ struct BaseECSComponentData {
  * for the entity it is attached to */
 struct BaseECSComponent {
   private:
-	static std::vector<BaseECSComponentData> m_ComponentTypes;
+	static std::vector<BaseECSComponentData> *m_ComponentTypes;
 
   public:
 	static unsigned int
@@ -48,19 +48,19 @@ struct BaseECSComponent {
 	EntityHandle entityHandle = NULL_ENTITY_HANDLE;
 
 	static ECSComponentCreateFunction GetTypeCreateFunction(unsigned int id) {
-		return m_ComponentTypes[id].createFunction;
+		return (*m_ComponentTypes)[id].createFunction;
 	}
 
 	static ECSComponentFreeFunction GetTypeFreeFunction(unsigned int id) {
-		return m_ComponentTypes[id].freeFunction;
+		return (*m_ComponentTypes)[id].freeFunction;
 	}
 
 	static size_t GetTypeSize(unsigned int id) {
-		return m_ComponentTypes[id].size;
+		return (*m_ComponentTypes)[id].size;
 	}
 
 	static bool IsTypeValid(unsigned int id) {
-		return id < m_ComponentTypes.size();
+		return id < m_ComponentTypes->size();
 	}
 };
 
