@@ -38,6 +38,8 @@ void GlobalGLFWEventHandler::HandleKeyEvent(WindowGLFW *window,
 void GlobalGLFWEventHandler::HandleFullScreen(WindowGLFW *window) {
 	static int prevWidth = 0;
 	static int prevHeight = 0;
+	static int prevPosX = 0;
+	static int prevPosY = 0;
 	if (!glfwGetWindowMonitor(
 			static_cast<GLFWwindow *>(window->GetAPIHandle()))) {
 
@@ -47,12 +49,15 @@ void GlobalGLFWEventHandler::HandleFullScreen(WindowGLFW *window) {
 		prevWidth = window->GetWidth();
 		prevHeight = window->GetHeight();
 
+		glfwGetWindowPos((GLFWwindow *)window->GetAPIHandle(), &prevPosX,
+						 &prevPosY);
+
 		glfwSetWindowMonitor(static_cast<GLFWwindow *>(window->GetAPIHandle()),
 							 glfwGetPrimaryMonitor(), 0, 0, videoMode->width,
 							 videoMode->height, GLFW_DONT_CARE);
 	} else {
 		glfwSetWindowMonitor(static_cast<GLFWwindow *>(window->GetAPIHandle()),
-							 nullptr, 0, 0, prevWidth, prevHeight,
+							 nullptr, prevPosX, prevPosY, prevWidth, prevHeight,
 							 GLFW_DONT_CARE);
 	}
 }
