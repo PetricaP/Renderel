@@ -38,6 +38,14 @@ class Transform {
 	void SetRotation(const math::Quaternion<T> rotation) {
 		m_Rotation = rotation;
 	}
+	void SetRotation(const math::Vec3<T> &rotationAngles) {
+		m_Rotation = math::Quaternion<T>(math::Vec3<T>(1.0f, 0.0f, 0.0f),
+										 rotationAngles.x) *
+					 math::Quaternion<T>(math::Vec3<T>(0.0f, 1.0f, 0.0f),
+										 rotationAngles.y) *
+					 math::Quaternion<T>(math::Vec3<T>(0.0f, 0.0f, 1.0f),
+										 rotationAngles.z);
+	}
 	void SetScale(const math::Vec3<T> scale) { m_Scale = scale; }
 };
 

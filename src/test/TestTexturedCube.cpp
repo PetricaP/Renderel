@@ -55,11 +55,7 @@ void TestTexturedCube::OnUpdate(float) {
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
 	shader->SetUniformMat4f("u_Proj", proj);
 
-	math::Quaternion<> qX(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x);
-	math::Quaternion<> qY(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y);
-	math::Quaternion<> qZ(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z);
-
-	transform.SetRotation(qX * qY * qZ);
+	transform.SetRotation(rotation);
 
 	math::Mat4<> model = transform.GetModel();
 	shader->SetUniformMat4f("u_Model", model);

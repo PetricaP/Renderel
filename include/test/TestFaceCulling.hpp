@@ -11,11 +11,11 @@ namespace renderel::test {
 
 class TestFaceCulling : public Test {
   private:
-	graphics::VertexArray *va;
-	graphics::IndexBuffer<> *ib;
-	graphics::Renderer<> *renderer;
-	graphics::Shader *shader;
-	graphics::Texture *texture;
+	graphics::VertexArray *va = nullptr;
+	graphics::IndexBuffer<> *ib = nullptr;
+	graphics::Renderer<> *renderer = nullptr;
+	graphics::Shader *shader = nullptr;
+	graphics::Texture *texture = nullptr;
 
 	math::Vec3<> rotation;
 	Transform<> transform;

@@ -83,10 +83,7 @@ void TestInput::OnUpdate(float deltaTime) {
 
 	transform.SetPosition(math::Vec3<>(x, y, z + -5.0f));
 
-	transform.SetRotation(
-		math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *
-		math::Quaternion<>(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y) *
-		math::Quaternion<>(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z));
+	transform.SetRotation(rotation);
 
 	math::Mat4<> model = transform.GetModel();
 	shader->Bind();

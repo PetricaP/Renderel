@@ -60,11 +60,7 @@ void TestFaceCulling::OnUpdate(float deltaTime) {
 
 	rotation.y += deltaTime * 50.0f;
 
-	math::Quaternion<> qX(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x);
-	math::Quaternion<> qY(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y);
-	math::Quaternion<> qZ(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z);
-
-	transform.SetRotation(qX * qY * qZ);
+	transform.SetRotation(rotation);
 
 	math::Mat4<> model = transform.GetModel();
 	shader->SetUniformMat4f("u_Model", model);
