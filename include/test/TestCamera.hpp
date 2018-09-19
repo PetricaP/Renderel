@@ -29,7 +29,7 @@ class TestCamera : public Test {
 		-size, -size,  size, 0.0f, 0.0f, // 4
 		 size, -size,  size, 1.0f, 0.0f, // 5
 		-size,  size,  size, 0.0f, 1.0f, // 6
-		 size,  size,  size, 1.0f, 1.0f,  // 7
+		 size,  size,  size, 1.0f, 1.0f, // 7
 		// Left face
 		-size, -size, -size, 0.0f, 0.0f, // 8
 		-size, -size,  size, 1.0f, 0.0f, // 9
@@ -74,15 +74,19 @@ class TestCamera : public Test {
 		21, 22, 23  //
 	};
 
+	const math::Vec3<> defaultCameraPosition;
+
 	InputControl xAxis;
 	InputControl yAxis;
 	InputControl zAxis;
 	InputControl xRotation;
 	InputControl pause;
 
-	float rotationSensitivity = 1.0f;
-	float movementSensitivity = 0.2f;
-	bool paused = false;
+	static constexpr float defaultRotationSensitivity = 1000.0f;
+	float rotationSensitivity = defaultRotationSensitivity;
+
+	static constexpr float defaultMovementSensitivity = 10.0f;
+	float movementSensitivity = defaultMovementSensitivity;
 
 	math::EulerAngle<> eulerAngle;
 	GameEventHandler *handler = nullptr;
@@ -94,9 +98,8 @@ class TestCamera : public Test {
 	graphics::Shader *shader = nullptr;
 	graphics::Texture *texture = nullptr;
 
-	math::Vec3<> position;
-	Transform<> transform;
 	float aspectRatio;
+	Transform<> transform;
 	Camera camera;
 
 	math::Mat4<> model;

@@ -34,6 +34,11 @@ inline float toRadians(float angle) {
 	return static_cast<float>(M_PI) * angle / 180.0f;
 }
 
+template <typename T>
+inline T max(T first, T second) {
+	return (first > second) ? first : second;
+}
+
 } // namespace renderel::math
 
 #endif // MATH_HPP

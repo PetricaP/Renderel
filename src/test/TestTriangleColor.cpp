@@ -36,7 +36,7 @@ TestTriangleColor::~TestTriangleColor() {
 	delete renderer;
 }
 
-void TestTriangleColor::OnUpdate(float deltaTime) {
+void TestTriangleColor::OnUpdate(float) {
 	math::Mat4<float> colorMatrix(m_Colors[0], m_Colors[1], m_Colors[2],
 								  math::Vec4<float>(1.0f));
 	shader->SetUniformMat4f("u_ColorMatrix", colorMatrix);

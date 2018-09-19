@@ -13,8 +13,7 @@ class TestOBJLoader : public Test {
   protected:
 	math::Vec4<> m_Color;
 
-	graphics::VertexArray *va;
-	graphics::IndexBuffer<> *ib;
+	graphics::Mesh<> mesh;
 	graphics::Renderer<> *renderer;
 	graphics::Shader *shader;
 	graphics::Texture *texture;
