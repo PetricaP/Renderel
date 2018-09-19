@@ -16,7 +16,6 @@ if ( NOT DEFINED CMAKE_BUILD_TYPE )
                 FORCE
         )
 endif (  NOT DEFINED CMAKE_BUILD_TYPE )
-
 if ( CMAKE_BUILD_TYPE MATCHES "Release" )
 	if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
         add_definitions( /O2 )
@@ -31,7 +30,9 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions  -Wall -Wextra -g")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   # using GCC
-    set(ignoreMe "${QT_QMAKE_EXECUTABLE}")
+  set(CMAKE_VERBOSE_MAKEFILE ON)
+	set(CMAKE_RULE_MESSAGES OFF)
+	set(ignoreMe "${QT_QMAKE_EXECUTABLE}")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     set(OpenGL_GL_PREFERENCE LEGACY)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fms-extensions -Wall -Wextra -g")
