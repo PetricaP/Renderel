@@ -5,7 +5,7 @@ namespace renderel {
 /* Defaults to nullptr */
 std::vector<BaseECSComponentData> *BaseECSComponent::m_ComponentTypes;
 
-unsigned int BaseECSComponent::RegisterComponentType(
+uint32 BaseECSComponent::RegisterComponentType(
 	ECSComponentCreateFunction createFunction,
 	ECSComponentFreeFunction freeFunction, size_t size) {
 
@@ -13,8 +13,7 @@ unsigned int BaseECSComponent::RegisterComponentType(
 		m_ComponentTypes = new std::vector<BaseECSComponentData>;
 	}
 
-	unsigned int componentID =
-		static_cast<unsigned int>(m_ComponentTypes->size());
+	uint32 componentID = static_cast<uint32>(m_ComponentTypes->size());
 
 	m_ComponentTypes->push_back(
 		BaseECSComponentData(createFunction, freeFunction, size));

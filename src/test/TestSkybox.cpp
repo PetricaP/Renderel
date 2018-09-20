@@ -104,7 +104,7 @@ void TestSkybox::OnUpdate(float deltaTime) {
 	static math::Vec2<> lastPositionf(0.5f);
 	static math::Vec3<> lastForward;
 
-	math::Vec2<int> newPosition = handler->GetMousePosition();
+	math::Vec2<int32> newPosition = handler->GetMousePosition();
 	math::Vec2<> newPositionf(
 		static_cast<float>(newPosition.x) / m_Window->GetWidth(),
 		static_cast<float>(newPosition.y) / m_Window->GetHeight());

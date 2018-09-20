@@ -20,8 +20,8 @@ Cubemap::Cubemap(const std::vector<std::string> &faces,
 
 	stbi_set_flip_vertically_on_load(false);
 
-	for (unsigned int i = 0; i < faces.size(); ++i) {
-		int width, height, channels;
+	for (uint32 i = 0; i < faces.size(); ++i) {
+		int32 width, height, channels;
 		unsigned char *data =
 			stbi_load(faces[i].c_str(), &width, &height, &channels, 0);
 

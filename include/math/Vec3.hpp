@@ -1,6 +1,7 @@
 #ifndef MATH_VEC3_HPP
 #define MATH_VEC3_HPP
 
+#include "core/Common.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -51,8 +52,8 @@ union Vec3 {
 	T Length() const;
 	Vec3 Normalize() const;
 
-	T &operator[](unsigned int index);
-	T operator[](unsigned int index) const;
+	T &operator[](uint32 index);
+	T operator[](uint32 index) const;
 };
 
 template <typename T>
@@ -71,12 +72,12 @@ Vec3<T> Vec3<T>::operator-() const {
 }
 
 template <typename T>
-T &Vec3<T>::operator[](unsigned int index) {
+T &Vec3<T>::operator[](uint32 index) {
 	return elements[index];
 }
 
 template <typename T>
-T Vec3<T>::operator[](unsigned int index) const {
+T Vec3<T>::operator[](uint32 index) const {
 	return elements[index];
 }
 

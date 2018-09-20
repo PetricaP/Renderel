@@ -8,7 +8,7 @@
 
 namespace renderel::graphics {
 
-template <typename T = unsigned int, typename F = float>
+template <typename T = uint32, typename F = float>
 class Mesh {
   private:
 	VertexArray *m_VA = nullptr;

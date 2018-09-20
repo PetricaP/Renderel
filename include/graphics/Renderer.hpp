@@ -6,7 +6,7 @@
 
 namespace renderel::graphics {
 
-template <typename T = unsigned int>
+template <typename T = uint32>
 class Renderer {
   public:
 	Renderer() = default;

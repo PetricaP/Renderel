@@ -1,11 +1,12 @@
 #ifndef BASICRENDERER_HPP
 #define BASICRENDERER_HPP
 
+#include "core/Common.hpp"
 #include "graphics/Renderer.hpp"
 
 namespace renderel::graphics {
 
-template <typename T = unsigned int>
+template <typename T = uint32>
 class BasicRenderer : public Renderer<T> {
   private:
 	std::queue<Renderable<T>> m_RenderObjects;

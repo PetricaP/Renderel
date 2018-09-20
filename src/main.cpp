@@ -3,6 +3,7 @@
 #include "InputControl.hpp"
 #include "Transform.hpp"
 #include "WindowGLFW.hpp"
+#include "core/Common.hpp"
 #include "graphics/BasicRenderer.hpp"
 #include "graphics/IndexBuffer.hpp"
 #include "graphics/OBJLoader.hpp"
@@ -30,17 +31,17 @@
 
 using namespace renderel;
 
-const int WIDTH = 1080;
-const int HEIGHT = 720;
+const int32 WIDTH = 1080;
+const int32 HEIGHT = 720;
 
-int main() {
+int32 main() {
 	GameEventHandler gameEventHandler;
 
 	std::shared_ptr<Window> window = std::make_shared<WindowGLFW>(
 		WIDTH, HEIGHT, "Renderel", &gameEventHandler);
 
-	graphics::Renderer<unsigned int>::InitGraphics();
-	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	graphics::Renderer<uint32>::InitGraphics();
+	graphics::Renderer<uint32>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	std::shared_ptr<test::Test> currentTest = nullptr;
 	std::shared_ptr<test::TestMenu> testMenu(

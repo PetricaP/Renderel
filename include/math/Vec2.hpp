@@ -1,6 +1,7 @@
 #ifndef MATH_VEC2_HPP
 #define MATH_VEC2_HPP
 
+#include "core/Common.hpp"
 #include <iostream>
 
 namespace renderel::math {
@@ -38,17 +39,17 @@ union Vec2 {
 	Vec2 &operator*=(T t);
 	Vec2 &operator/=(T t);
 
-	T &operator[](unsigned int index);
-	T operator[](unsigned int index) const;
+	T &operator[](uint32 index);
+	T operator[](uint32 index) const;
 };
 
 template <typename T>
-T &Vec2<T>::operator[](unsigned int index) {
+T &Vec2<T>::operator[](uint32 index) {
 	return elements[index];
 }
 
 template <typename T>
-T Vec2<T>::operator[](unsigned int index) const {
+T Vec2<T>::operator[](uint32 index) const {
 	return elements[index];
 }
 

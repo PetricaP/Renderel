@@ -7,20 +7,21 @@
 
 namespace renderel {
 
-static void key_callback(GLFWwindow *window, int key, int, int action, int) {
+static void key_callback(GLFWwindow *window, int32 key, int32, int32 action,
+						 int32) {
 	Event event;
 	event.type = KEY;
-	event.keyEvent.key = static_cast<unsigned int>(key);
-	event.keyEvent.action = static_cast<unsigned int>(action);
+	event.keyEvent.key = static_cast<uint32>(key);
+	event.keyEvent.action = static_cast<uint32>(action);
 	GlobalGLFWEventHandler::PushEvent(window, event);
 }
 
-static void mouse_button_callback(GLFWwindow *window, int button, int action,
-								  int) {
+static void mouse_button_callback(GLFWwindow *window, int32 button,
+								  int32 action, int32) {
 	Event event;
 	event.type = MOUSEBUTTON;
-	event.mouseButtonEvent.button = static_cast<unsigned int>(button);
-	event.mouseButtonEvent.action = static_cast<unsigned int>(action);
+	event.mouseButtonEvent.button = static_cast<uint32>(button);
+	event.mouseButtonEvent.action = static_cast<uint32>(action);
 	GlobalGLFWEventHandler::PushEvent(window, event);
 }
 
@@ -28,12 +29,13 @@ static void cursor_position_callback(GLFWwindow *window, double xPos,
 									 double yPos) {
 	Event event;
 	event.type = MOUSEMOTION;
-	event.mouseMotionEvent.xPos = static_cast<int>(xPos);
-	event.mouseMotionEvent.yPos = static_cast<int>(yPos);
+	event.mouseMotionEvent.xPos = static_cast<int32>(xPos);
+	event.mouseMotionEvent.yPos = static_cast<int32>(yPos);
 	GlobalGLFWEventHandler::PushEvent(window, event);
 }
 
-static void window_resize_callback(GLFWwindow *window, int width, int height) {
+static void window_resize_callback(GLFWwindow *window, int32 width,
+								   int32 height) {
 	Event event;
 	event.type = WINDOWRESIZE;
 	event.windowEvent.width = width;
@@ -41,7 +43,7 @@ static void window_resize_callback(GLFWwindow *window, int width, int height) {
 	GlobalGLFWEventHandler::PushEvent(window, event);
 }
 
-WindowGLFW::WindowGLFW(int width, int height, std::string title,
+WindowGLFW::WindowGLFW(int32 width, int32 height, std::string title,
 					   EventHandler *eventHandler)
 	: Window(width, height, eventHandler) {
 

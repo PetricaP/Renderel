@@ -36,10 +36,10 @@ void GlobalGLFWEventHandler::HandleKeyEvent(WindowGLFW *window,
 }
 
 void GlobalGLFWEventHandler::HandleFullScreen(WindowGLFW *window) {
-	static int prevWidth = 0;
-	static int prevHeight = 0;
-	static int prevPosX = 0;
-	static int prevPosY = 0;
+	static int32 prevWidth = 0;
+	static int32 prevHeight = 0;
+	static int32 prevPosX = 0;
+	static int32 prevPosY = 0;
 	if (!glfwGetWindowMonitor(
 			static_cast<GLFWwindow *>(window->GetAPIHandle()))) {
 

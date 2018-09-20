@@ -46,8 +46,8 @@ TestCamera::TestCamera(const std::shared_ptr<Window> window)
 
 	va->AddBuffer(vb, layout);
 
-	ib = new graphics::IndexBuffer<unsigned int>(
-		indices, sizeof(indices) / sizeof(indices[0]));
+	ib = new graphics::IndexBuffer<uint32>(indices, sizeof(indices) /
+														sizeof(indices[0]));
 
 	renderer = new graphics::BasicRenderer();
 	shader = new graphics::Shader("shaders/vertexShader.glsl",
@@ -78,7 +78,7 @@ TestCamera::~TestCamera() {
 static void ResetCursorPosition(const std::shared_ptr<Window> window,
 								const GameEventHandler *handler,
 								math::Vec2<> &lastPositionf) {
-	math::Vec2<int> newPosition = handler->GetMousePosition();
+	math::Vec2<int32> newPosition = handler->GetMousePosition();
 	math::Vec2<> newPositionf(
 		static_cast<float>(newPosition.x) / window->GetWidth(),
 		static_cast<float>(newPosition.y) / window->GetHeight());
@@ -120,7 +120,7 @@ void TestCamera::OnUpdate(float deltaTime) {
 	} else {
 		m_Window->DisableMouse();
 
-		math::Vec2<int> newPosition = handler->GetMousePosition();
+		math::Vec2<int32> newPosition = handler->GetMousePosition();
 		math::Vec2<> newPositionf(
 			static_cast<float>(newPosition.x) / m_Window->GetWidth(),
 			static_cast<float>(newPosition.y) / m_Window->GetHeight());

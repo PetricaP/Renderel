@@ -25,7 +25,7 @@ class TestInput : public Test {
 		0.5f,  -0.5f, 0.0f  // 2
 	};
 
-	static constexpr unsigned int indices[] = {0, 1, 2};
+	static constexpr uint32 indices[] = {0, 1, 2};
 
 	math::Vec3<> rotation = math::Vec3(0.0f);
 

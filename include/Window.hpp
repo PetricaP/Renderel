@@ -8,12 +8,12 @@ namespace renderel {
 
 class Window {
   protected:
-	int m_Width;
-	int m_Height;
+	int32 m_Width;
+	int32 m_Height;
 	EventHandler *m_EventHandler = nullptr;
 
   protected:
-	Window(int width, int height, EventHandler *eventHandler);
+	Window(int32 width, int32 height, EventHandler *eventHandler);
 
   public:
 	virtual ~Window() = default;
@@ -26,10 +26,10 @@ class Window {
 	virtual void DisableMouse() const = 0;
 	virtual void EnableMouse() const = 0;
 
-	void SetWidth(int width) { m_Width = width; }
-	void SetHeight(int height) { m_Height = height; }
-	int GetWidth() const { return m_Width; }
-	int GetHeight() const { return m_Height; }
+	void SetWidth(int32 width) { m_Width = width; }
+	void SetHeight(int32 height) { m_Height = height; }
+	int32 GetWidth() const { return m_Width; }
+	int32 GetHeight() const { return m_Height; }
 	EventHandler *GetEventHandler() const { return m_EventHandler; }
 	void SetEventHandler(EventHandler *handler) { m_EventHandler = handler; }
 };

@@ -19,28 +19,27 @@ struct InputPart {
 
 class GameEventHandler final : public EventHandler {
   private:
-	std::unordered_map<unsigned int, std::vector<InputPart>> m_Inputs;
-	math::Vec2<int> m_MousePosition;
+	std::unordered_map<uint32, std::vector<InputPart>> m_Inputs;
+	math::Vec2<int32> m_MousePosition;
 
   public:
 	GameEventHandler() = default;
 
-	void OnKeyDown(unsigned int keyCode, bool isRepeat) override;
-	void OnKeyUp(unsigned int keyCode, bool isRepeat) override;
-	void OnMouseDown(unsigned int mouseButton,
-					 unsigned char numClicks) override;
-	void OnMouseUp(unsigned int mouseButton, unsigned char numClicks) override;
-	void OnMouseMove(int mousePosX, int mousePosY) override;
+	void OnKeyDown(uint32 keyCode, bool isRepeat) override;
+	void OnKeyUp(uint32 keyCode, bool isRepeat) override;
+	void OnMouseDown(uint32 mouseButton, unsigned char numClicks) override;
+	void OnMouseUp(uint32 mouseButton, unsigned char numClicks) override;
+	void OnMouseMove(int32 mousePosX, int32 mousePosY) override;
 
-	void AddKeyControl(unsigned int keyCode, InputControl &inputControl,
+	void AddKeyControl(uint32 keyCode, InputControl &inputControl,
 					   float weight = 1.0f);
-	void AddMouseControl(unsigned int mouseButton, InputControl &inputControl,
+	void AddMouseControl(uint32 mouseButton, InputControl &inputControl,
 						 float weight = 1.0f);
 
-	math::Vec2<int> GetMousePosition() const { return m_MousePosition; }
+	math::Vec2<int32> GetMousePosition() const { return m_MousePosition; }
 
   private:
-	void updateInput(unsigned int inputCode, float direction, bool isRepeat);
+	void updateInput(uint32 inputCode, float direction, bool isRepeat);
 };
 
 } // namespace renderel

@@ -40,17 +40,17 @@ union Vec4 {
 	Vec4 &operator*=(T t);
 	Vec4 &operator/=(T t);
 
-	T &operator[](unsigned int index);
-	T operator[](unsigned int index) const;
+	T &operator[](uint32 index);
+	T operator[](uint32 index) const;
 };
 
 template <typename T>
-T &Vec4<T>::operator[](unsigned int index) {
+T &Vec4<T>::operator[](uint32 index) {
 	return elements[index];
 }
 
 template <typename T>
-T Vec4<T>::operator[](unsigned int index) const {
+T Vec4<T>::operator[](uint32 index) const {
 	return elements[index];
 }
 

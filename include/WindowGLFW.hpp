@@ -15,7 +15,7 @@ class WindowGLFW final : public Window {
 	GLFWwindow *m_GLFWwindow = nullptr;
 
   public:
-	WindowGLFW(int width, int height, std::string title,
+	WindowGLFW(int32 width, int32 height, std::string title,
 			   EventHandler *eventHandler);
 	~WindowGLFW() override;
 

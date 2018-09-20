@@ -1,6 +1,7 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
+#include "core/Common.hpp"
 #include <string>
 
 namespace renderel::graphics {
@@ -8,21 +9,21 @@ namespace renderel::graphics {
 class Texture {
   private:
 	std::string m_FilePath;
-	unsigned int m_RendererID = 0;
-	unsigned char *m_LocalBuffer = nullptr;
-	int m_Width = 0;
-	int m_Height = 0;
-	int m_BPP = 0;
+	uint32 m_RendererID = 0;
+	uint8 *m_LocalBuffer = nullptr;
+	int32 m_Width = 0;
+	int32 m_Height = 0;
+	int32 m_BPP = 0;
 
   public:
 	Texture(const std::string &path);
 	~Texture();
 
-	void Bind(unsigned int slot = 0) const;
+	void Bind(uint32 slot = 0) const;
 	void Unbind() const;
 
-	int GetWidth() const { return m_Width; }
-	int GetHeight() const { return m_Height; }
+	int32 GetWidth() const { return m_Width; }
+	int32 GetHeight() const { return m_Height; }
 };
 
 } // namespace renderel::graphics

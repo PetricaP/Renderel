@@ -1,15 +1,17 @@
 #ifndef GRAPHICS_VERTEXBUFFER_HPP
 #define GRAPHICS_VERTEXBUFFER_HPP
 
+#include "core/Common.hpp"
+
 namespace renderel::graphics {
 
 class VertexBuffer {
   private:
-	unsigned int m_RendererID;
+	uint32 m_RendererID;
 
   public:
-	VertexBuffer(void *data, unsigned int size);
-	VertexBuffer(const void *data, unsigned int size);
+	VertexBuffer(void *data, uint32 size);
+	VertexBuffer(const void *data, uint32 size);
 	~VertexBuffer();
 	void Bind() const;
 	void Unbind() const;

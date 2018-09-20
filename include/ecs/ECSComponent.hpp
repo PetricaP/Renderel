@@ -1,6 +1,7 @@
 #ifndef ECSCOMPONENT_HPP
 #define ECSCOMPONENT_HPP
 
+#include "core/Common.hpp"
 #include <cstdlib>
 #include <vector>
 
@@ -14,14 +15,14 @@ using EntityHandle = void *;
 
 /* Renaming so it makes more sense, because it's jut a
  * block of memory */
-using byte = unsigned char;
+using byte = uint8;
 
 struct BaseECSComponent;
 
 /* Typedefs for our functions so it won't be a pain to type */
-typedef unsigned int (*ECSComponentCreateFunction)(
-	std::vector<byte> &memory, EntityHandle entity,
-	BaseECSComponent *components);
+typedef uint32 (*ECSComponentCreateFunction)(std::vector<byte> &memory,
+											 EntityHandle entity,
+											 BaseECSComponent *components);
 
 typedef void (*ECSComponentFreeFunction)(BaseECSComponent *freeComponent);
 
@@ -42,33 +43,31 @@ struct BaseECSComponent {
 	static std::vector<BaseECSComponentData> *m_ComponentTypes;
 
   public:
-	static unsigned int
+	static uint32
 	RegisterComponentType(ECSComponentCreateFunction createFunction,
 						  ECSComponentFreeFunction freeFunction, size_t size);
 	EntityHandle entityHandle = NULL_ENTITY_HANDLE;
 
-	static ECSComponentCreateFunction GetTypeCreateFunction(unsigned int id) {
+	static ECSComponentCreateFunction GetTypeCreateFunction(uint32 id) {
 		return (*m_ComponentTypes)[id].createFunction;
 	}
 
-	static ECSComponentFreeFunction GetTypeFreeFunction(unsigned int id) {
+	static ECSComponentFreeFunction GetTypeFreeFunction(uint32 id) {
 		return (*m_ComponentTypes)[id].freeFunction;
 	}
 
-	static size_t GetTypeSize(unsigned int id) {
+	static size_t GetTypeSize(uint32 id) {
 		return (*m_ComponentTypes)[id].size;
 	}
 
-	static bool IsTypeValid(unsigned int id) {
-		return id < m_ComponentTypes->size();
-	}
+	static bool IsTypeValid(uint32 id) { return id < m_ComponentTypes->size(); }
 };
 
 /* These will be the "constructors" and "destructors" for our components */
 template <typename Component>
-unsigned int ECSComponentCreate(std::vector<byte> &memory, EntityHandle handle,
-								BaseECSComponent *components) {
-	unsigned int index = static_cast<unsigned int>(memory.size());
+uint32 ECSComponentCreate(std::vector<byte> &memory, EntityHandle handle,
+						  BaseECSComponent *components) {
+	uint32 index = static_cast<uint32>(memory.size());
 	memory.resize(index + Component::SIZE);
 	Component *component =
 		new (&memory[index]) Component(*static_cast<Component *>(components));
@@ -90,14 +89,14 @@ struct ECSComponent : public BaseECSComponent {
   public:
 	static const ECSComponentCreateFunction CREATEFUNCTION;
 	static const ECSComponentFreeFunction FREEFUNCTION;
-	static const unsigned int ID;
+	static const uint32 ID;
 	static const size_t SIZE;
 };
 
 /* Initialize all the static members */
 
 template <typename T>
-const unsigned int ECSComponent<T>::ID(BaseECSComponent::RegisterComponentType(
+const uint32 ECSComponent<T>::ID(BaseECSComponent::RegisterComponentType(
 	ECSComponentCreate<T>, ECSComponentFree<T>, sizeof(T)));
 
 template <typename T>

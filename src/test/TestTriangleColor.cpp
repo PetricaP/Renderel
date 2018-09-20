@@ -14,12 +14,12 @@ TestTriangleColor::TestTriangleColor(const std::shared_ptr<Window> window)
 
 	graphics::VertexBufferLayout vbl;
 	vbl.Push<float>(3);
-	vbl.Push<int>(1);
+	vbl.Push<int32>(1);
 
 	va->AddBuffer(vb, vbl);
 
-	ib = new graphics::IndexBuffer<unsigned int>(
-		m_Indices, sizeof(m_Indices) / sizeof(m_Indices[0]));
+	ib = new graphics::IndexBuffer<uint32>(m_Indices, sizeof(m_Indices) /
+														  sizeof(m_Indices[0]));
 
 	renderer = new graphics::BasicRenderer();
 

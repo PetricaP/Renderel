@@ -36,10 +36,10 @@ bool Vertex<U>::operator==(const Vertex<U> &other) const {
 }
 
 /*
- * T - IndexBuffer data type - defaults to unsigned int
+ * T - IndexBuffer data type - defaults to uint32
  * U - Vertex data type - defaults to float
  */
-template <typename T = unsigned int, typename U = float>
+template <typename T = uint32, typename U = float>
 bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 
 	std::vector<math::Vec3<U>> vertexPositions;
@@ -57,7 +57,7 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 
 	char begin[128];
 
-	int currentLine = 0;
+	int32 currentLine = 0;
 
 	while (fscanf(objFile, "%s", begin) != EOF) {
 		if (strcmp(begin, VERTEX) == 0) {
@@ -66,10 +66,10 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 				   &position.z);
 			vertexPositions.push_back(position);
 		} else if (strcmp(begin, FACE) == 0) {
-			math::Vec3<unsigned int> vertIndex;
-			math::Vec3<unsigned int> texCoordIndex;
-			math::Vec3<unsigned int> normalIndex;
-			for (unsigned int i = 0; i < VERTICES_PER_FACE; ++i) {
+			math::Vec3<uint32> vertIndex;
+			math::Vec3<uint32> texCoordIndex;
+			math::Vec3<uint32> normalIndex;
+			for (uint32 i = 0; i < VERTICES_PER_FACE; ++i) {
 				fscanf(objFile, "%u/%u/%u ", &vertIndex[i], &texCoordIndex[i],
 					   &normalIndex[i]);
 
@@ -106,7 +106,7 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 
 	VertexBuffer *vb = new VertexBuffer(
 		vertices.data(),
-		static_cast<unsigned int>(vertices.size() * sizeof(Vertex<U>)));
+		static_cast<uint32>(vertices.size() * sizeof(Vertex<U>)));
 
 	VertexBufferLayout vbl;
 	vbl.Push<U>(3);
@@ -114,8 +114,8 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 
 	va->AddBuffer(vb, vbl);
 
-	ib = new IndexBuffer<T>(indices.data(),
-							static_cast<unsigned int>(indices.size()));
+	ib =
+		new IndexBuffer<T>(indices.data(), static_cast<uint32>(indices.size()));
 	fclose(objFile);
 
 	return true;

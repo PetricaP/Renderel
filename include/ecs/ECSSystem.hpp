@@ -9,30 +9,25 @@ namespace renderel {
 class BaseECSSystem {
   private:
 	/* The component types on which the system operates */
-	std::vector<unsigned int> m_ComponentTypes;
-	std::vector<unsigned int> m_ComponentFlags;
+	std::vector<uint32> m_ComponentTypes;
+	std::vector<uint32> m_ComponentFlags;
 
   public:
 	enum { FLAG_OPTIONAL = 1 };
 
-	BaseECSSystem(const std::vector<unsigned int> &componentTypes)
+	BaseECSSystem(const std::vector<uint32> &componentTypes)
 		: m_ComponentTypes(componentTypes) {}
 	virtual ~BaseECSSystem() = default;
 	virtual void UpdateComponents(float deltaTime,
 								  BaseECSComponent **components) {}
-	const std::vector<unsigned int> &GetComponentTypes() {
-		return m_ComponentTypes;
-	}
+	const std::vector<uint32> &GetComponentTypes() { return m_ComponentTypes; }
 
-	const std::vector<unsigned int> &GetComponentFlags() {
-		return m_ComponentFlags;
-	}
+	const std::vector<uint32> &GetComponentFlags() { return m_ComponentFlags; }
 
 	bool IsValid();
 
   protected:
-	void AddComponentType(unsigned int componentType,
-						  unsigned int componentFlag = 0) {
+	void AddComponentType(uint32 componentType, uint32 componentFlag = 0) {
 		m_ComponentTypes.push_back(componentType);
 		m_ComponentFlags.push_back(componentFlag);
 	}
@@ -53,7 +48,7 @@ class ECSSystemList {
 	bool RemoveSystem(BaseECSSystem &system);
 	size_t size() { return m_Systems.size(); }
 
-	BaseECSSystem *operator[](unsigned int index) { return m_Systems[index]; }
+	BaseECSSystem *operator[](uint32 index) { return m_Systems[index]; }
 };
 
 } // namespace renderel

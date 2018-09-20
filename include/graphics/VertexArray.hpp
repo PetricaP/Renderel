@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_VERTEXARRAY_HPP
 #define GRAPHICS_VERTEXARRAY_HPP
 
+#include "core/Common.hpp"
 #include "graphics/VertexBuffer.hpp"
 #include "graphics/VertexBufferLayout.hpp"
 #include <vector>
@@ -9,7 +10,7 @@ namespace renderel::graphics {
 
 class VertexArray {
   private:
-	unsigned int m_RendererID;
+	uint32 m_RendererID;
 	std::vector<VertexBuffer *> m_VBs;
 
   public:

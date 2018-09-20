@@ -26,12 +26,12 @@ void VertexArray::AddBuffer(VertexBuffer *vb,
 	vb->Bind();
 	const auto &elements = layout.GetElements();
 	unsigned long offset = 0;
-	for (unsigned int i = 0; i < elements.size(); ++i) {
+	for (uint32 i = 0; i < elements.size(); ++i) {
 		const auto &element = elements[i];
 		GLCall(glEnableVertexAttribArray(i));
-		GLCall(glVertexAttribPointer(i, static_cast<int>(element.count),
+		GLCall(glVertexAttribPointer(i, static_cast<int32>(element.count),
 									 element.type, element.normalized,
-									 static_cast<int>(layout.GetStride()),
+									 static_cast<int32>(layout.GetStride()),
 									 (const void *)offset));
 		offset +=
 			element.count * VertexBufferElement::GetSizeOfType(element.type);

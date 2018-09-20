@@ -53,7 +53,7 @@ class TestCamera : public Test {
 		// clang-format on
 	};
 
-	static constexpr unsigned int indices[] = {
+	static constexpr uint32 indices[] = {
 		// Back face
 		0, 1, 2, //
 		1, 2, 3, //

@@ -1,6 +1,7 @@
 #ifndef MATH_MAT4_HPP
 #define MATH_MAT4_HPP
 
+#include "core/Common.hpp"
 #include "math/Math.hpp"
 #include "math/Vec3.hpp"
 #include "math/Vec4.hpp"
@@ -19,8 +20,8 @@ union Mat4 {
 	Mat4(const Vec4<T> &row0, const Vec4<T> &row1, const Vec4<T> &row2,
 		 const Vec4<T> &row3);
 
-	Vec4<T> operator[](unsigned int index) const;
-	Vec4<T> &operator[](unsigned int index);
+	Vec4<T> operator[](uint32 index) const;
+	Vec4<T> &operator[](uint32 index);
 
 	static Mat4 Ortho(T left, T right, T bottom, T top, T near, T far);
 	static Mat4 Perspective(T fov, T aspectRatio, T near, T far);
@@ -33,12 +34,12 @@ union Mat4 {
 };
 
 template <typename T>
-Vec4<T> Mat4<T>::operator[](unsigned int index) const {
+Vec4<T> Mat4<T>::operator[](uint32 index) const {
 	return vecs[index];
 }
 
 template <typename T>
-Vec4<T> &Mat4<T>::operator[](unsigned int index) {
+Vec4<T> &Mat4<T>::operator[](uint32 index) {
 	return vecs[index];
 }
 
@@ -122,8 +123,8 @@ Mat4<T> Mat4<T>::SimplePerspective(T aspectRatio) {
 template <typename T>
 Mat4<T> operator+(const Mat4<T> &first, const Mat4<T> &second) {
 	Mat4<T> res;
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	for (int32 i = 0; i < 4; ++i) {
+		for (int32 j = 0; j < 4; ++j) {
 			res[i][j] = first[i][j] + second[i][j];
 		}
 	}
@@ -133,8 +134,8 @@ Mat4<T> operator+(const Mat4<T> &first, const Mat4<T> &second) {
 template <typename T>
 Mat4<T> operator-(const Mat4<T> &first, const Mat4<T> &second) {
 	Mat4<T> res;
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	for (int32 i = 0; i < 4; ++i) {
+		for (int32 j = 0; j < 4; ++j) {
 			res[i][j] = first[i][j] - second[i][j];
 		}
 	}
@@ -144,10 +145,10 @@ Mat4<T> operator-(const Mat4<T> &first, const Mat4<T> &second) {
 template <typename T>
 Mat4<T> operator*(const Mat4<T> &first, const Mat4<T> &second) {
 	Mat4<T> res;
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	for (int32 i = 0; i < 4; ++i) {
+		for (int32 j = 0; j < 4; ++j) {
 			T sum = 0;
-			for (int k = 0; k < 4; ++k) {
+			for (int32 k = 0; k < 4; ++k) {
 				sum += first[i][k] * second[k][j];
 			}
 			res[i][j] = sum;
@@ -159,9 +160,9 @@ Mat4<T> operator*(const Mat4<T> &first, const Mat4<T> &second) {
 template <typename T>
 Vec4<T> operator*(const Mat4<T> &mat, const Vec4<T> &vec) {
 	Vec4<T> res;
-	for (int i = 0; i < 4; ++i) {
+	for (int32 i = 0; i < 4; ++i) {
 		T sum = 0;
-		for (int k = 0; k < 4; ++k) {
+		for (int32 k = 0; k < 4; ++k) {
 			sum += mat[i][k] * vec[k];
 		}
 		res[i] = sum;
@@ -172,9 +173,9 @@ Vec4<T> operator*(const Mat4<T> &mat, const Vec4<T> &vec) {
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Mat4<T> &mat) {
 	std::cout << "Mat4:" << '\n';
-	for (int i = 0; i < 4; ++i) {
+	for (int32 i = 0; i < 4; ++i) {
 		std::cout << '(';
-		for (int j = 0; j < 3; ++j) {
+		for (int32 j = 0; j < 3; ++j) {
 			std::cout << mat[i][j] << ", ";
 		}
 		std::cout << mat[i][3] << ")\n";
@@ -190,7 +191,7 @@ Mat4<T>::Mat4() {
 template <typename T>
 Mat4<T>::Mat4(T diag) {
 	memset(elements, 0, sizeof(elements));
-	for (int i = 0; i < 4; ++i) {
+	for (int32 i = 0; i < 4; ++i) {
 		elements[i][i] = diag;
 	}
 }

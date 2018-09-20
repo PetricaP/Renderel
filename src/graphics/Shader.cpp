@@ -10,9 +10,8 @@ Shader::Shader(const std::string &vertexShaderPath,
 	char *vertexShaderSource = loadFile(vertexShaderPath);
 	char *fragmentShaderSource = loadFile(fragmentShaderPath);
 
-	unsigned int vertexShaderID =
-		CompileShader(vertexShaderSource, GL_VERTEX_SHADER);
-	unsigned int fragmentShaderID =
+	uint32 vertexShaderID = CompileShader(vertexShaderSource, GL_VERTEX_SHADER);
+	uint32 fragmentShaderID =
 		CompileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
 
 	m_RendererID = CreateProgram(vertexShaderID, fragmentShaderID);
@@ -24,21 +23,20 @@ void Shader::Bind() const { glUseProgram(m_RendererID); }
 
 void Shader::Unbind() const { glUseProgram(0); }
 
-unsigned int Shader::CompileShader(const char *const shaderSource,
-								   unsigned int type) {
-	GLCall(unsigned int shaderID = glCreateShader(type));
+uint32 Shader::CompileShader(const char *const shaderSource, uint32 type) {
+	GLCall(uint32 shaderID = glCreateShader(type));
 	GLCall(glShaderSource(shaderID, 1, &shaderSource, nullptr));
 	delete[] shaderSource;
 
 	GLCall(glCompileShader(shaderID));
 
-	int compilationResult = 0;
+	int32 compilationResult = 0;
 	GLCall(glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compilationResult));
 	if (compilationResult != GL_TRUE) {
 		fprintf(stderr, "Failed to compile %s shader.\n",
 				(type == GL_VERTEX_SHADER) ? "vertex" : "fragment");
 
-		int infoLogLength = 0;
+		int32 infoLogLength = 0;
 		GLCall(glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
 		char log[1024];
 		GLCall(glGetShaderInfoLog(shaderID, infoLogLength, nullptr, log));
@@ -69,19 +67,18 @@ char *Shader::loadFile(std::string path) {
 	return shaderSource;
 }
 
-unsigned int Shader::CreateProgram(unsigned int vertexShaderID,
-								   unsigned int fragmentShaderID) {
-	GLCall(unsigned int shaderID = glCreateProgram());
+uint32 Shader::CreateProgram(uint32 vertexShaderID, uint32 fragmentShaderID) {
+	GLCall(uint32 shaderID = glCreateProgram());
 	GLCall(glAttachShader(shaderID, vertexShaderID));
 	GLCall(glAttachShader(shaderID, fragmentShaderID));
 	GLCall(glLinkProgram(shaderID));
 
-	int result;
+	int32 result;
 	GLCall(glGetProgramiv(shaderID, GL_LINK_STATUS, &result));
 	if (result == GL_FALSE) {
 		fprintf(stderr, "Failed to link program\n");
 
-		int infoLogLength;
+		int32 infoLogLength;
 		GLCall(glGetProgramiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
 
 		if (infoLogLength > 0) {
@@ -107,11 +104,11 @@ unsigned int Shader::CreateProgram(unsigned int vertexShaderID,
 	return shaderID;
 }
 
-int Shader::GetUniformLocation(const std::string &name) {
+int32 Shader::GetUniformLocation(const std::string &name) {
 	if (m_LocationCache.find(name) != m_LocationCache.end()) {
 		return m_LocationCache[name];
 	}
-	GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
+	GLCall(int32 location = glGetUniformLocation(m_RendererID, name.c_str()));
 	if (location == -1) {
 		std::cout << "Warning: Uniform " << name << " might not exist."
 				  << std::endl;
@@ -135,7 +132,7 @@ void Shader::SetUniformMat4f(const std::string &name,
 							  &mat.elements[0][0]));
 }
 
-void Shader::SetUniform1i(const std::string &name, int val) {
+void Shader::SetUniform1i(const std::string &name, int32 val) {
 	GLCall(glUniform1i(GetUniformLocation(name), val));
 }
 

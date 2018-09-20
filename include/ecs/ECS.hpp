@@ -3,6 +3,7 @@
 
 #include "ECSComponent.hpp"
 #include "ECSSystem.hpp"
+#include "core/Common.hpp"
 #include <unordered_map>
 
 namespace renderel {
@@ -15,15 +16,15 @@ using ComponentMemory = std::vector<byte>;
  * the way we want */
 struct ComponentData {
 	/* The id of a component is it's type */
-	unsigned int componentType;
-	unsigned int keyInComponentMap;
+	uint32 componentType;
+	uint32 keyInComponentMap;
 };
 
 /* All an entity is, is just a group of components */
 using Entity = std::vector<ComponentData>;
 
 struct EntityData {
-	unsigned int indexInEntityArray;
+	uint32 indexInEntityArray;
 	Entity entity;
 };
 
@@ -32,13 +33,13 @@ class ECS {
 	/* Map containing components, each component type will be a key
 	 * into this map, the value at each key will be the memory containing
 	 * all of the components of this particular type (id) */
-	std::unordered_map<unsigned int, ComponentMemory> m_Components;
+	std::unordered_map<uint32, ComponentMemory> m_Components;
 	std::vector<EntityData *> m_Entities;
 
 	/* Utilities for creating our parameters for the MakeEntity method */
 	static BaseECSComponent **tempComponents;
-	static unsigned int *tempComponentIDs;
-	static int index;
+	static uint32 *tempComponentIDs;
+	static uint32 index;
 
   public:
 	ECS() = default;
@@ -46,7 +47,7 @@ class ECS {
 
 	/* Entity methods */
 	EntityHandle MakeEntity(BaseECSComponent **entityComponents,
-							const unsigned int *entityComponentIDs,
+							const uint32 *entityComponentIDs,
 							size_t numComponents);
 	void RemoveEntity(EntityHandle handle);
 
@@ -58,7 +59,7 @@ class ECS {
 		if (tempComponents == nullptr) {
 			size_t numComponents = (sizeof...(args)) + 1;
 			tempComponents = new BaseECSComponent *[numComponents];
-			tempComponentIDs = new unsigned int[numComponents];
+			tempComponentIDs = new uint32[numComponents];
 		}
 		tempComponentIDs[index] = A::ID;
 		tempComponents[index++] = &c;
@@ -107,30 +108,28 @@ class ECS {
 		return HandleToRawType(handle)->entity;
 	}
 
-	unsigned int HandleToEntityIndex(EntityHandle handle) {
+	uint32 HandleToEntityIndex(EntityHandle handle) {
 		return HandleToRawType(handle)->indexInEntityArray;
 	}
 
-	void DeleteComponent(unsigned int componentID, unsigned int index);
-	bool RemoveComponentInternal(EntityHandle handle, unsigned int componentID);
+	void DeleteComponent(uint32 componentID, uint32 index);
+	bool RemoveComponentInternal(EntityHandle handle, uint32 componentID);
 
 	void AddComponentInternal(EntityHandle handle, Entity &entity,
-							  unsigned int componentID,
-							  BaseECSComponent *component);
+							  uint32 componentID, BaseECSComponent *component);
 
 	BaseECSComponent *GetComponentInternal(Entity &entity,
 										   ComponentMemory &memory,
-										   unsigned int componentID);
+										   uint32 componentID);
 
 	void UpdateSystemWithMultipleComponents(
-		unsigned int index, ECSSystemList &ecsSystemList, float deltaTime,
-		const std::vector<unsigned int> &componentTypes,
+		uint32 index, ECSSystemList &ecsSystemList, float deltaTime,
+		const std::vector<uint32> &componentTypes,
 		std::vector<BaseECSComponent *> &componentParam,
 		std::vector<ComponentMemory *> &componentArrays);
 
-	unsigned int
-	FindLeastCommonComponent(const std::vector<unsigned int> &componentTypes,
-							 const std::vector<unsigned int> &componentFlags);
+	uint32 FindLeastCommonComponent(const std::vector<uint32> &componentTypes,
+									const std::vector<uint32> &componentFlags);
 
 	/* No copying allowed */
 	ECS(const ECS &other) = delete;

@@ -22,23 +22,23 @@ enum Type { KEY, MOUSEBUTTON, MOUSEMOTION, WINDOWRESIZE };
 #define MOUSE_BUTTON_RIGHT GLFW_MOUSE_BUTTON_RIGHT
 
 struct WindowResizeEvent {
-	int width;
-	int height;
+	int32 width;
+	int32 height;
 };
 
 struct KeyboardEvent {
-	unsigned int key;
-	unsigned int action;
+	uint32 key;
+	uint32 action;
 };
 
 struct MouseButtonEvent {
-	unsigned int button;
-	unsigned int action;
+	uint32 button;
+	uint32 action;
 };
 
 struct MouseMotionEvent {
-	int xPos;
-	int yPos;
+	int32 xPos;
+	int32 yPos;
 };
 
 struct Event {

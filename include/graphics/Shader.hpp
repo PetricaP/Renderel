@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_SHADER_HPP
 #define GRAPHICS_SHADER_HPP
 
+#include "core/Common.hpp"
 #include "math/Mat4.hpp"
 #include <string>
 #include <unordered_map>
@@ -9,8 +10,8 @@ namespace renderel::graphics {
 
 class Shader {
   private:
-	unsigned int m_RendererID;
-	std::unordered_map<std::string, int> m_LocationCache;
+	uint32 m_RendererID;
+	std::unordered_map<std::string, int32> m_LocationCache;
 
   public:
 	Shader(const std::string &vertexShaderPath,
@@ -20,19 +21,17 @@ class Shader {
 	void Bind() const;
 	void Unbind() const;
 
-	void SetUniform1i(const std::string &name, int val);
+	void SetUniform1i(const std::string &name, int32 val);
 	void SetUniform4f(const std::string &name, float f0, float f1, float f2,
 					  float f3);
 	void SetUniform2f(const std::string &name, float f0, float f1);
 	void SetUniformMat4f(const std::string &name, const math::Mat4<float> &mat);
 
   private:
-	int GetUniformLocation(const std::string &name);
-	static unsigned int CompileShader(const char *const shaderSource,
-									  unsigned int type);
+	int32 GetUniformLocation(const std::string &name);
+	static uint32 CompileShader(const char *const shaderSource, uint32 type);
 	static char *loadFile(std::string path);
-	static unsigned int CreateProgram(unsigned int vertexShaderID,
-									  unsigned int fragmentShaderID);
+	static uint32 CreateProgram(uint32 vertexShaderID, uint32 fragmentShaderID);
 };
 
 } // namespace renderel::graphics

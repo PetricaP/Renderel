@@ -57,7 +57,7 @@ void TestInput::OnRender() {
 	shader->Bind();
 	va->Bind();
 	ib->Bind();
-	GLCall(glDrawElements(GL_TRIANGLES, static_cast<int>(ib->GetCount()),
+	GLCall(glDrawElements(GL_TRIANGLES, static_cast<int32>(ib->GetCount()),
 						  GL_UNSIGNED_INT, nullptr));
 }
 

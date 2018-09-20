@@ -9,7 +9,7 @@ namespace renderel::test {
 
 struct VertexI {
 	float x, y, z;
-	int index;
+	int32 index;
 };
 
 class TestTriangleColor : public Test {
@@ -25,7 +25,7 @@ class TestTriangleColor : public Test {
 		{size, -size, 0.0f, 2}   // Third corner
 	};
 
-	static constexpr int m_Indices[] = {0, 1, 2};
+	static constexpr int32 m_Indices[] = {0, 1, 2};
 
 	graphics::VertexArray *va;
 	graphics::VertexBuffer *vb;

@@ -25,8 +25,8 @@ TestTexturedCube::TestTexturedCube(const std::shared_ptr<Window> window)
 
 	va->AddBuffer(vb, layout);
 
-	ib = new graphics::IndexBuffer<unsigned int>(
-		indices, sizeof(indices) / sizeof(indices[0]));
+	ib = new graphics::IndexBuffer<uint32>(indices, sizeof(indices) /
+														sizeof(indices[0]));
 
 	renderer = new graphics::BasicRenderer();
 	shader = new graphics::Shader("shaders/vertexShader.glsl",

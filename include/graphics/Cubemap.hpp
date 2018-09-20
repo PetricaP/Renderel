@@ -1,6 +1,7 @@
 #ifndef CUBEMAP_HPP
 #define CUBEMAP_HPP
 
+#include "core/Common.hpp"
 #include "graphics/Shader.hpp"
 #include "graphics/VertexArray.hpp"
 #include "graphics/VertexBuffer.hpp"
@@ -11,7 +12,7 @@ namespace renderel::graphics {
 
 class Cubemap {
   private:
-	unsigned int m_TextureID;
+	uint32 m_TextureID;
 	Shader *m_Shader;
 
 	VertexArray *m_Va;
