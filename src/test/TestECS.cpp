@@ -1,14 +1,22 @@
 #include "test/TestECS.hpp"
+#include "graphics/Shader.hpp"
 #include <imgui.h>
 
 namespace renderel::test {
 
-TestECS::TestECS(std::shared_ptr<Window> window) : Test(window) {
+TestECS::TestECS(std::shared_ptr<Window> window)
+	: Test(window), shader("shaders/vertexShader.glsl",
+						   "shaders/fragmentShaderTexture.glsl") {
+
 	TransformComponent transformComponent;
 	transformComponent.transform.SetPosition(math::Vec3<>(0.0f, 0.0f, 3.0f));
 
-	EntityHandle entity = m_ECS.MakeEntity(transformComponent);
+	RenderableMeshComponent renderableMeshComponent;
+	renderableMeshComponent.mesh.LoadOBJ("res/models/monkey.obj");
 
+	entity = m_ECS.MakeEntity(transformComponent, renderableMeshComponent);
+
+	shader.Bind();
 	workingTransform =
 		&m_ECS.GetComponent<TransformComponent>(entity)->transform;
 }
@@ -25,6 +33,15 @@ void TestECS::OnGUIRender() {
 				position.z);
 }
 
-void TestECS::OnRender() {}
+void TestECS::OnRender() {
+	Transform<> transform =
+		m_ECS.GetComponent<TransformComponent>(entity)->transform;
+	graphics::Mesh<> mesh =
+		m_ECS.GetComponent<RenderableMeshComponent>(entity)->mesh;
+
+	renderer.Submit(graphics::Renderable<>(mesh.GetVertexArray(),
+										   mesh.GetIndexBuffer(), shader));
+	renderer.Flush();
+}
 
 } // namespace renderel::test

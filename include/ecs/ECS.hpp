@@ -16,7 +16,7 @@ using ComponentMemory = std::vector<byte>;
 struct ComponentData {
 	/* The id of a component is it's type */
 	unsigned int componentType;
-	unsigned int indexInComponentArray;
+	unsigned int keyInComponentMap;
 };
 
 /* All an entity is, is just a group of components */
@@ -38,6 +38,7 @@ class ECS {
 	/* Utilities for creating our parameters for the MakeEntity method */
 	static BaseECSComponent **tempComponents;
 	static unsigned int *tempComponentIDs;
+	static int index;
 
   public:
 	ECS() = default;
@@ -52,9 +53,8 @@ class ECS {
 	/* TODO: Not sure if this actually works */
 	template <class A, class... Args>
 	EntityHandle MakeEntity(A &c, Args &... args) {
-		static int index = 0;
 		/* TODO: I don't really want this check every time
-		 *  MakeEntity is caled */
+		 *  MakeEntity is called */
 		if (tempComponents == nullptr) {
 			size_t numComponents = (sizeof...(args)) + 1;
 			tempComponents = new BaseECSComponent *[numComponents];
@@ -68,6 +68,7 @@ class ECS {
 											 static_cast<size_t>(index));
 			tempComponents = nullptr;
 			tempComponentIDs = nullptr;
+			index = 0;
 			return handle;
 		} else {
 			return MakeEntity(args...);

@@ -8,6 +8,7 @@ namespace renderel {
 /* Defaulted to nullptr */
 BaseECSComponent **ECS::tempComponents;
 unsigned int *ECS::tempComponentIDs;
+int ECS::index = 0;
 
 ECS::~ECS() {
 	for (auto &component : m_Components) {
@@ -29,8 +30,8 @@ ECS::~ECS() {
 	}
 }
 
-EntityHandle ECS::MakeEntity(BaseECSComponent *entityComponents[],
-							 const unsigned int entityComponentIDs[],
+EntityHandle ECS::MakeEntity(BaseECSComponent **entityComponents,
+							 const unsigned int *entityComponentIDs,
 							 size_t numComponents) {
 	EntityData *entityData = new EntityData;
 
@@ -63,7 +64,7 @@ void ECS::RemoveEntity(EntityHandle handle) {
 	Entity entity = HandleToEntity(handle);
 	for (const auto componentData : entity) {
 		DeleteComponent(componentData.componentType,
-						componentData.indexInComponentArray);
+						componentData.keyInComponentMap);
 	}
 
 	/* Replace the deleted entity with the entity at the end of the array */
@@ -87,7 +88,7 @@ void ECS::AddComponentInternal(EntityHandle handle, Entity &entity,
 
 	componentData.componentType = id;
 
-	componentData.indexInComponentArray =
+	componentData.keyInComponentMap =
 		createFunction(m_Components[id], handle, component);
 
 	entity.push_back(componentData);
@@ -126,9 +127,9 @@ void ECS::DeleteComponent(unsigned int componentID, unsigned int index) {
 	Entity &srcEntity = HandleToEntity(srcComponent->entityHandle);
 	for (auto &component : srcEntity) {
 		if (componentID == component.componentType &&
-			srcIndex == component.indexInComponentArray) {
+			srcIndex == component.keyInComponentMap) {
 
-			component.indexInComponentArray = index;
+			component.keyInComponentMap = index;
 			break;
 		}
 	}
@@ -141,7 +142,7 @@ bool ECS::RemoveComponentInternal(EntityHandle handle,
 	Entity &entity = HandleToEntity(handle);
 	for (unsigned int i = 0; i < entity.size(); ++i) {
 		if (componentID == entity[i].componentType) {
-			DeleteComponent(componentID, entity[i].indexInComponentArray);
+			DeleteComponent(componentID, entity[i].keyInComponentMap);
 
 			unsigned int srcIndex =
 				static_cast<unsigned int>(entity.size()) - 1;
@@ -161,8 +162,9 @@ BaseECSComponent *ECS::GetComponentInternal(Entity &entity,
 											unsigned int componentID) {
 	for (auto &component : entity) {
 		if (componentID == component.componentType) {
-			return reinterpret_cast<BaseECSComponent *>(
-				&memory[component.indexInComponentArray]);
+			BaseECSComponent *found = reinterpret_cast<BaseECSComponent *>(
+				&memory[component.keyInComponentMap]);
+			return found;
 		}
 	}
 	return nullptr;

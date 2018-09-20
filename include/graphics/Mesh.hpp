@@ -15,9 +15,11 @@ class Mesh {
 	IndexBuffer<T> *m_IB = nullptr;
 
   public:
+	Mesh() = default;
 	Mesh(const std::string &objFilePath);
 	~Mesh();
 
+	void LoadOBJ(const std::string &objFilePath);
 	void SetIndexBuffer(IndexBuffer<T> *ib) { m_IB = ib; }
 	IndexBuffer<T> *GetIndexBuffer() const { return m_IB; }
 	void SetVertexArray(VertexArray *va) { m_VA = va; }
@@ -26,6 +28,11 @@ class Mesh {
 
 template <typename T, typename F>
 Mesh<T, F>::Mesh(const std::string &objFilePath) {
+	OBJLoader::Load<T, F>(objFilePath, m_IB, m_VA);
+}
+
+template <typename T, typename F>
+void Mesh<T, F>::LoadOBJ(const std::string &objFilePath) {
 	OBJLoader::Load<T, F>(objFilePath, m_IB, m_VA);
 }
 
