@@ -1,7 +1,6 @@
 #include "test/TestTexturedCube.hpp"
 #include "math/Mat4.hpp"
 #include "math/Quaternion.hpp"
-#include <imgui.h>
 
 namespace renderel::test {
 
@@ -62,11 +61,12 @@ void TestTexturedCube::OnUpdate(float) {
 }
 
 void TestTexturedCube::OnGUIRender() {
-	ImGui::SliderFloat3("Position", &transform.GetPosition().x, -5.0f, 5.0f);
-	ImGui::SliderFloat3("Rotation", &rotation.x, -180.0f, 180.0f);
-	ImGui::SliderFloat3("Scale", &transform.GetScale().x, 0.0f, 10.0f);
+	GUI *gui = m_Window->GetGUI();
+	gui->Slider3f("Position", &transform.GetPosition().x, -5.0f, 5.0f);
+	gui->Slider3f("Rotation", &rotation.x, -180.0f, 180.0f);
+	gui->Slider3f("Scale", &transform.GetScale().x, 0.0f, 10.0f);
 
-	if (ImGui::Button("Reset to defaults")) {
+	if (gui->Button("Reset to defaults")) {
 		transform.SetPosition(math::Vec3<>(0.0f, 0.0f, -5.0f));
 		rotation.x = 0;
 		rotation.y = 0;

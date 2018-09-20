@@ -2,6 +2,7 @@
 #define WINDOW_HPP
 
 #include "EventHandler.hpp"
+#include "GUI.hpp"
 #include <string>
 
 namespace renderel {
@@ -11,12 +12,13 @@ class Window {
 	int32 m_Width;
 	int32 m_Height;
 	EventHandler *m_EventHandler = nullptr;
+	GUI *m_GUI = nullptr;
 
   protected:
-	Window(int32 width, int32 height, EventHandler *eventHandler);
+	Window(int32 width, int32 height, EventHandler *eventHandler, GUI *gui);
 
   public:
-	virtual ~Window() = default;
+	virtual ~Window();
 
 	virtual bool ShouldClose() const = 0;
 	virtual void SwapBuffers() const = 0;
@@ -32,6 +34,8 @@ class Window {
 	int32 GetHeight() const { return m_Height; }
 	EventHandler *GetEventHandler() const { return m_EventHandler; }
 	void SetEventHandler(EventHandler *handler) { m_EventHandler = handler; }
+	GUI *GetGUI() const { return m_GUI; }
+	void SetGUI(GUI *gui) { m_GUI = gui; }
 };
 
 } // namespace renderel

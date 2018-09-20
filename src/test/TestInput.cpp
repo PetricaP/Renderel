@@ -1,7 +1,6 @@
 #include "test/TestInput.hpp"
 #include "Debug.hpp"
 #include <GL/glew.h>
-#include <imgui.h>
 
 namespace renderel::test {
 
@@ -91,19 +90,20 @@ void TestInput::OnUpdate(float deltaTime) {
 }
 
 void TestInput::OnGUIRender() {
-	ImGui::Text("W - Y forward");
-	ImGui::Text("S - Y backward");
-	ImGui::Text("D - X forward");
-	ImGui::Text("A - X backward");
-	ImGui::Text("R - Z forward");
-	ImGui::Text("F - Z backward");
-	ImGui::Text("---------------");
-	ImGui::Text("Q - X rotate forward");
-	ImGui::Text("E - x rotate backward");
-	ImGui::Text("Z - Y rotate forward");
-	ImGui::Text("X - Y rotate backward");
-	ImGui::Text("C - Z rotate forward");
-	ImGui::Text("V - Z rotate backward");
+	GUI *gui = m_Window->GetGUI();
+	gui->Text("W - Y forward");
+	gui->Text("S - Y backward");
+	gui->Text("D - X forward");
+	gui->Text("A - X backward");
+	gui->Text("R - Z forward");
+	gui->Text("F - Z backward");
+	gui->Text("---------------");
+	gui->Text("Q - X rotate forward");
+	gui->Text("E - x rotate backward");
+	gui->Text("Z - Y rotate forward");
+	gui->Text("X - Y rotate backward");
+	gui->Text("C - Z rotate forward");
+	gui->Text("V - Z rotate backward");
 }
 
 } // namespace renderel::test

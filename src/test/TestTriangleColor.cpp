@@ -1,5 +1,4 @@
 #include "test/TestTriangleColor.hpp"
-#include <imgui.h>
 
 namespace renderel::test {
 
@@ -49,9 +48,10 @@ void TestTriangleColor::OnRender() {
 }
 
 void TestTriangleColor::OnGUIRender() {
-	ImGui::ColorEdit4("First corner", m_Colors[0].elements);
-	ImGui::ColorEdit4("Second corner", m_Colors[1].elements);
-	ImGui::ColorEdit4("Third corner", m_Colors[2].elements);
+	GUI *gui = m_Window->GetGUI();
+	gui->ColorEdit4("First corner", m_Colors[0].elements);
+	gui->ColorEdit4("Second corner", m_Colors[1].elements);
+	gui->ColorEdit4("Third corner", m_Colors[2].elements);
 }
 
 } // namespace renderel::test

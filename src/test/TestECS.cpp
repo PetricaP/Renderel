@@ -1,6 +1,5 @@
 #include "test/TestECS.hpp"
 #include "graphics/Shader.hpp"
-#include <imgui.h>
 
 namespace renderel::test {
 
@@ -29,8 +28,8 @@ void TestECS::OnUpdate(float deltaTime) {
 
 void TestECS::OnGUIRender() {
 	math::Vec3<> position = workingTransform->GetPosition();
-	ImGui::Text("Position: x: %f y: %f z: %f", position.x, position.y,
-				position.z);
+	m_Window->GetGUI()->Text("Position: x: %f y: %f z: %f", position.x,
+							 position.y, position.z);
 }
 
 void TestECS::OnRender() {

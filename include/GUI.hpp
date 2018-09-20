@@ -13,6 +13,12 @@ class GUI {
 	virtual void End() = 0;
 	virtual void Render() = 0;
 	virtual bool Button(const std::string &name) = 0;
+	virtual void Text(const char *message, ...) = 0;
+	virtual void Slider3f(const char *name, float *memory, float minValue,
+						  float maxValue) = 0;
+	virtual void Sliderf(const char *name, float *memory, float minValue,
+						 float maxValue) = 0;
+	virtual void ColorEdit4(const char *name, float *memory) = 0;
 };
 
 } // namespace renderel

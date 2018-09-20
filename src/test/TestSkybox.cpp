@@ -2,7 +2,6 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <imgui.h>
 #include <vector>
 
 namespace renderel::test {
@@ -65,13 +64,14 @@ void TestSkybox::OnRender() {
 
 void TestSkybox::OnGUIRender() {
 
-	ImGui::Text("Q - Toggle Mouse");
-	ImGui::Text("Euler angle yaw: %f", eulerAngle.yaw);
-	ImGui::Text("Euler angle pitch: %f", eulerAngle.pitch);
-	ImGui::Text("Euler angle roll: %f", eulerAngle.roll);
-	ImGui::Text("Camera position:\n\t%.1f\n\t%.1f\n\t%.1f",
-				m_Camera.GetPosition().x, m_Camera.GetPosition().y,
-				m_Camera.GetPosition().z);
+	GUI *gui = m_Window->GetGUI();
+	gui->Text("Q - Toggle Mouse");
+	gui->Text("Euler angle yaw: %f", eulerAngle.yaw);
+	gui->Text("Euler angle pitch: %f", eulerAngle.pitch);
+	gui->Text("Euler angle roll: %f", eulerAngle.roll);
+	gui->Text("Camera position:\n\t%.1f\n\t%.1f\n\t%.1f",
+			  m_Camera.GetPosition().x, m_Camera.GetPosition().y,
+			  m_Camera.GetPosition().z);
 }
 
 void TestSkybox::OnUpdate(float deltaTime) {

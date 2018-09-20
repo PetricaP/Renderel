@@ -1,4 +1,6 @@
 #include "ImGUI.hpp"
+#include "core/Common.hpp"
+#include <cstdarg>
 
 namespace renderel {
 
@@ -43,6 +45,27 @@ void ImGUI::End() { ImGui::End(); }
 void ImGUI::Render() {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void ImGUI::Text(const char *format, ...) {
+	va_list args;
+	va_start(args, format);
+	ImGui::TextV(format, args);
+	va_end(args);
+}
+
+void ImGUI::Slider3f(const char *name, float *memory, float minValue,
+					 float maxValue) {
+	ImGui::SliderFloat3(name, memory, minValue, maxValue);
+}
+
+void ImGUI::Sliderf(const char *name, float *memory, float minValue,
+					float maxValue) {
+	ImGui::SliderFloat(name, memory, minValue, maxValue);
+}
+
+void ImGUI::ColorEdit4(const char *name, float *memory) {
+	ImGui::ColorEdit4(name, memory);
 }
 
 } // namespace renderel

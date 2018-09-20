@@ -4,7 +4,6 @@
 #include "math/Quaternion.hpp"
 #include "math/Vec2.hpp"
 #include <GLFW/glfw3.h>
-#include <imgui.h>
 
 namespace renderel::test {
 
@@ -153,21 +152,20 @@ void TestCamera::OnUpdate(float deltaTime) {
 }
 
 void TestCamera::OnGUIRender() {
-	ImGui::Text("W - Forward");
-	ImGui::Text("S - Backwards");
-	ImGui::Text("D - Right");
-	ImGui::Text("A - Left");
-	ImGui::Text("R/Space - Up");
-	ImGui::Text("F - Down");
-	ImGui::Text("P - Pause/Unpause");
-	ImGui::Text("---------------");
+	GUI *gui = m_Window->GetGUI();
+	gui->Text("W - Forward");
+	gui->Text("S - Backwards");
+	gui->Text("D - Right");
+	gui->Text("A - Left");
+	gui->Text("R/Space - Up");
+	gui->Text("F - Down");
+	gui->Text("P - Pause/Unpause");
+	gui->Text("---------------");
 
-	ImGui::SliderFloat("Rotation sensitivity", &rotationSensitivity, 0.0f,
-					   300000.0f);
-	ImGui::SliderFloat("Movement sensitivity", &movementSensitivity, 0.0f,
-					   30.0f);
+	gui->Sliderf("Rotation sensitivity", &rotationSensitivity, 0.0f, 300000.0f);
+	gui->Sliderf("Movement sensitivity", &movementSensitivity, 0.0f, 30.0f);
 
-	if (ImGui::Button("Reset to defaults")) {
+	if (gui->Button("Reset to defaults")) {
 		movementSensitivity = defaultMovementSensitivity;
 		rotationSensitivity = defaultRotationSensitivity;
 		eulerAngle.pitch = 0.0f;

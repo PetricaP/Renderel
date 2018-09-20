@@ -1,7 +1,5 @@
 #include "test/Test.hpp"
 
-#include <imgui.h>
-
 namespace renderel::test {
 
 TestMenu::TestMenu(const std::shared_ptr<Window> window,
@@ -14,7 +12,7 @@ void TestMenu::OnRender() {}
 
 void TestMenu::OnGUIRender() {
 	for (auto test : m_Tests) {
-		if (ImGui::Button(test.name.c_str())) {
+		if (m_Window->GetGUI()->Button(test.name.c_str())) {
 			m_CurrentTest = test.function();
 		}
 	}

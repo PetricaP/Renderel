@@ -2,7 +2,6 @@
 
 #include "Debug.hpp"
 #include "graphics/Renderer.hpp"
-#include <imgui.h>
 
 namespace renderel::test {
 
@@ -20,7 +19,7 @@ void TestClearColor::OnRender() {
 }
 
 void TestClearColor::OnGUIRender() {
-	ImGui::ColorEdit4("Pick a color", m_Color.elements);
+	m_Window->GetGUI()->ColorEdit4("Pick a color", m_Color.elements);
 }
 
 } // namespace renderel::test

@@ -35,10 +35,13 @@ const int32 WIDTH = 1080;
 const int32 HEIGHT = 720;
 
 int32 main() {
-	GameEventHandler gameEventHandler;
+	EventHandler *gameEventHandler = new GameEventHandler;
 
 	std::shared_ptr<Window> window = std::make_shared<WindowGLFW>(
-		WIDTH, HEIGHT, "Renderel", &gameEventHandler);
+		WIDTH, HEIGHT, "Renderel", gameEventHandler, nullptr);
+
+	GUI *gui = new ImGUI(window->GetAPIHandle(), "#version 130");
+	window->SetGUI(gui);
 
 	graphics::Renderer<uint32>::InitGraphics();
 	graphics::Renderer<uint32>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -58,9 +61,6 @@ int32 main() {
 	testMenu->RegisterTest<test::TestSkybox>("Skybox test");
 	testMenu->RegisterTest<test::TestECS>("ECS test");
 
-	std::unique_ptr<GUI> gui =
-		std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
-
 	float prevTime = 0;
 	float newTime = static_cast<float>(glfwGetTime());
 	float deltaTime;
@@ -75,25 +75,25 @@ int32 main() {
 		if (currentTest) {
 			currentTest->OnUpdate(deltaTime);
 			currentTest->OnRender();
-			gui->Init();
-			gui->Begin("Test");
-			ImGui::Text("FPS: %.2f", 1.0f / deltaTime);
+			window->GetGUI()->Init();
+			window->GetGUI()->Begin("Test");
+			window->GetGUI()->Text("FPS: %.2f", 1.0f / deltaTime);
 			currentTest->OnGUIRender();
 
 			if (currentTest != testMenu) {
-				if (gui->Button("| <-- |")) {
+				if (window->GetGUI()->Button("| <-- |")) {
 					currentTest = testMenu;
 				}
 			} else {
-				if (gui->Button("Exit")) {
+				if (window->GetGUI()->Button("Exit")) {
 					window->Close();
 				}
 			}
 
-			gui->End();
+			window->GetGUI()->End();
 		}
 
-		gui->Render();
+		window->GetGUI()->Render();
 
 		window->SwapBuffers();
 

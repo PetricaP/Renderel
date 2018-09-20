@@ -16,7 +16,7 @@ class WindowGLFW final : public Window {
 
   public:
 	WindowGLFW(int32 width, int32 height, std::string title,
-			   EventHandler *eventHandler);
+			   EventHandler *eventHandler, GUI *gui);
 	~WindowGLFW() override;
 
 	bool ShouldClose() const override;

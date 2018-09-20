@@ -44,8 +44,8 @@ static void window_resize_callback(GLFWwindow *window, int32 width,
 }
 
 WindowGLFW::WindowGLFW(int32 width, int32 height, std::string title,
-					   EventHandler *eventHandler)
-	: Window(width, height, eventHandler) {
+					   EventHandler *eventHandler, GUI *gui)
+	: Window(width, height, eventHandler, gui) {
 
 	// TODO: Create logging system for errors
 	if (!glfwInit()) {
