@@ -67,7 +67,7 @@ void TestSkybox::OnGUIRender() {
 
 	ImGui::Text("Q - Toggle Mouse");
 	ImGui::Text("Euler angle yaw: %f", eulerAngle.yaw);
-	ImGui::Text("Euler angle pitci: %f", eulerAngle.pitch);
+	ImGui::Text("Euler angle pitch: %f", eulerAngle.pitch);
 	ImGui::Text("Euler angle roll: %f", eulerAngle.roll);
 	ImGui::Text("Camera position:\n\t%.1f\n\t%.1f\n\t%.1f",
 				m_Camera.GetPosition().x, m_Camera.GetPosition().y,
@@ -76,8 +76,6 @@ void TestSkybox::OnGUIRender() {
 
 void TestSkybox::OnUpdate(float deltaTime) {
 
-	static bool hasCursor = true;
-	static bool canChangeMouse = true; // to prevent flickering
 	if (toggleMouse.GetAmount()) {
 		if (canChangeMouse) {
 			if (hasCursor) {
@@ -114,8 +112,6 @@ void TestSkybox::OnUpdate(float deltaTime) {
 	math::Vec2<> deltaPosition = lastPositionf - newPositionf;
 	lastPositionf = newPositionf;
 
-	// Ignore first update because it rotates the camera a lot
-	static bool inputReady = false;
 	if (inputReady) {
 		eulerAngle.pitch += deltaPosition.y * rotationSensitivity * deltaTime;
 		eulerAngle.yaw += deltaPosition.x * rotationSensitivity * deltaTime;

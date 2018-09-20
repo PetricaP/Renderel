@@ -11,6 +11,13 @@ namespace renderel::test {
 
 class TestSkybox : public TestOBJLoader {
   private:
+	// is cursor enabled
+	bool hasCursor = true;
+	// to prevent flickering
+	bool canChangeMouse = true;
+	// Ignore first update because it rotates the camera a lot
+	bool inputReady = false;
+
 	graphics::Cubemap *m_Cubemap;
 
 	Camera m_Camera;
