@@ -19,11 +19,11 @@ using byte = unsigned char;
 struct BaseECSComponent;
 
 /* Typedefs for our functions so it won't be a pain to type */
-using ECSComponentCreateFunction =
-	unsigned int (*)(std::vector<byte> &memory, EntityHandle entity,
-					 BaseECSComponent *components, size_t size);
+typedef unsigned int (*ECSComponentCreateFunction)(
+	std::vector<byte> &memory, EntityHandle entity,
+	BaseECSComponent *components);
 
-using ECSComponentFreeFunction = void (*)(BaseECSComponent *freeComponent);
+typedef void (*ECSComponentFreeFunction)(BaseECSComponent *freeComponent);
 
 struct BaseECSComponentData {
 	ECSComponentCreateFunction createFunction;
@@ -66,13 +66,13 @@ struct BaseECSComponent {
 
 /* These will be the "constructors" and "destructors" for our components */
 template <typename Component>
-unsigned int ECSComponentCreate(std::vector<byte> &memory, EntityHandle entity,
+unsigned int ECSComponentCreate(std::vector<byte> &memory, EntityHandle handle,
 								BaseECSComponent *components) {
 	unsigned int index = static_cast<unsigned int>(memory.size());
 	memory.resize(index + Component::SIZE);
 	Component *component =
 		new (&memory[index]) Component(*static_cast<Component *>(components));
-	component->entity = entity;
+	component->entityHandle = handle;
 	return index;
 }
 
@@ -87,13 +87,15 @@ void ECSComponentFree(BaseECSComponent *freeComponent) {
  * for our components */
 template <typename T>
 struct ECSComponent : public BaseECSComponent {
-	static const ECSComponentCreateFunction createFunction;
-	static const ECSComponentFreeFunction freeFunction;
+  public:
+	static const ECSComponentCreateFunction CREATEFUNCTION;
+	static const ECSComponentFreeFunction FREEFUNCTION;
 	static const unsigned int ID;
 	static const size_t SIZE;
 };
 
 /* Initialize all the static members */
+
 template <typename T>
 const unsigned int ECSComponent<T>::ID(BaseECSComponent::RegisterComponentType(
 	ECSComponentCreate<T>, ECSComponentFree<T>, sizeof(T)));
@@ -103,19 +105,17 @@ const size_t ECSComponent<T>::SIZE(sizeof(T));
 
 template <typename T>
 const ECSComponentCreateFunction
-	ECSComponent<T>::createFunction(ECSComponentCreate<T>);
+	ECSComponent<T>::CREATEFUNCTION(ECSComponentCreate<T>);
 
 template <typename T>
 const ECSComponentFreeFunction
-	ECSComponent<T>::freeFunction(ECSComponentFree<T>);
+	ECSComponent<T>::FREEFUNCTION(ECSComponentFree<T>);
 
 /* This is how a game component should be declared */
-/*
 struct TestComponent : public ECSComponent<TestComponent> {
 	float x;
 	float y;
 };
-*/
 
 } // namespace renderel
 

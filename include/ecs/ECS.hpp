@@ -35,6 +35,10 @@ class ECS {
 	std::unordered_map<unsigned int, ComponentMemory> m_Components;
 	std::vector<EntityData *> m_Entities;
 
+	/* Utilities for creating our parameters for the MakeEntity method */
+	static BaseECSComponent **tempComponents;
+	static unsigned int *tempComponentIDs;
+
   public:
 	ECS() = default;
 	~ECS();
@@ -48,26 +52,23 @@ class ECS {
 	/* TODO: Not sure if this actually works */
 	template <class A, class... Args>
 	EntityHandle MakeEntity(A &c, Args &... args) {
-		static BaseECSComponent **components = nullptr;
-		static unsigned int *componentIDs = nullptr;
 		static int index = 0;
-		if (components == nullptr) {
-			size_t numComponents = (sizeof...(args) + sizeof(c)) / sizeof(c);
-			components = new BaseECSComponent *[numComponents];
-			componentIDs = new unsigned int[numComponents];
-		} else {
-			if constexpr (sizeof...(args) == 0) {
-				EntityHandle handle = MakeEntity(
-					components, componentIDs, static_cast<size_t>(index + 1));
-				components = nullptr;
-				componentIDs = nullptr;
-				return handle;
-			} else {
-				components[index++] = &c;
-				return MakeEntity(args...);
-			}
+		if (tempComponents == nullptr) {
+			size_t numComponents = (sizeof...(args)) + 1;
+			tempComponents = new BaseECSComponent *[numComponents];
+			tempComponentIDs = new unsigned int[numComponents];
 		}
-		return nullptr;
+		tempComponentIDs[index] = A::ID;
+		tempComponents[index++] = &c;
+		if constexpr (sizeof...(args) == 0) {
+			EntityHandle handle = MakeEntity(tempComponents, tempComponentIDs,
+											 static_cast<size_t>(index));
+			tempComponents = nullptr;
+			tempComponentIDs = nullptr;
+			return handle;
+		} else {
+			return MakeEntity(args...);
+		}
 	}
 
 	/* Component methods */

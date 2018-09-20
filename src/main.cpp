@@ -32,11 +32,22 @@ using namespace renderel;
 const int WIDTH = 1080;
 const int HEIGHT = 720;
 
+struct TransformComponent : public ECSComponent<TransformComponent> {
+	Transform<> transform;
+};
+
 int main() {
 	GameEventHandler gameEventHandler;
 
 	std::shared_ptr<Window> window = std::make_shared<WindowGLFW>(
 		WIDTH, HEIGHT, "Renderel", &gameEventHandler);
+
+	ECS ecs;
+
+	TransformComponent transformComponent;
+
+	EntityHandle handle =
+		ecs.MakeEntity<TransformComponent>(transformComponent);
 
 	graphics::Renderer<unsigned int>::InitGraphics();
 	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);

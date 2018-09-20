@@ -5,6 +5,10 @@
 
 namespace renderel {
 
+/* Defaulted to nullptr */
+BaseECSComponent **ECS::tempComponents;
+unsigned int *ECS::tempComponentIDs;
+
 ECS::~ECS() {
 	for (auto &component : m_Components) {
 		/* id is the key in the components map */
@@ -83,8 +87,8 @@ void ECS::AddComponentInternal(EntityHandle handle, Entity &entity,
 
 	componentData.componentType = id;
 
-	componentData.indexInComponentArray = createFunction(
-		m_Components[id], handle, component, BaseECSComponent::GetTypeSize(id));
+	componentData.indexInComponentArray =
+		createFunction(m_Components[id], handle, component);
 
 	entity.push_back(componentData);
 }
