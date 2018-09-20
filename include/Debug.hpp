@@ -18,6 +18,9 @@
 	x;                                                                         \
 	ASSERT(GLLogCall(#x, __FILE__, __LINE__))
 
+#define ERROR "Error"
+#define WARNING "Warning"
+
 #define DEBUG_LOG(category, level, message, ...)                               \
 	fprintf(stderr, "[%s] ", category);                                        \
 	fprintf(stderr, "[%s] (%s, %d): ", level, __FILE__, __LINE__);             \

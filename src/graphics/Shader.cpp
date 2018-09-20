@@ -33,14 +33,14 @@ uint32 Shader::CompileShader(const char *const shaderSource, uint32 type) {
 	int32 compilationResult = 0;
 	GLCall(glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compilationResult));
 	if (compilationResult != GL_TRUE) {
-		fprintf(stderr, "Failed to compile %s shader.\n",
-				(type == GL_VERTEX_SHADER) ? "vertex" : "fragment");
+		DEBUG_LOG("Shaders", ERROR, "Failed to compile %s shader",
+				  (type == GL_VERTEX_SHADER) ? "vertex" : "fragment");
 
 		int32 infoLogLength = 0;
 		GLCall(glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
 		char log[1024];
 		GLCall(glGetShaderInfoLog(shaderID, infoLogLength, nullptr, log));
-		fprintf(stderr, "Log: %s\n", log);
+		DEBUG_LOG("Shaders", WARNING, "Log: %s", log);
 
 		GLCall(glDeleteShader(shaderID));
 	}
@@ -51,7 +51,7 @@ uint32 Shader::CompileShader(const char *const shaderSource, uint32 type) {
 char *Shader::loadFile(std::string path) {
 	FILE *stream = fopen(path.c_str(), "rt");
 	if (stream == nullptr) {
-		fprintf(stderr, "Couldn't open file %s\n", path.c_str());
+		DEBUG_LOG("Shaders", ERROR, "Failed to open shader: %s", path.c_str());
 		return nullptr;
 	}
 
@@ -76,7 +76,7 @@ uint32 Shader::CreateProgram(uint32 vertexShaderID, uint32 fragmentShaderID) {
 	int32 result;
 	GLCall(glGetProgramiv(shaderID, GL_LINK_STATUS, &result));
 	if (result == GL_FALSE) {
-		fprintf(stderr, "Failed to link program\n");
+		DEBUG_LOG("Shaders", ERROR, "Failed to link program.");
 
 		int32 infoLogLength;
 		GLCall(glGetProgramiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength));
@@ -86,11 +86,12 @@ uint32 Shader::CreateProgram(uint32 vertexShaderID, uint32 fragmentShaderID) {
 				malloc(static_cast<unsigned long>((infoLogLength + 1)) *
 					   sizeof(char)));
 			if (log == nullptr) {
-				fprintf(stderr, "Couldn't allocate memory for shader log.");
+				DEBUG_LOG("Shaders", ERROR,
+						  "Couldn't allocate memory for shader log");
 				exit(EXIT_FAILURE);
 			}
 			GLCall(glGetProgramInfoLog(shaderID, infoLogLength, nullptr, log));
-			fprintf(stderr, "Log: %s\n", log);
+			DEBUG_LOG("Shaders", WARNING, "Log: %s", log);
 			free(log);
 		}
 		return 0;
@@ -110,8 +111,8 @@ int32 Shader::GetUniformLocation(const std::string &name) {
 	}
 	GLCall(int32 location = glGetUniformLocation(m_RendererID, name.c_str()));
 	if (location == -1) {
-		std::cout << "Warning: Uniform " << name << " might not exist."
-				  << std::endl;
+		DEBUG_LOG("Shaders", WARNING, "Uniform %s might not exist.",
+				  name.c_str());
 	}
 	m_LocationCache[name] = location;
 	return location;

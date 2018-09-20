@@ -51,7 +51,8 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 
 	FILE *objFile = fopen(path.c_str(), "rt");
 	if (objFile == nullptr) {
-		fprintf(stderr, "Couldn't open file %s\n", path.c_str());
+		DEBUG_LOG("OBJLoader", ERROR, "Couldn't open obj file: %s",
+				  path.c_str());
 		return false;
 	}
 
