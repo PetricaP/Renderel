@@ -53,6 +53,8 @@ class ECS {
 	template <class A, class... Args>
 	EntityHandle MakeEntity(A &c, Args &... args) {
 		static int index = 0;
+		/* TODO: I don't really want this check every time
+		 *  MakeEntity is caled */
 		if (tempComponents == nullptr) {
 			size_t numComponents = (sizeof...(args)) + 1;
 			tempComponents = new BaseECSComponent *[numComponents];
@@ -60,6 +62,7 @@ class ECS {
 		}
 		tempComponentIDs[index] = A::ID;
 		tempComponents[index++] = &c;
+		/* This is ok because it's compile time check */
 		if constexpr (sizeof...(args) == 0) {
 			EntityHandle handle = MakeEntity(tempComponents, tempComponentIDs,
 											 static_cast<size_t>(index));
@@ -95,7 +98,8 @@ class ECS {
 
   private:
 	EntityData *HandleToRawType(EntityHandle handle) {
-		return static_cast<EntityData *>(handle);
+		EntityData *entityData = static_cast<EntityData *>(handle);
+		return entityData;
 	}
 
 	Entity &HandleToEntity(EntityHandle handle) {

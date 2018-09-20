@@ -3,7 +3,6 @@
 #include "InputControl.hpp"
 #include "Transform.hpp"
 #include "WindowGLFW.hpp"
-#include "ecs/ECS.hpp"
 #include "graphics/BasicRenderer.hpp"
 #include "graphics/IndexBuffer.hpp"
 #include "graphics/OBJLoader.hpp"
@@ -19,6 +18,7 @@
 #include "test/Test.hpp"
 #include "test/TestCamera.hpp"
 #include "test/TestClearColor.hpp"
+#include "test/TestECS.hpp"
 #include "test/TestFaceCulling.hpp"
 #include "test/TestInput.hpp"
 #include "test/TestOBJLoader.hpp"
@@ -32,22 +32,11 @@ using namespace renderel;
 const int WIDTH = 1080;
 const int HEIGHT = 720;
 
-struct TransformComponent : public ECSComponent<TransformComponent> {
-	Transform<> transform;
-};
-
 int main() {
 	GameEventHandler gameEventHandler;
 
 	std::shared_ptr<Window> window = std::make_shared<WindowGLFW>(
 		WIDTH, HEIGHT, "Renderel", &gameEventHandler);
-
-	ECS ecs;
-
-	TransformComponent transformComponent;
-
-	EntityHandle handle =
-		ecs.MakeEntity<TransformComponent>(transformComponent);
 
 	graphics::Renderer<unsigned int>::InitGraphics();
 	graphics::Renderer<unsigned int>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -65,6 +54,7 @@ int main() {
 	testMenu->RegisterTest<test::TestCamera>("Camera test");
 	testMenu->RegisterTest<test::TestFaceCulling>("Face culling test");
 	testMenu->RegisterTest<test::TestSkybox>("Skybox test");
+	testMenu->RegisterTest<test::TestECS>("ECS test");
 
 	std::unique_ptr<GUI> gui =
 		std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");

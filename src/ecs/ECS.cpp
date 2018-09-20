@@ -34,7 +34,7 @@ EntityHandle ECS::MakeEntity(BaseECSComponent *entityComponents[],
 							 size_t numComponents) {
 	EntityData *entityData = new EntityData;
 
-	EntityHandle handle = static_cast<EntityHandle>(&entityData->entity);
+	EntityHandle handle = static_cast<EntityHandle>(entityData);
 	/* Create every component and attach it to the entity */
 	for (unsigned int i = 0; i < numComponents; ++i) {
 
@@ -159,7 +159,7 @@ bool ECS::RemoveComponentInternal(EntityHandle handle,
 BaseECSComponent *ECS::GetComponentInternal(Entity &entity,
 											ComponentMemory &memory,
 											unsigned int componentID) {
-	for (const auto &component : entity) {
+	for (auto &component : entity) {
 		if (componentID == component.componentType) {
 			return reinterpret_cast<BaseECSComponent *>(
 				&memory[component.indexInComponentArray]);
