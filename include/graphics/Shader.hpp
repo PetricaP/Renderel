@@ -21,9 +21,10 @@ class Shader {
 	void Unbind() const;
 
 	void SetUniform1i(const std::string &name, int val);
+	void SetUniform2f(const std::string &name, float f0, float f1);
+	void SetUniform3f(const std::string &name, float f0, float f1, float f2);
 	void SetUniform4f(const std::string &name, float f0, float f1, float f2,
 					  float f3);
-	void SetUniform2f(const std::string &name, float f0, float f1);
 	void SetUniformMat4f(const std::string &name, const math::Mat4<float> &mat);
 
   private:

@@ -75,6 +75,7 @@ class Cubemap {
 	~Cubemap();
 
 	void Draw() const;
+	const unsigned int GetTextureID() const { return m_TextureID; }
 	void SetViewMatrix(const math::Mat4<float> &mat);
 	void SetProjectionMatrix(const math::Mat4<float> &mat);
 };

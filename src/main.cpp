@@ -25,6 +25,7 @@
 #include "test/TestSkybox.hpp"
 #include "test/TestTexturedCube.hpp"
 #include "test/TestTriangleColor.hpp"
+#include <imgui.h>
 #include <memory>
 
 using namespace renderel;
@@ -76,6 +77,7 @@ int main() {
 			currentTest->OnUpdate(deltaTime);
 			currentTest->OnRender();
 			gui->Begin("Test");
+			ImGui::Text("FPS: %.2f", 1.0f / deltaTime);
 			currentTest->OnGUIRender();
 
 			if (currentTest != testMenu) {

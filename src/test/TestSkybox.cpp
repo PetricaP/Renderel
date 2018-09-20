@@ -8,7 +8,9 @@
 namespace renderel::test {
 
 TestSkybox::TestSkybox(const std::shared_ptr<Window> window)
-	: TestOBJLoader(window),
+	: TestOBJLoader(window, "res/models/dome.obj",
+					"res/textures/chesterfield_normal.png",
+					"shaders/normalShader.vert", "shaders/normalShader.frag"),
 	  m_Camera(math::Vec3<>(0.0f, 0.0f, 0.0f), 70.0f, 1.21f, 0.001f, 100.0f),
 	  eulerAngle(0.0f, -90.0f, 0.0f) {
 
@@ -52,14 +54,19 @@ TestSkybox::TestSkybox(const std::shared_ptr<Window> window)
 
 	m_Cubemap = new graphics::Cubemap(faces, "shaders/cubemap.vert",
 									  "shaders/cubemap.frag");
+
+	texture->Bind(1);
+	shader->SetUniform1i("u_Texture", 1);
+	// shader->SetUniform1i("u_Cubemap", m_Cubemap->GetTextureID());
 }
 
 TestSkybox::~TestSkybox() { delete m_Cubemap; }
 
 void TestSkybox::OnRender() {
-
+	math::Vec3 position = m_Camera.GetPosition();
+	shader->SetUniform3f("u_CameraPosition", position.x, position.y,
+						 position.z);
 	TestOBJLoader::OnRender();
-
 	m_Cubemap->Draw();
 }
 
@@ -112,20 +119,22 @@ void TestSkybox::OnUpdate(float deltaTime) {
 	math::Vec2<> deltaPosition = lastPositionf - newPositionf;
 	lastPositionf = newPositionf;
 
-	if (inputReady) {
-		eulerAngle.pitch += deltaPosition.y * rotationSensitivity * deltaTime;
-		eulerAngle.yaw += deltaPosition.x * rotationSensitivity * deltaTime;
-	} else {
-		inputReady = true;
-	}
+	if (!hasCursor) {
+		if (inputReady) {
+			eulerAngle.pitch +=
+				deltaPosition.y * rotationSensitivity * deltaTime;
+			eulerAngle.yaw += deltaPosition.x * rotationSensitivity * deltaTime;
 
-	eulerAngle.Normalize();
+			eulerAngle.Normalize();
+		} else {
+			inputReady = true;
+		}
+	}
+	m_Camera.SetForward(eulerAngle.ToVector());
 
 	math::Mat4<> view = m_Camera.GetView();
 	shader->Bind();
 	shader->SetUniformMat4f("u_View", view);
-
-	m_Camera.SetForward(eulerAngle.ToVector());
 
 	m_Cubemap->SetViewMatrix(m_Camera.GetView().StripTranslation());
 	m_Cubemap->SetProjectionMatrix(m_Camera.GetProjection());
