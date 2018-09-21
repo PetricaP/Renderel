@@ -4,7 +4,7 @@
 
 namespace renderel::test {
 
-TestTexturedCube::TestTexturedCube(const std::shared_ptr<Window> window)
+TestTexturedCube::TestTexturedCube(const Window &window)
 	: Test(window), m_Color{0.1f, 0.1f, 0.2f, 1.0f}, rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -5.0f),
@@ -49,7 +49,7 @@ TestTexturedCube::~TestTexturedCube() {
 }
 
 void TestTexturedCube::OnUpdate(float) {
-	float aspectRatio = 1.0f * m_Window->GetWidth() / m_Window->GetHeight();
+	float aspectRatio = 1.0f * m_Window.GetWidth() / m_Window.GetHeight();
 	math::Mat4<> proj =
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
 	shader->SetUniformMat4f("u_Proj", proj);
@@ -61,7 +61,7 @@ void TestTexturedCube::OnUpdate(float) {
 }
 
 void TestTexturedCube::OnGUIRender() {
-	GUI *gui = m_Window->GetGUI();
+	GUI *gui = m_Window.GetGUI();
 	gui->Slider3f("Position", &transform.GetPosition().x, -5.0f, 5.0f);
 	gui->Slider3f("Rotation", &rotation.x, -180.0f, 180.0f);
 	gui->Slider3f("Scale", &transform.GetScale().x, 0.0f, 10.0f);

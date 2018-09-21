@@ -16,12 +16,12 @@
 #include "math/Quaternion.hpp"
 #include "math/Vec2.hpp"
 #include "math/Vec3.hpp"
-#include "test/Test.hpp"
 #include "test/TestCamera.hpp"
 #include "test/TestClearColor.hpp"
 #include "test/TestECS.hpp"
 #include "test/TestFaceCulling.hpp"
 #include "test/TestInput.hpp"
+#include "test/TestMenu.hpp"
 #include "test/TestOBJLoader.hpp"
 #include "test/TestSkybox.hpp"
 #include "test/TestTexturedCube.hpp"
@@ -31,25 +31,23 @@
 
 using namespace renderel;
 
-const int32 WIDTH = 1080;
-const int32 HEIGHT = 720;
-
 int32 main() {
-	EventHandler *gameEventHandler = new GameEventHandler;
+	constexpr int32 WIDTH = 1080;
+	constexpr int32 HEIGHT = 720;
 
-	std::shared_ptr<Window> window = std::make_shared<WindowGLFW>(
-		WIDTH, HEIGHT, "Renderel", gameEventHandler, nullptr);
+	auto gameEventHandler = std::make_unique<GameEventHandler>();
 
-	GUI *gui = new ImGUI(window->GetAPIHandle(), "#version 130");
-	window->SetGUI(gui);
+	auto window = std::make_unique<WindowGLFW>(WIDTH, HEIGHT, "Renderel",
+											   std::move(gameEventHandler));
 
-	graphics::Renderer<uint32>::InitGraphics();
-	graphics::Renderer<uint32>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	auto gui = std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
 
-	std::shared_ptr<test::Test> currentTest = nullptr;
-	std::shared_ptr<test::TestMenu> testMenu(
-		new test::TestMenu(window, currentTest));
-	currentTest = static_cast<std::shared_ptr<test::Test>>(testMenu);
+	window->SetGUI(std::move(gui));
+
+	graphics::Renderer<>::InitGraphics();
+	graphics::Renderer<>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+	std::unique_ptr<test::TestMenu> testMenu(new test::TestMenu(*window));
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear color test");
 	testMenu->RegisterTest<test::TestTriangleColor>("Triangle color test");
@@ -72,26 +70,7 @@ int32 main() {
 		window->PollEvents();
 		graphics::Renderer<>::Clear();
 
-		if (currentTest) {
-			currentTest->OnUpdate(deltaTime);
-			currentTest->OnRender();
-			window->GetGUI()->Init();
-			window->GetGUI()->Begin("Test");
-			window->GetGUI()->Text("FPS: %.2f", 1.0f / deltaTime);
-			currentTest->OnGUIRender();
-
-			if (currentTest != testMenu) {
-				if (window->GetGUI()->Button("| <-- |")) {
-					currentTest = testMenu;
-				}
-			} else {
-				if (window->GetGUI()->Button("Exit")) {
-					window->Close();
-				}
-			}
-
-			window->GetGUI()->End();
-		}
+		testMenu->Run(deltaTime);
 
 		window->GetGUI()->Render();
 

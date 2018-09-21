@@ -84,7 +84,7 @@ class TestTexturedCube : public Test {
 	math::Mat4<> proj;
 
   public:
-	TestTexturedCube(const std::shared_ptr<Window> window);
+	TestTexturedCube(const Window &window);
 	~TestTexturedCube() override;
 	void OnRender() override;
 	void OnGUIRender() override;

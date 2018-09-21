@@ -7,19 +7,19 @@
 
 namespace renderel::test {
 
-TestCamera::TestCamera(const std::shared_ptr<Window> window)
+TestCamera::TestCamera(const Window &window)
 	: Test(window), m_Color(0.2f, 0.2f, 0.2f, 1.0f),
 	  defaultCameraPosition(0.0f, 0.0f, -3.0f),
 
 	  eulerAngle(0.0f, math::toRadians(90.0f), 0.0f),
-	  aspectRatio(static_cast<float>(window->GetWidth()) / window->GetHeight()),
+	  aspectRatio(static_cast<float>(window.GetWidth()) / window.GetHeight()),
 	  transform(math::Vec3<>(0.0f, 0.0f, 5.0f),
 				math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),
 				math::Vec3<>(1.0f)),
 
 	  camera(Camera(defaultCameraPosition, 70.0f, aspectRatio, 0.1f, 100.0f)) {
 
-	handler = static_cast<GameEventHandler *>(window->GetEventHandler());
+	handler = static_cast<GameEventHandler *>(window.GetEventHandler());
 
 	handler->AddKeyControl(KEY_W, yAxis, 1.0f);
 	handler->AddKeyControl(KEY_S, yAxis, -1.0f);
@@ -71,16 +71,16 @@ TestCamera::~TestCamera() {
 	delete ib;
 	delete texture;
 	delete renderer;
-	m_Window->EnableMouse();
+	m_Window.EnableMouse();
 }
 
-static void ResetCursorPosition(const std::shared_ptr<Window> window,
+static void ResetCursorPosition(const Window &window,
 								const GameEventHandler *handler,
 								math::Vec2<> &lastPositionf) {
 	math::Vec2<int32> newPosition = handler->GetMousePosition();
 	math::Vec2<> newPositionf(
-		static_cast<float>(newPosition.x) / window->GetWidth(),
-		static_cast<float>(newPosition.y) / window->GetHeight());
+		static_cast<float>(newPosition.x) / window.GetWidth(),
+		static_cast<float>(newPosition.y) / window.GetHeight());
 	lastPositionf = newPositionf;
 }
 
@@ -115,14 +115,14 @@ void TestCamera::OnUpdate(float deltaTime) {
 	}
 
 	if (paused) {
-		m_Window->EnableMouse();
+		m_Window.EnableMouse();
 	} else {
-		m_Window->DisableMouse();
+		m_Window.DisableMouse();
 
 		math::Vec2<int32> newPosition = handler->GetMousePosition();
 		math::Vec2<> newPositionf(
-			static_cast<float>(newPosition.x) / m_Window->GetWidth(),
-			static_cast<float>(newPosition.y) / m_Window->GetHeight());
+			static_cast<float>(newPosition.x) / m_Window.GetWidth(),
+			static_cast<float>(newPosition.y) / m_Window.GetHeight());
 
 		math::Vec2<> deltaPosition = lastPositionf - newPositionf;
 		lastPositionf = newPositionf;
@@ -152,7 +152,7 @@ void TestCamera::OnUpdate(float deltaTime) {
 }
 
 void TestCamera::OnGUIRender() {
-	GUI *gui = m_Window->GetGUI();
+	GUI *gui = m_Window.GetGUI();
 	gui->Text("W - Forward");
 	gui->Text("S - Backwards");
 	gui->Text("D - Right");

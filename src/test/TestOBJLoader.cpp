@@ -5,8 +5,7 @@
 
 namespace renderel::test {
 
-TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window,
-							 const std::string objPath,
+TestOBJLoader::TestOBJLoader(const Window &window, const std::string objPath,
 							 const std::string texturePath,
 							 const std::string vertexShaderPath,
 							 const std::string fragmentShaderPath)
@@ -42,7 +41,7 @@ TestOBJLoader::~TestOBJLoader() {
 
 void TestOBJLoader::OnUpdate(float) {
 
-	float aspectRatio = 1.0f * m_Window->GetWidth() / m_Window->GetHeight();
+	float aspectRatio = 1.0f * m_Window.GetWidth() / m_Window.GetHeight();
 	math::Mat4<> proj =
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 40.0f);
 	shader->SetUniformMat4f("u_Proj", proj);
@@ -54,7 +53,7 @@ void TestOBJLoader::OnUpdate(float) {
 }
 
 void TestOBJLoader::OnGUIRender() {
-	GUI *gui = m_Window->GetGUI();
+	GUI *gui = m_Window.GetGUI();
 	gui->Slider3f("Position", &transform.GetPosition().x, -50.0f, 5.0f);
 	gui->Slider3f("Rotation", &rotation.x, -180.0f, 180.0f);
 	gui->Slider3f("Scale", &transform.GetScale().x, 0.0f, 10.0f);

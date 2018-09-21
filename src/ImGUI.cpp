@@ -1,6 +1,9 @@
 #include "ImGUI.hpp"
 #include "core/Common.hpp"
 #include <cstdarg>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 namespace renderel {
 

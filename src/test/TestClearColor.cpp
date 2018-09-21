@@ -5,7 +5,7 @@
 
 namespace renderel::test {
 
-TestClearColor::TestClearColor(const std::shared_ptr<Window> window)
+TestClearColor::TestClearColor(const Window &window)
 	: Test(window), m_Color{0.75f, 0.75f, 0.75f, 1.0f} {}
 
 TestClearColor::~TestClearColor() {}
@@ -19,7 +19,7 @@ void TestClearColor::OnRender() {
 }
 
 void TestClearColor::OnGUIRender() {
-	m_Window->GetGUI()->ColorEdit4("Pick a color", m_Color.elements);
+	m_Window.GetGUI()->ColorEdit4("Pick a color", m_Color.elements);
 }
 
 } // namespace renderel::test

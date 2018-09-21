@@ -26,7 +26,7 @@ class TestECS : public Test {
 	graphics::BasicRenderer<> renderer;
 
   public:
-	TestECS(std::shared_ptr<Window> window);
+	TestECS(const Window &window);
 	~TestECS() override = default;
 	void OnRender() override;
 	void OnUpdate(float deltaTime) override;

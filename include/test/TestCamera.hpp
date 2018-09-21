@@ -106,7 +106,7 @@ class TestCamera : public Test {
 	math::Mat4<> proj;
 
   public:
-	TestCamera(const std::shared_ptr<Window> window);
+	TestCamera(const Window &window);
 	~TestCamera() override;
 	void OnRender() override;
 	void OnGUIRender() override;

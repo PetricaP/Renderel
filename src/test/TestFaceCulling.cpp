@@ -6,7 +6,7 @@
 
 namespace renderel::test {
 
-TestFaceCulling::TestFaceCulling(const std::shared_ptr<Window> window)
+TestFaceCulling::TestFaceCulling(const Window &window)
 	: Test(window), rotation(30.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.0f),
@@ -53,7 +53,7 @@ void TestFaceCulling::OnRender() {
 void TestFaceCulling::OnGUIRender() {}
 
 void TestFaceCulling::OnUpdate(float deltaTime) {
-	float aspectRatio = 1.0f * m_Window->GetWidth() / m_Window->GetHeight();
+	float aspectRatio = 1.0f * m_Window.GetWidth() / m_Window.GetHeight();
 	math::Mat4<> proj =
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 40.0f);
 	shader->SetUniformMat4f("u_Proj", proj);

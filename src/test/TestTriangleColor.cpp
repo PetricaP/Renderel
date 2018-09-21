@@ -2,7 +2,7 @@
 
 namespace renderel::test {
 
-TestTriangleColor::TestTriangleColor(const std::shared_ptr<Window> window)
+TestTriangleColor::TestTriangleColor(const Window &window)
 	: Test(window), m_Colors{math::Vec4<float>(1.0f, 0.0f, 0.0f, 1.0f),
 							 math::Vec4<float>(0.0f, 0.0f, 1.0f, 1.0f),
 							 math::Vec4<float>(0.0f, 1.0f, 0.0f, 1.0f)} {
@@ -48,7 +48,7 @@ void TestTriangleColor::OnRender() {
 }
 
 void TestTriangleColor::OnGUIRender() {
-	GUI *gui = m_Window->GetGUI();
+	GUI *gui = m_Window.GetGUI();
 	gui->ColorEdit4("First corner", m_Colors[0].elements);
 	gui->ColorEdit4("Second corner", m_Colors[1].elements);
 	gui->ColorEdit4("Third corner", m_Colors[2].elements);

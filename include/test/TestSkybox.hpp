@@ -38,8 +38,8 @@ class TestSkybox : public TestOBJLoader {
 	InputControl toggleMouse;
 
   public:
-	TestSkybox(const std::shared_ptr<Window> window);
-	~TestSkybox();
+	TestSkybox(const Window &window);
+	~TestSkybox() override;
 
 	void OnRender() override;
 	void OnGUIRender() override;

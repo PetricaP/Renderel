@@ -6,12 +6,12 @@
 
 namespace renderel::test {
 
-TestSkybox::TestSkybox(const std::shared_ptr<Window> window)
+TestSkybox::TestSkybox(const Window &window)
 	: TestOBJLoader(window),
 	  m_Camera(math::Vec3<>(0.0f, 0.0f, 0.0f), 70.0f, 1.21f, 0.001f, 100.0f),
 	  eulerAngle(0.0f, -90.0f, 0.0f) {
 
-	handler = static_cast<GameEventHandler *>(window->GetEventHandler());
+	handler = static_cast<GameEventHandler *>(window.GetEventHandler());
 
 	std::vector<std::string> faces;
 	std::vector<std::string> shaders;
@@ -64,7 +64,7 @@ void TestSkybox::OnRender() {
 
 void TestSkybox::OnGUIRender() {
 
-	GUI *gui = m_Window->GetGUI();
+	GUI *gui = m_Window.GetGUI();
 	gui->Text("Q - Toggle Mouse");
 	gui->Text("Euler angle yaw: %f", eulerAngle.yaw);
 	gui->Text("Euler angle pitch: %f", eulerAngle.pitch);
@@ -79,9 +79,9 @@ void TestSkybox::OnUpdate(float deltaTime) {
 	if (toggleMouse.GetAmount()) {
 		if (canChangeMouse) {
 			if (hasCursor) {
-				m_Window->DisableMouse();
+				m_Window.DisableMouse();
 			} else {
-				m_Window->EnableMouse();
+				m_Window.EnableMouse();
 			}
 			hasCursor = !hasCursor; // reverse hasCursor
 			canChangeMouse = false;
@@ -106,8 +106,8 @@ void TestSkybox::OnUpdate(float deltaTime) {
 
 	math::Vec2<int32> newPosition = handler->GetMousePosition();
 	math::Vec2<> newPositionf(
-		static_cast<float>(newPosition.x) / m_Window->GetWidth(),
-		static_cast<float>(newPosition.y) / m_Window->GetHeight());
+		static_cast<float>(newPosition.x) / m_Window.GetWidth(),
+		static_cast<float>(newPosition.y) / m_Window.GetHeight());
 
 	math::Vec2<> deltaPosition = lastPositionf - newPositionf;
 	lastPositionf = newPositionf;

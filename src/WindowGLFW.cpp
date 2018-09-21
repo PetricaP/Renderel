@@ -44,8 +44,8 @@ static void window_resize_callback(GLFWwindow *window, int32 width,
 }
 
 WindowGLFW::WindowGLFW(int32 width, int32 height, std::string title,
-					   EventHandler *eventHandler, GUI *gui)
-	: Window(width, height, eventHandler, gui) {
+					   std::unique_ptr<EventHandler> eventHandler)
+	: Window(width, height, std::move(eventHandler)) {
 
 	// TODO: Create logging system for errors
 	if (!glfwInit()) {
@@ -72,9 +72,6 @@ WindowGLFW::WindowGLFW(int32 width, int32 height, std::string title,
 	glfwSetWindowSizeCallback(m_GLFWwindow, window_resize_callback);
 
 	GlobalGLFWEventHandler::GetEventPoll()[m_GLFWwindow].windowGLFW = this;
-
-	GlobalGLFWEventHandler::GetEventPoll()[m_GLFWwindow]
-		.windowGLFW->SetEventHandler(eventHandler);
 
 	glfwMakeContextCurrent(m_GLFWwindow);
 	glfwSwapInterval(1);

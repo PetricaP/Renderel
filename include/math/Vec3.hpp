@@ -256,6 +256,8 @@ Vec3<T> operator/(T t, const Vec3<T> &vec) {
 	return {vec.x / t, vec.y / t, vec.z / t};
 }
 
+typedef Vec3<float> dVec3;
+
 } // namespace renderel::math
 
 #endif // MATH_VEC3_HPP

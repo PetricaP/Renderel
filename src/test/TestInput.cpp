@@ -4,9 +4,9 @@
 
 namespace renderel::test {
 
-TestInput::TestInput(const std::shared_ptr<Window> window)
+TestInput::TestInput(const Window &window)
 	: Test(window),
-	  handler(static_cast<GameEventHandler *>(window->GetEventHandler())),
+	  handler(static_cast<GameEventHandler *>(window.GetEventHandler())),
 	  transform(
 		  Transform<>(math::Vec3<>(0.0f, 0.0f, -5.0f),
 					  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),
@@ -62,7 +62,7 @@ void TestInput::OnRender() {
 
 void TestInput::OnUpdate(float deltaTime) {
 	float aspectRatio =
-		static_cast<float>(m_Window->GetWidth()) / m_Window->GetHeight();
+		static_cast<float>(m_Window.GetWidth()) / m_Window.GetHeight();
 	shader->Bind();
 	math::Mat4<> proj =
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
@@ -90,7 +90,7 @@ void TestInput::OnUpdate(float deltaTime) {
 }
 
 void TestInput::OnGUIRender() {
-	GUI *gui = m_Window->GetGUI();
+	GUI *gui = m_Window.GetGUI();
 	gui->Text("W - Y forward");
 	gui->Text("S - Y backward");
 	gui->Text("D - X forward");

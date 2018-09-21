@@ -24,7 +24,7 @@ class TestFaceCulling : public Test {
 	math::Mat4<> proj;
 
   public:
-	TestFaceCulling(const std::shared_ptr<Window> window);
+	TestFaceCulling(const Window &window);
 	~TestFaceCulling() override;
 	void OnRender() override;
 	void OnGUIRender() override;

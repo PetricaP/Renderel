@@ -26,7 +26,7 @@ class TestOBJLoader : public Test {
 
   public:
 	TestOBJLoader(
-		const std::shared_ptr<Window> window,
+		const Window &window,
 		const std::string objPath = "res/models/monkey.obj",
 		const std::string texturePath = "res/textures/monkey_baked.png",
 		const std::string vertexShaderPath = "shaders/vertexShader.glsl",

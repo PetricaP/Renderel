@@ -36,7 +36,7 @@ class TestInput : public Test {
 	graphics::Shader *shader = nullptr;
 
   public:
-	TestInput(const std::shared_ptr<Window> window);
+	TestInput(const Window &window);
 	~TestInput() override;
 
 	void OnUpdate(float) override;

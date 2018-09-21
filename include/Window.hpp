@@ -3,6 +3,7 @@
 
 #include "EventHandler.hpp"
 #include "GUI.hpp"
+#include <memory>
 #include <string>
 
 namespace renderel {
@@ -11,14 +12,16 @@ class Window {
   protected:
 	int32 m_Width;
 	int32 m_Height;
-	EventHandler *m_EventHandler = nullptr;
-	GUI *m_GUI = nullptr;
+	std::unique_ptr<EventHandler> m_EventHandler = nullptr;
+	// TODO: make it so m_GUI can never be nullptr
+	std::unique_ptr<GUI> m_GUI = nullptr;
 
   protected:
-	Window(int32 width, int32 height, EventHandler *eventHandler, GUI *gui);
+	Window(int32 width, int32 height,
+		   std::unique_ptr<EventHandler> eventHandler);
 
   public:
-	virtual ~Window();
+	virtual ~Window() = default;
 
 	virtual bool ShouldClose() const = 0;
 	virtual void SwapBuffers() const = 0;
@@ -32,10 +35,12 @@ class Window {
 	void SetHeight(int32 height) { m_Height = height; }
 	int32 GetWidth() const { return m_Width; }
 	int32 GetHeight() const { return m_Height; }
-	EventHandler *GetEventHandler() const { return m_EventHandler; }
-	void SetEventHandler(EventHandler *handler) { m_EventHandler = handler; }
-	GUI *GetGUI() const { return m_GUI; }
-	void SetGUI(GUI *gui) { m_GUI = gui; }
+	EventHandler *GetEventHandler() const { return m_EventHandler.get(); }
+	void SetEventHandler(std::unique_ptr<EventHandler> handler) {
+		m_EventHandler = std::move(handler);
+	}
+	GUI *GetGUI() const { return m_GUI.get(); }
+	void SetGUI(std::unique_ptr<GUI> gui) { m_GUI = std::move(gui); }
 };
 
 } // namespace renderel

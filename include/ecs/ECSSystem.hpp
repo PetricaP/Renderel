@@ -18,8 +18,7 @@ class BaseECSSystem {
 	BaseECSSystem(const std::vector<uint32> &componentTypes)
 		: m_ComponentTypes(componentTypes) {}
 	virtual ~BaseECSSystem() = default;
-	virtual void UpdateComponents(float deltaTime,
-								  BaseECSComponent **components) {}
+	virtual void UpdateComponents(float, BaseECSComponent **) {}
 	const std::vector<uint32> &GetComponentTypes() { return m_ComponentTypes; }
 
 	const std::vector<uint32> &GetComponentFlags() { return m_ComponentFlags; }

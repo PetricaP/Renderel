@@ -3,7 +3,7 @@
 
 namespace renderel::test {
 
-TestECS::TestECS(std::shared_ptr<Window> window)
+TestECS::TestECS(const Window &window)
 	: Test(window), shader("shaders/vertexShader.glsl",
 						   "shaders/fragmentShaderTexture.glsl") {
 
@@ -20,7 +20,7 @@ TestECS::TestECS(std::shared_ptr<Window> window)
 		&m_ECS.GetComponent<TransformComponent>(entity)->transform;
 }
 
-void TestECS::OnUpdate(float deltaTime) {
+void TestECS::OnUpdate(float) {
 	static float g = 0.0f;
 	workingTransform->SetPosition(math::Vec3<>(g, g, g));
 	g += 0.01;
@@ -28,13 +28,11 @@ void TestECS::OnUpdate(float deltaTime) {
 
 void TestECS::OnGUIRender() {
 	math::Vec3<> position = workingTransform->GetPosition();
-	m_Window->GetGUI()->Text("Position: x: %f y: %f z: %f", position.x,
-							 position.y, position.z);
+	m_Window.GetGUI()->Text("Position: x: %f y: %f z: %f", position.x,
+							position.y, position.z);
 }
 
 void TestECS::OnRender() {
-	Transform<> transform =
-		m_ECS.GetComponent<TransformComponent>(entity)->transform;
 	graphics::Mesh<> mesh =
 		m_ECS.GetComponent<RenderableMeshComponent>(entity)->mesh;
 

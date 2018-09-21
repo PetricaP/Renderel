@@ -34,7 +34,7 @@ class TestTriangleColor : public Test {
 	graphics::Shader *shader;
 
   public:
-	TestTriangleColor(const std::shared_ptr<Window> window);
+	TestTriangleColor(const Window &window);
 	~TestTriangleColor() override;
 
 	void OnUpdate(float deltaTime) override;

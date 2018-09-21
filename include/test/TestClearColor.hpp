@@ -13,7 +13,7 @@ class TestClearColor : public Test {
 	math::Vec4<> m_Color;
 
   public:
-	TestClearColor(const std::shared_ptr<Window> window);
+	TestClearColor(const Window &window);
 	~TestClearColor() override;
 
 	void OnUpdate(float deltaTime) override;
