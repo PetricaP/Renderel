@@ -11,8 +11,8 @@ namespace renderel::graphics {
 template <typename T = uint32, typename F = float>
 class Mesh {
   private:
-	VertexArray *m_VA = nullptr;
-	IndexBuffer<T> *m_IB = nullptr;
+	std::unique_ptr<VertexArray> m_VA = nullptr;
+	std::unique_ptr<IndexBuffer<T>> m_IB = nullptr;
 
   public:
 	Mesh() = default;
@@ -20,10 +20,25 @@ class Mesh {
 	~Mesh();
 
 	void LoadOBJ(const std::string &objFilePath);
-	void SetIndexBuffer(IndexBuffer<T> *ib) { m_IB = ib; }
-	IndexBuffer<T> *GetIndexBuffer() const { return m_IB; }
-	void SetVertexArray(VertexArray *va) { m_VA = va; }
-	VertexArray *GetVertexArray() const { return m_VA; }
+
+	void SetIndexBuffer(std::unique_ptr<IndexBuffer<T>> ib) {
+		m_IB = std::move(ib);
+	}
+	IndexBuffer<T> *GetIndexBuffer() const { return m_IB.get(); }
+
+	std::unique_ptr<IndexBuffer<T>> *GetMIndexBuffer() {
+		return std::move(m_IB);
+	}
+
+	std::unique_ptr<VertexArray> *GetMVertexArray() { return std::move(m_VA); }
+
+	void SetVertexArray(std::unique_ptr<VertexArray> va) {
+		m_VA = std::move(va);
+	}
+	VertexArray *GetVertexArray() const { return m_VA.get(); }
+
+	Mesh(Mesh &other)
+		: m_VA(other.m_VA.release()), m_IB(other.m_IB.release()) {}
 };
 
 template <typename T, typename F>
@@ -37,10 +52,7 @@ void Mesh<T, F>::LoadOBJ(const std::string &objFilePath) {
 }
 
 template <typename T, typename F>
-Mesh<T, F>::~Mesh() {
-	delete m_VA;
-	delete m_IB;
-}
+Mesh<T, F>::~Mesh() {}
 
 } // namespace renderel::graphics
 

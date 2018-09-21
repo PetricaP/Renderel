@@ -27,11 +27,11 @@ class TestTriangleColor : public Test {
 
 	static constexpr int32 m_Indices[] = {0, 1, 2};
 
-	graphics::VertexArray *va;
-	graphics::VertexBuffer *vb;
-	graphics::IndexBuffer<> *ib;
-	graphics::Renderer<> *renderer;
-	graphics::Shader *shader;
+	std::unique_ptr<graphics::VertexArray> va;
+	std::unique_ptr<graphics::VertexBuffer> vb;
+	std::unique_ptr<graphics::IndexBuffer<>> ib;
+	graphics::BasicRenderer<> renderer;
+	graphics::Shader shader;
 
   public:
 	TestTriangleColor(const Window &window);

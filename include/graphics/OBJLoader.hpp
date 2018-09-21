@@ -40,7 +40,8 @@ bool Vertex<U>::operator==(const Vertex<U> &other) const {
  * U - Vertex data type - defaults to float
  */
 template <typename T = uint32, typename U = float>
-bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
+bool Load(const std::string &path, std::unique_ptr<IndexBuffer<T>> &ib,
+		  std::unique_ptr<VertexArray> &va) {
 
 	std::vector<math::Vec3<U>> vertexPositions;
 	std::vector<math::Vec2<U>> textures;
@@ -103,9 +104,9 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 		++currentLine;
 	}
 
-	va = new VertexArray();
+	va = std::make_unique<VertexArray>();
 
-	VertexBuffer *vb = new VertexBuffer(
+	auto vb = std::make_unique<VertexBuffer>(
 		vertices.data(),
 		static_cast<uint32>(vertices.size() * sizeof(Vertex<U>)));
 
@@ -113,10 +114,10 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 	vbl.Push<U>(3);
 	vbl.Push<U>(2);
 
-	va->AddBuffer(vb, vbl);
+	va->AddBuffer(std::move(vb), vbl);
 
-	ib =
-		new IndexBuffer<T>(indices.data(), static_cast<uint32>(indices.size()));
+	ib = std::make_unique<IndexBuffer<T>>(indices.data(),
+										  static_cast<uint32>(indices.size()));
 	fclose(objFile);
 
 	return true;

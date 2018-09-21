@@ -8,20 +8,14 @@ VertexArray::VertexArray() {
 	GLCall(glBindVertexArray(m_RendererID));
 }
 
-VertexArray::~VertexArray() {
-	GLCall(glDeleteVertexArrays(1, &m_RendererID));
-	for (auto vb : m_VBs) {
-		delete vb;
-	}
-}
+VertexArray::~VertexArray() { GLCall(glDeleteVertexArrays(1, &m_RendererID)); }
 
 void VertexArray::Bind() const { GLCall(glBindVertexArray(m_RendererID)); }
 
 void VertexArray::Unbind() const { GLCall(glBindVertexArray(0)); }
 
-void VertexArray::AddBuffer(VertexBuffer *vb,
+void VertexArray::AddBuffer(std::unique_ptr<VertexBuffer> vb,
 							const VertexBufferLayout &layout) {
-	m_VBs.push_back(vb);
 	Bind();
 	vb->Bind();
 	const auto &elements = layout.GetElements();
@@ -36,12 +30,13 @@ void VertexArray::AddBuffer(VertexBuffer *vb,
 		offset +=
 			element.count * VertexBufferElement::GetSizeOfType(element.type);
 	}
+	m_VBs.push_back(std::move(vb));
 }
 
-void VertexArray::AddBuffers(std::vector<VertexBuffer *> vbs,
+void VertexArray::AddBuffers(std::vector<std::unique_ptr<VertexBuffer>> vbs,
 							 const VertexBufferLayout &layout) {
-	for (auto vb : vbs) {
-		AddBuffer(vb, layout);
+	for (auto &vb : vbs) {
+		AddBuffer(std::move(vb), layout);
 	}
 }
 

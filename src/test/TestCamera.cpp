@@ -10,8 +10,9 @@ namespace renderel::test {
 TestCamera::TestCamera(const Window &window)
 	: Test(window), m_Color(0.2f, 0.2f, 0.2f, 1.0f),
 	  defaultCameraPosition(0.0f, 0.0f, -3.0f),
-
 	  eulerAngle(0.0f, math::toRadians(90.0f), 0.0f),
+	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
+	  texture("res/textures/bricks.jpg", graphics::Texture::TEXTURE_2D),
 	  aspectRatio(static_cast<float>(window.GetWidth()) / window.GetHeight()),
 	  transform(math::Vec3<>(0.0f, 0.0f, 5.0f),
 				math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),
@@ -33,46 +34,33 @@ TestCamera::TestCamera(const Window &window)
 
 	handler->AddKeyControl(KEY_P, pause, 1.0f);
 
-	va = new graphics::VertexArray();
-	va = new graphics::VertexArray();
+	va = std::make_unique<graphics::VertexArray>();
 
-	vb = new graphics::VertexBuffer(static_cast<const float *>(m_Vertices),
-									sizeof(m_Vertices));
+	vb = std::make_unique<graphics::VertexBuffer>(
+		static_cast<const float *>(m_Vertices), sizeof(m_Vertices));
 
 	graphics::VertexBufferLayout layout;
 	layout.Push<float>(3);
 	layout.Push<float>(2);
 
-	va->AddBuffer(vb, layout);
+	va->AddBuffer(std::move(vb), layout);
 
-	ib = new graphics::IndexBuffer<uint32>(indices, sizeof(indices) /
-														sizeof(indices[0]));
+	ib = std::make_unique<graphics::IndexBuffer<>>(
+		indices, sizeof(indices) / sizeof(indices[0]));
 
-	renderer = new graphics::BasicRenderer();
-	shader = new graphics::Shader("shaders/vertexShader.glsl",
-								  "shaders/fragmentShaderTexture.glsl");
+	shader.Bind();
 
-	shader->Bind();
-
-	texture = new graphics::Texture("res/textures/bricks.jpg");
-	texture->Bind(0);
-	shader->SetUniform1i("u_Sampler", 0);
+	texture.Bind(0);
+	shader.SetUniform1i("u_Sampler", 0);
 
 	math::Mat4<> model = transform.GetModel();
-	shader->SetUniformMat4f("u_Model", model);
+	shader.SetUniformMat4f("u_Model", model);
 
 	math::Mat4<> proj = camera.GetProjection();
-	shader->SetUniformMat4f("u_Proj", proj);
+	shader.SetUniformMat4f("u_Proj", proj);
 }
 
-TestCamera::~TestCamera() {
-	delete shader;
-	delete va;
-	delete ib;
-	delete texture;
-	delete renderer;
-	m_Window.EnableMouse();
-}
+TestCamera::~TestCamera() { m_Window.EnableMouse(); }
 
 static void ResetCursorPosition(const Window &window,
 								const GameEventHandler *handler,
@@ -133,8 +121,8 @@ void TestCamera::OnUpdate(float deltaTime) {
 		eulerAngle.Normalize();
 
 		math::Mat4<> view = camera.GetView();
-		shader->Bind();
-		shader->SetUniformMat4f("u_View", view);
+		shader.Bind();
+		shader.SetUniformMat4f("u_View", view);
 
 		math::Vec3<> yVec =
 			yAxis.GetAmount() * movementSensitivity * camera.GetForward();
@@ -176,8 +164,8 @@ void TestCamera::OnGUIRender() {
 
 void TestCamera::OnRender() {
 	graphics::Renderer<>::Clear();
-	renderer->Submit(graphics::Renderable(va, ib, *shader));
-	renderer->Flush();
+	renderer.Submit(graphics::Renderable(va.get(), ib.get(), shader));
+	renderer.Flush();
 }
 
 } // namespace renderel::test

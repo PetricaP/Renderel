@@ -70,12 +70,12 @@ class TestTexturedCube : public Test {
 		21, 22, 23  //
 	};
 
-	graphics::VertexArray *va;
-	graphics::VertexBuffer *vb;
-	graphics::IndexBuffer<> *ib;
-	graphics::Renderer<> *renderer;
-	graphics::Shader *shader;
-	graphics::Texture *texture;
+	std::unique_ptr<graphics::VertexArray> va;
+	std::unique_ptr<graphics::VertexBuffer> vb;
+	std::unique_ptr<graphics::IndexBuffer<>> ib;
+	graphics::BasicRenderer<> renderer;
+	graphics::Shader shader;
+	graphics::Texture texture;
 
 	math::Vec3<> rotation;
 	Transform<> transform;

@@ -122,8 +122,8 @@ void TestSkybox::OnUpdate(float deltaTime) {
 	eulerAngle.Normalize();
 
 	math::Mat4<> view = m_Camera.GetView();
-	shader->Bind();
-	shader->SetUniformMat4f("u_View", view);
+	shader.Bind();
+	shader.SetUniformMat4f("u_View", view);
 
 	m_Camera.SetForward(eulerAngle.ToVector());
 

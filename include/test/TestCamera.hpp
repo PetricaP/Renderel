@@ -91,12 +91,12 @@ class TestCamera : public Test {
 	math::EulerAngle<> eulerAngle;
 	GameEventHandler *handler = nullptr;
 
-	graphics::VertexArray *va = nullptr;
-	graphics::VertexBuffer *vb = nullptr;
-	graphics::IndexBuffer<> *ib = nullptr;
-	graphics::Renderer<> *renderer = nullptr;
-	graphics::Shader *shader = nullptr;
-	graphics::Texture *texture = nullptr;
+	std::unique_ptr<graphics::VertexArray> va = nullptr;
+	std::unique_ptr<graphics::VertexBuffer> vb = nullptr;
+	std::unique_ptr<graphics::IndexBuffer<>> ib = nullptr;
+	graphics::BasicRenderer<> renderer;
+	graphics::Shader shader;
+	graphics::Texture texture;
 
 	float aspectRatio;
 	Transform<> transform;

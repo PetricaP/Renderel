@@ -4,6 +4,7 @@
 #include "core/Common.hpp"
 #include "graphics/VertexBuffer.hpp"
 #include "graphics/VertexBufferLayout.hpp"
+#include <memory>
 #include <vector>
 
 namespace renderel::graphics {
@@ -11,13 +12,14 @@ namespace renderel::graphics {
 class VertexArray {
   private:
 	uint32 m_RendererID;
-	std::vector<VertexBuffer *> m_VBs;
+	std::vector<std::unique_ptr<VertexBuffer>> m_VBs;
 
   public:
 	VertexArray();
 	~VertexArray();
-	void AddBuffer(VertexBuffer *vb, const VertexBufferLayout &layout);
-	void AddBuffers(std::vector<VertexBuffer *> vbs,
+	void AddBuffer(std::unique_ptr<VertexBuffer> vb,
+				   const VertexBufferLayout &layout);
+	void AddBuffers(std::vector<std::unique_ptr<VertexBuffer>> vbs,
 					const VertexBufferLayout &layout);
 
 	void Bind() const;

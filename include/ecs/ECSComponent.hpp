@@ -3,6 +3,7 @@
 
 #include "core/Common.hpp"
 #include <cstdlib>
+#include <memory>
 #include <vector>
 
 namespace renderel {
@@ -66,11 +67,12 @@ struct BaseECSComponent {
 /* These will be the "constructors" and "destructors" for our components */
 template <typename Component>
 uint32 ECSComponentCreate(std::vector<byte> &memory, EntityHandle handle,
-						  BaseECSComponent *components) {
+						  BaseECSComponent *component) {
 	uint32 index = static_cast<uint32>(memory.size());
 	memory.resize(index + Component::SIZE);
-	Component *component =
-		new (&memory[index]) Component(*static_cast<Component *>(components));
+	std::unique_ptr<Component> comp(
+		new (&memory[index]) Component(*static_cast<Component *>(component)));
+	comp.release();
 	component->entityHandle = handle;
 	return index;
 }

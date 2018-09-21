@@ -15,8 +15,8 @@ class Cubemap {
 	uint32 m_TextureID;
 	Shader *m_Shader;
 
-	VertexArray *m_Va;
-	VertexBuffer *m_Vb;
+	std::unique_ptr<VertexArray> m_Va;
+	std::unique_ptr<VertexBuffer> m_Vb;
 
 	math::Mat4<float> m_ViewMatrix;
 	math::Mat4<float> m_ProjectionMatrix;

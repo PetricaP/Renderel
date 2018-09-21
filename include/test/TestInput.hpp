@@ -31,9 +31,9 @@ class TestInput : public Test {
 
 	Transform<> transform;
 
-	graphics::VertexArray *va = nullptr;
-	graphics::IndexBuffer<> *ib = nullptr;
-	graphics::Shader *shader = nullptr;
+	std::unique_ptr<graphics::VertexArray> va = nullptr;
+	std::unique_ptr<graphics::IndexBuffer<>> ib = nullptr;
+	graphics::Shader shader;
 
   public:
 	TestInput(const Window &window);

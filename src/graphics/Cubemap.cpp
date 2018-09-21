@@ -53,20 +53,17 @@ Cubemap::Cubemap(const std::vector<std::string> &faces,
 
 	m_Shader = new Shader(vertexShaderPath, fragmentShaderPath);
 
-	m_Va = new VertexArray();
-	m_Vb = new VertexBuffer(m_SkyboxVertices, sizeof(m_SkyboxVertices));
+	m_Va = std::make_unique<VertexArray>();
+	m_Vb = std::make_unique<VertexBuffer>(m_SkyboxVertices,
+										  sizeof(m_SkyboxVertices));
 
 	VertexBufferLayout vbl;
 	vbl.Push<float>(3);
 
-	m_Va->AddBuffer(m_Vb, vbl);
+	m_Va->AddBuffer(std::move(m_Vb), vbl);
 }
 
-Cubemap::~Cubemap() {
-	delete m_Shader;
-	delete m_Va;
-	// m_Vb is deleted by m_Va
-}
+Cubemap::~Cubemap() { delete m_Shader; }
 
 void Cubemap::Draw() const {
 	GLCall(glDepthMask(GL_FALSE));

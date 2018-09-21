@@ -5,46 +5,39 @@ namespace renderel::test {
 TestTriangleColor::TestTriangleColor(const Window &window)
 	: Test(window), m_Colors{math::Vec4<float>(1.0f, 0.0f, 0.0f, 1.0f),
 							 math::Vec4<float>(0.0f, 0.0f, 1.0f, 1.0f),
-							 math::Vec4<float>(0.0f, 1.0f, 0.0f, 1.0f)} {
+							 math::Vec4<float>(0.0f, 1.0f, 0.0f, 1.0f)},
+	  shader("shaders/vertexShaderColor.glsl",
+			 "shaders/fragmentShaderColor.glsl") {
 
-	va = new graphics::VertexArray();
+	va = std::make_unique<graphics::VertexArray>();
 
-	vb = new graphics::VertexBuffer(m_Vertices, sizeof(m_Vertices));
+	vb = std::make_unique<graphics::VertexBuffer>(m_Vertices,
+												  sizeof(m_Vertices));
 
 	graphics::VertexBufferLayout vbl;
 	vbl.Push<float>(3);
 	vbl.Push<int32>(1);
 
-	va->AddBuffer(vb, vbl);
+	va->AddBuffer(std::move(vb), vbl);
 
-	ib = new graphics::IndexBuffer<uint32>(m_Indices, sizeof(m_Indices) /
-														  sizeof(m_Indices[0]));
+	ib = std::make_unique<graphics::IndexBuffer<>>(
+		m_Indices, sizeof(m_Indices) / sizeof(m_Indices[0]));
 
-	renderer = new graphics::BasicRenderer();
-
-	shader = new graphics::Shader("shaders/vertexShaderColor.glsl",
-								  "shaders/fragmentShaderColor.glsl");
-
-	shader->Bind();
+	shader.Bind();
 }
 
-TestTriangleColor::~TestTriangleColor() {
-	delete shader;
-	delete va;
-	delete ib;
-	delete renderer;
-}
+TestTriangleColor::~TestTriangleColor() {}
 
 void TestTriangleColor::OnUpdate(float) {
 	math::Mat4<float> colorMatrix(m_Colors[0], m_Colors[1], m_Colors[2],
 								  math::Vec4<float>(1.0f));
-	shader->SetUniformMat4f("u_ColorMatrix", colorMatrix);
+	shader.SetUniformMat4f("u_ColorMatrix", colorMatrix);
 }
 
 void TestTriangleColor::OnRender() {
-	renderer->Clear();
-	renderer->Submit(graphics::Renderable(va, ib, *shader));
-	renderer->Flush();
+	renderer.Clear();
+	renderer.Submit(graphics::Renderable(va.get(), ib.get(), shader));
+	renderer.Flush();
 }
 
 void TestTriangleColor::OnGUIRender() {

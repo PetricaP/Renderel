@@ -10,7 +10,9 @@ TestInput::TestInput(const Window &window)
 	  transform(
 		  Transform<>(math::Vec3<>(0.0f, 0.0f, -5.0f),
 					  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),
-					  math::Vec3<>(1.0f))) {
+					  math::Vec3<>(1.0f))),
+	  shader("shaders/vertexShaderBasic2D.glsl",
+			 "shaders/fragmentShaderBasic2D.glsl") {
 
 	handler->AddKeyControl(KEY_W, yAxis, 1.0f);
 	handler->AddKeyControl(KEY_S, yAxis, -1.0f);
@@ -30,30 +32,23 @@ TestInput::TestInput(const Window &window)
 	handler->AddKeyControl(KEY_C, zRotation, 1.0f);
 	handler->AddKeyControl(KEY_V, zRotation, -1.0f);
 
-	va = new graphics::VertexArray();
+	va = std::make_unique<graphics::VertexArray>();
 
-	graphics::VertexBuffer *vb =
-		new graphics::VertexBuffer(vertices, sizeof(vertices));
+	std::unique_ptr<graphics::VertexBuffer> vb =
+		std::make_unique<graphics::VertexBuffer>(vertices, sizeof(vertices));
 
 	graphics::VertexBufferLayout layout;
 	layout.Push<float>(3);
 
-	va->AddBuffer(vb, layout);
+	va->AddBuffer(std::move(vb), layout);
 
-	ib = new graphics::IndexBuffer<>(indices, 3);
-
-	shader = new graphics::Shader("shaders/vertexShaderBasic2D.glsl",
-								  "shaders/fragmentShaderBasic2D.glsl");
+	ib = std::make_unique<graphics::IndexBuffer<>>(indices, 3);
 }
 
-TestInput::~TestInput() {
-	delete va;
-	delete ib;
-	delete shader;
-}
+TestInput::~TestInput() {}
 
 void TestInput::OnRender() {
-	shader->Bind();
+	shader.Bind();
 	va->Bind();
 	ib->Bind();
 	GLCall(glDrawElements(GL_TRIANGLES, static_cast<int32>(ib->GetCount()),
@@ -63,10 +58,10 @@ void TestInput::OnRender() {
 void TestInput::OnUpdate(float deltaTime) {
 	float aspectRatio =
 		static_cast<float>(m_Window.GetWidth()) / m_Window.GetHeight();
-	shader->Bind();
+	shader.Bind();
 	math::Mat4<> proj =
 		math::Mat4<>::Perspective(70.0f, aspectRatio, 0.1f, 100.0f);
-	shader->SetUniformMat4f("u_Proj", proj);
+	shader.SetUniformMat4f("u_Proj", proj);
 
 	static float x = 0.0f;
 	static float y = 0.0f;
@@ -85,8 +80,8 @@ void TestInput::OnUpdate(float deltaTime) {
 	transform.SetRotation(rotation);
 
 	math::Mat4<> model = transform.GetModel();
-	shader->Bind();
-	shader->SetUniformMat4f("u_Model", model);
+	shader.Bind();
+	shader.SetUniformMat4f("u_Model", model);
 }
 
 void TestInput::OnGUIRender() {
