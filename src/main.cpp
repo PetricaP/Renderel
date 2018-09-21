@@ -1,21 +1,8 @@
 #include "GameEventHandler.hpp"
 #include "ImGUI.hpp"
-#include "InputControl.hpp"
-#include "Transform.hpp"
 #include "WindowGLFW.hpp"
 #include "core/Common.hpp"
 #include "graphics/BasicRenderer.hpp"
-#include "graphics/IndexBuffer.hpp"
-#include "graphics/OBJLoader.hpp"
-#include "graphics/Shader.hpp"
-#include "graphics/Texture.hpp"
-#include "graphics/VertexArray.hpp"
-#include "graphics/VertexBuffer.hpp"
-#include "math/EulerAngle.hpp"
-#include "math/Mat4.hpp"
-#include "math/Quaternion.hpp"
-#include "math/Vec2.hpp"
-#include "math/Vec3.hpp"
 #include "test/TestCamera.hpp"
 #include "test/TestClearColor.hpp"
 #include "test/TestECS.hpp"
@@ -26,8 +13,6 @@
 #include "test/TestSkybox.hpp"
 #include "test/TestTexturedCube.hpp"
 #include "test/TestTriangleColor.hpp"
-#include <imgui.h>
-#include <memory>
 
 using namespace renderel;
 
@@ -42,6 +27,8 @@ int32 main() {
 
 	auto gui = std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
 
+	// TODO: make it so this step is required (we don't want to check if gui
+	// is nullptr all the time
 	window->SetGUI(std::move(gui));
 
 	graphics::Renderer<>::InitGraphics();
