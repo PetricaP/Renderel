@@ -12,7 +12,7 @@ TestCamera::TestCamera(const Window &window)
 	  defaultCameraPosition(0.0f, 0.0f, -3.0f),
 	  eulerAngle(0.0f, math::toRadians(90.0f), 0.0f),
 	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
-	  texture("res/textures/bricks.jpg", graphics::Texture::TEXTURE_2D),
+	  texture("res/textures/bricks.jpg"),
 	  aspectRatio(static_cast<float>(window.GetWidth()) / window.GetHeight()),
 	  transform(math::Vec3<>(0.0f, 0.0f, 5.0f),
 				math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), 0.0f),

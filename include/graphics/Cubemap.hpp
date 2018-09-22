@@ -3,6 +3,7 @@
 
 #include "core/Common.hpp"
 #include "graphics/Shader.hpp"
+#include "graphics/Texture.hpp"
 #include "graphics/VertexArray.hpp"
 #include "graphics/VertexBuffer.hpp"
 #include "math/Mat4.hpp"
@@ -12,8 +13,9 @@ namespace renderel::graphics {
 
 class Cubemap {
   private:
-	uint32 m_TextureID;
 	Shader *m_Shader;
+	Texture texture;
+	uint32 m_TextureID;
 
 	std::unique_ptr<VertexArray> m_Va;
 	std::unique_ptr<VertexBuffer> m_Vb;

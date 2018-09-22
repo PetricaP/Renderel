@@ -12,7 +12,7 @@ void GLClearError() {
 
 bool GLLogCall(const char *function, const char *file, int line) {
 
-	static const std::string GLErrors[] = {"GL_INVADIL_ENUM",
+	static const std::string GLErrors[] = {"GL_INVALID_ENUM",
 										   "GL_INVALID_VALUE",
 										   "GL_INVALID_OPERATION",
 										   "GL_STACK_OVERFLOW",

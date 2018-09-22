@@ -70,8 +70,10 @@ uint32 ECSComponentCreate(std::vector<byte> &memory, EntityHandle handle,
 						  BaseECSComponent *component) {
 	uint32 index = static_cast<uint32>(memory.size());
 	memory.resize(index + Component::SIZE);
+
 	std::unique_ptr<Component> comp(
 		new (&memory[index]) Component(*static_cast<Component *>(component)));
+
 	comp.release();
 	component->entityHandle = handle;
 	return index;

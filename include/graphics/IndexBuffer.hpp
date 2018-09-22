@@ -29,8 +29,7 @@ class IndexBuffer {
 	}
 
 	template <typename U = T>
-	static typename std::enable_if<std::is_same<U, unsigned char>::value,
-								   uint32>::type
+	static typename std::enable_if<std::is_same<U, uint8>::value, uint32>::type
 	GetType() {
 		return GL_UNSIGNED_BYTE;
 	}

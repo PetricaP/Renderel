@@ -11,8 +11,7 @@ TestOBJLoader::TestOBJLoader(const Window &window, const std::string objPath,
 							 const std::string fragmentShaderPath)
 	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f},
 	  shader(vertexShaderPath, fragmentShaderPath),
-	  texture(texturePath.c_str(), graphics::Texture::TEXTURE_2D),
-	  mesh(objPath), rotation(0.0f, 0.0f, 0.0f),
+	  texture(texturePath.c_str()), mesh(objPath), rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.5f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *

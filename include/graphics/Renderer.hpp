@@ -18,7 +18,19 @@ class Renderer {
 	static void InitGraphics();
 	static void Clear();
 	static void SetClearColor(float r, float g, float b, float a);
+	static void EnableDepthMask();
+	static void DisableDepthMask();
 };
+
+template <typename T>
+void Renderer<T>::EnableDepthMask() {
+	GLCall(glDepthMask(GL_TRUE));
+}
+
+template <typename T>
+void Renderer<T>::DisableDepthMask() {
+	GLCall(glDepthMask(GL_FALSE));
+}
 
 template <typename T>
 void Renderer<T>::InitGraphics() {

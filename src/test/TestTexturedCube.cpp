@@ -7,7 +7,7 @@ namespace renderel::test {
 TestTexturedCube::TestTexturedCube(const Window &window)
 	: Test(window), m_Color{0.1f, 0.1f, 0.2f, 1.0f}, rotation(0.0f, 0.0f, 0.0f),
 	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
-	  texture("res/textures/bricks.jpg", graphics::Texture::TEXTURE_2D),
+	  texture("res/textures/bricks.jpg"),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -5.0f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *

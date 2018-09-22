@@ -6,7 +6,7 @@ namespace renderel::test {
 TestECS::TestECS(const Window &window)
 	: Test(window),
 	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
-	  texture("res/textures/monkey_baked.png", graphics::Texture::TEXTURE_2D) {
+	  texture("res/textures/monkey_baked.png") {
 
 	renderableMeshComponent.mesh.LoadOBJ("res/models/monkey.obj");
 	cameraComponent.camera.SetUp(math::Vec3<>(0.0f, 0.0f, -3.0f), 70.0f, 1.23f,

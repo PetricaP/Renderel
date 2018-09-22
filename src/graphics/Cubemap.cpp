@@ -1,6 +1,7 @@
 #include "graphics/Cubemap.hpp"
 
 #include "Debug.hpp"
+#include "graphics/Renderer.hpp"
 #include <GL/glew.h>
 #include <iostream>
 #include <stb_image.h>
@@ -10,46 +11,19 @@ namespace renderel::graphics {
 Cubemap::Cubemap(const std::vector<std::string> &faces,
 				 const std::string &vertexShaderPath,
 				 const std::string &fragmentShaderPath)
-	: m_ViewMatrix(math::Mat4<float>(1.0f)),
+	: texture(Texture::TEXTURE_CUBE_MAP, Texture::LINEAR,
+			  Texture::CLAMP_TO_EDGE),
+	  m_ViewMatrix(math::Mat4<float>(1.0f)),
 	  m_ProjectionMatrix(math::Mat4<float>(1.0f)) {
 
 	ASSERT(faces.size() == 6);
-
-	GLCall(glGenTextures(1, &m_TextureID));
-	GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID));
-
-	stbi_set_flip_vertically_on_load(false);
+	texture.Bind();
 
 	for (uint32 i = 0; i < faces.size(); ++i) {
-		int32 width, height, channels;
-		unsigned char *data =
-			stbi_load(faces[i].c_str(), &width, &height, &channels, 0);
-
-		if (data) {
-			GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
-								width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
-								data));
-		} else {
-			std::cerr << "Failed to load texture " << faces[i].c_str()
-					  << std::endl;
-		}
-		stbi_image_free(data);
+		texture.AddPart(faces[i], false, 3,
+						Texture::TEXTURE_CUBE_MAP_POSITIVE_X + i, Texture::RGB,
+						Texture::RGB8);
 	}
-
-	GLCall(
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-
-	GLCall(
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-	GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S,
-						   GL_CLAMP_TO_EDGE));
-
-	GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T,
-						   GL_CLAMP_TO_EDGE));
-
-	GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R,
-						   GL_CLAMP_TO_EDGE));
 
 	m_Shader = new Shader(vertexShaderPath, fragmentShaderPath);
 
@@ -66,17 +40,17 @@ Cubemap::Cubemap(const std::vector<std::string> &faces,
 Cubemap::~Cubemap() { delete m_Shader; }
 
 void Cubemap::Draw() const {
-	GLCall(glDepthMask(GL_FALSE));
+	Renderer<>::DisableDepthMask();
 	m_Shader->Bind();
 
-	this->m_Shader->SetUniformMat4f("u_View", m_ViewMatrix);
-	this->m_Shader->SetUniformMat4f("u_Proj", m_ProjectionMatrix);
+	m_Shader->SetUniformMat4f("u_View", m_ViewMatrix);
+	m_Shader->SetUniformMat4f("u_Proj", m_ProjectionMatrix);
 
 	m_Va->Bind();
-	GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID));
+	texture.Bind();
 
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
-	GLCall(glDepthMask(GL_TRUE));
+	Renderer<>::EnableDepthMask();
 }
 
 void Cubemap::SetViewMatrix(const math::Mat4<float> &mat) {
@@ -84,7 +58,7 @@ void Cubemap::SetViewMatrix(const math::Mat4<float> &mat) {
 }
 
 void Cubemap::SetProjectionMatrix(const math::Mat4<float> &mat) {
-	this->m_ProjectionMatrix = mat;
+	m_ProjectionMatrix = mat;
 }
 
 } // namespace renderel::graphics
