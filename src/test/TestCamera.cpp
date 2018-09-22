@@ -9,8 +9,7 @@ namespace renderel::test {
 
 TestCamera::TestCamera(const Window &window)
 	: Test(window), m_Color(0.2f, 0.2f, 0.2f, 1.0f),
-	  defaultCameraPosition(0.0f, 0.0f, -3.0f),
-	  eulerAngle(0.0f, math::toRadians(90.0f), 0.0f),
+	  defaultCameraPosition(0.0f, 0.0f, -3.0f), eulerAngle(0.0f, 90.0f, 0.0f),
 	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
 	  texture("res/textures/bricks.jpg"),
 	  aspectRatio(static_cast<float>(window.GetWidth()) / window.GetHeight()),

@@ -1,10 +1,7 @@
 #include "graphics/Cubemap.hpp"
-
 #include "Debug.hpp"
 #include "graphics/Renderer.hpp"
 #include <GL/glew.h>
-#include <iostream>
-#include <stb_image.h>
 
 namespace renderel::graphics {
 

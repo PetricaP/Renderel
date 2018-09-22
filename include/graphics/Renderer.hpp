@@ -35,7 +35,7 @@ void Renderer<T>::DisableDepthMask() {
 template <typename T>
 void Renderer<T>::InitGraphics() {
 	if (glewInit() != GLEW_OK) {
-		std::cerr << "Couldn't initialize glew.\n";
+		DEBUG_LOG("Renderer", ERROR, "Couldn't initialize GLEW.");
 		exit(EXIT_FAILURE);
 	}
 
