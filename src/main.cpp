@@ -47,7 +47,7 @@ int32 main() {
 	testMenu->RegisterTest<test::TestECS>("ECS test");
 
 	float prevTime = 0;
-	float newTime = static_cast<float>(glfwGetTime());
+	auto newTime = static_cast<float>(glfwGetTime());
 	float deltaTime;
 
 	while (!window->ShouldClose()) {

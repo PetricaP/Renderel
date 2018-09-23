@@ -30,8 +30,6 @@ class Mesh {
 		return std::move(m_IB);
 	}
 
-	std::unique_ptr<VertexArray> *GetMVertexArray() { return std::move(m_VA); }
-
 	void SetVertexArray(std::unique_ptr<VertexArray> va) {
 		m_VA = std::move(va);
 	}
