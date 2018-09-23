@@ -8,9 +8,9 @@
 namespace renderel::test {
 
 TestSkybox::TestSkybox(const std::shared_ptr<Window> window)
-	: TestOBJLoader(window, "res/models/dome.obj",
-					"res/textures/chesterfield_normal.png",
-					"shaders/normalShader.vert", "shaders/normalShader.frag"),
+	: TestOBJLoader(
+		  window, "res/models/dome.obj", "res/textures/chesterfield_normal.png",
+		  "shaders/normalShader.vert", "shaders/normalShader.frag", true, true),
 	  m_Camera(math::Vec3<>(0.0f, 0.0f, 0.0f), 70.0f, 1.21f, 0.001f, 100.0f),
 	  eulerAngle(0.0f, -90.0f, 0.0f) {
 

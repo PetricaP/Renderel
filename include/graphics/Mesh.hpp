@@ -4,6 +4,7 @@
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "graphics/OBJLoader.hpp"
+#include "graphics/Vertex.hpp"
 #include <string>
 
 namespace renderel::graphics {
@@ -15,7 +16,8 @@ class Mesh {
 	IndexBuffer<T> *m_IB = nullptr;
 
   public:
-	Mesh(const std::string &objFilePath);
+	Mesh(const std::string &objFilePath, bool loadTextures = false,
+		 bool loadNormals = false);
 	~Mesh();
 
 	void SetIndexBuffer(IndexBuffer<T> *ib) { m_IB = ib; }
@@ -25,8 +27,49 @@ class Mesh {
 };
 
 template <typename T, typename F>
-Mesh<T, F>::Mesh(const std::string &objFilePath) {
-	OBJLoader::Load<T, F>(objFilePath, m_IB, m_VA);
+Mesh<T, F>::Mesh(const std::string &objFilePath, bool loadTextures,
+				 bool loadNormals) {
+
+	vector<Vertex<F>> vertices;
+	vector<T> indices;
+
+	OBJLoader::Load<T, F>(objFilePath, vertices, indices, loadTextures,
+						  loadNormals);
+
+	if (loadNormals) {
+		OBJLoader::computeTangents(vertices, indices);
+	}
+
+	m_VA = new VertexArray();
+
+	VertexBuffer *vb = new VertexBuffer(
+		vertices.data(),
+		static_cast<unsigned int>(vertices.size() * sizeof(Vertex<F>)));
+
+	VertexBufferLayout vbl;
+	// Position
+	vbl.Push<F>(3);
+	// if (loadTextures) {
+
+	// TexCoord
+	vbl.Push<F>(2);
+
+	//}
+	// if (loadNormals) {
+
+	// Normal
+	vbl.Push<F>(3);
+	// Tangent
+	vbl.Push<F>(3);
+	// Bitangent
+	vbl.Push<F>(3);
+
+	//}
+
+	m_VA->AddBuffer(vb, vbl);
+
+	m_IB = new IndexBuffer<T>(indices.data(),
+							  static_cast<unsigned int>(indices.size()));
 }
 
 template <typename T, typename F>

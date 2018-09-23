@@ -11,8 +11,7 @@ namespace renderel::test {
 
 class TestFaceCulling : public Test {
   private:
-	graphics::VertexArray *va = nullptr;
-	graphics::IndexBuffer<> *ib = nullptr;
+	graphics::Mesh<> *mesh = nullptr;
 	graphics::Renderer<> *renderer = nullptr;
 	graphics::Shader *shader = nullptr;
 	graphics::Texture *texture = nullptr;

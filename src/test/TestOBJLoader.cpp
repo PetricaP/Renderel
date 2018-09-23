@@ -10,7 +10,8 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window,
 							 const std::string objPath,
 							 const std::string texturePath,
 							 const std::string vertexShaderPath,
-							 const std::string fragmentShaderPath)
+							 const std::string fragmentShaderPath,
+							 const bool loadTextures, const bool loadNormals)
 	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f}, rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.5f),
@@ -19,7 +20,7 @@ TestOBJLoader::TestOBJLoader(const std::shared_ptr<Window> window,
 			  math::Quaternion<>(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z),
 		  math::Vec3<>(1.0f)) {
 
-	mesh = new graphics::Mesh<>(objPath.c_str());
+	mesh = new graphics::Mesh<>(objPath.c_str(), loadTextures, loadNormals);
 
 	renderer = new graphics::BasicRenderer();
 	shader = new graphics::Shader(vertexShaderPath.c_str(),

@@ -1,8 +1,7 @@
 #ifndef GRAPHICS_OBJLOADER_HPP
 #define GRAPHICS_OBJLOADER_HPP
 
-#include "graphics/IndexBuffer.hpp"
-#include "graphics/VertexArray.hpp"
+#include "graphics/Vertex.hpp"
 #include "math/Vec2.hpp"
 #include "math/Vec3.hpp"
 #include <algorithm>
@@ -22,32 +21,23 @@
 
 namespace renderel::graphics::OBJLoader {
 
-template <typename U = float>
-struct Vertex {
-	math::Vec3<U> position;
-	math::Vec2<U> texCoords;
-	// TODO: math::Vec3<T> normal;
-	bool operator==(const Vertex &other) const;
-};
-
-template <typename U>
-bool Vertex<U>::operator==(const Vertex<U> &other) const {
-	return position == other.position && texCoords == other.texCoords;
-}
+using math::Vec2;
+using math::Vec3;
+using std::string;
+using std::vector;
 
 /*
  * T - IndexBuffer data type - defaults to unsigned int
  * U - Vertex data type - defaults to float
  */
 template <typename T = unsigned int, typename U = float>
-bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
+bool Load(const string &path, std::vector<Vertex<U>> &vertices,
+		  vector<T> &indices, bool loadTextures = false,
+		  bool loadNormals = false) {
 
-	std::vector<math::Vec3<U>> vertexPositions;
-	std::vector<math::Vec2<U>> textures;
-	std::vector<math::Vec3<U>> normals;
-
-	std::vector<Vertex<U>> vertices;
-	std::vector<T> indices;
+	vector<Vec3<U>> vertexPositions;
+	vector<Vec2<U>> textures;
+	vector<Vec3<U>> normals;
 
 	FILE *objFile = fopen(path.c_str(), "rt");
 	if (objFile == nullptr) {
@@ -76,7 +66,17 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 				// Create a vertex
 				Vertex<U> v;
 				v.position = vertexPositions[vertIndex[i] - 1];
-				v.texCoords = textures[texCoordIndex[i] - 1];
+
+				if (loadTextures) {
+					v.texCoords = textures[texCoordIndex[i] - 1];
+				} else {
+					v.texCoords = Vec2<U>(0.0f, 0.0f);
+				}
+				if (loadNormals) {
+					v.normal = normals[normalIndex[i] - 1];
+				} else {
+					v.normal = Vec3<U>(0.0f, 0.0f, 0.0f);
+				}
 
 				// Check if it already exists
 				auto position = std::find(vertices.begin(), vertices.end(), v);
@@ -90,11 +90,11 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 					indices.push_back(pos);
 				}
 			}
-		} else if (strcmp(begin, TEXTURE) == 0) {
+		} else if (loadTextures && strcmp(begin, TEXTURE) == 0) {
 			math::Vec2<> coord;
 			fscanf(objFile, "%f %f\n", &coord.x, &coord.y);
 			textures.push_back(coord);
-		} else if (strcmp(begin, NORMAL) == 0) {
+		} else if (loadNormals && strcmp(begin, NORMAL) == 0) {
 			math::Vec3<> coord;
 			fscanf(objFile, "%f %f %f\n", &coord.x, &coord.y, &coord.z);
 			normals.push_back(coord);
@@ -102,21 +102,17 @@ bool Load(const std::string &path, IndexBuffer<T> *&ib, VertexArray *&va) {
 		++currentLine;
 	}
 
-	va = new VertexArray();
-
-	VertexBuffer *vb = new VertexBuffer(
-		vertices.data(),
-		static_cast<unsigned int>(vertices.size() * sizeof(Vertex<U>)));
-
-	VertexBufferLayout vbl;
-	vbl.Push<U>(3);
-	vbl.Push<U>(2);
-
-	va->AddBuffer(vb, vbl);
-
-	ib = new IndexBuffer<T>(indices.data(),
-							static_cast<unsigned int>(indices.size()));
 	fclose(objFile);
+
+	return true;
+} // namespace renderel::graphics::OBJLoader
+
+template <typename T, typename U>
+bool computeTangents(vector<Vertex<U>> &vertices, vector<T> &indices) {
+
+	for (unsigned int i = 0; i < vertices.size(); ++i) {
+		// TODO separate verts even if they have the same coords
+	}
 
 	return true;
 }

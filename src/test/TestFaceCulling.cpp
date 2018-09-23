@@ -14,7 +14,8 @@ TestFaceCulling::TestFaceCulling(const std::shared_ptr<Window> window)
 			  math::Quaternion<>(math::Vec3<>(0.0f, 1.0f, 0.0f), rotation.y) *
 			  math::Quaternion<>(math::Vec3<>(0.0f, 0.0f, 1.0f), rotation.z),
 		  math::Vec3<>(1.0f)) {
-	graphics::OBJLoader::Load<>("res/models/flipped_cube.obj", ib, va);
+	// graphics::OBJLoader::Load<>("res/models/flipped_cube.obj", ib, va);
+	mesh = new graphics::Mesh<>("res/models/flipped_cube.obj", true);
 
 	renderer = new graphics::BasicRenderer();
 	shader = new graphics::Shader("shaders/vertexShader.glsl",
@@ -39,14 +40,13 @@ TestFaceCulling::~TestFaceCulling() {
 	GLCall(glDisable(GL_CULL_FACE));
 
 	delete shader;
-	delete va;
-	delete ib;
+	delete mesh;
 	delete renderer;
 }
 
 void TestFaceCulling::OnRender() {
 	graphics::Renderer<>::Clear();
-	renderer->Submit(graphics::Renderable(va, ib, *shader));
+	renderer->Submit(graphics::Renderable(*mesh, *shader));
 	renderer->Flush();
 }
 

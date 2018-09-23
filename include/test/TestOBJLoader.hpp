@@ -31,7 +31,8 @@ class TestOBJLoader : public Test {
 		const std::string texturePath = "res/textures/monkey_baked.png",
 		const std::string vertexShaderPath = "shaders/vertexShader.glsl",
 		const std::string fragmentShaderPath =
-			"shaders/fragmentShaderTexture.glsl");
+			"shaders/fragmentShaderTexture.glsl",
+		const bool loadTextures = true, const bool loadNormals = false);
 	~TestOBJLoader() override;
 	void OnRender() override;
 	void OnGUIRender() override;
