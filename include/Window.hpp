@@ -30,6 +30,7 @@ class Window {
 	virtual void Close() const = 0;
 	virtual void DisableMouse() const = 0;
 	virtual void EnableMouse() const = 0;
+	virtual void ToggleFullScreen() const = 0;
 
 	void SetWidth(int32 width) { m_Width = width; }
 	void SetHeight(int32 height) { m_Height = height; }

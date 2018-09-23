@@ -23,6 +23,7 @@ class WindowGLFW final : public Window {
 	void SwapBuffers() const override;
 	void PollEvents() const override;
 	void *GetAPIHandle() const override { return m_GLFWwindow; }
+	void ToggleFullScreen() const override;
 	void DisableMouse() const override {
 		glfwSetInputMode(m_GLFWwindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}

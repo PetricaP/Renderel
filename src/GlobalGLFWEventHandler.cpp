@@ -1,6 +1,6 @@
 #include "GlobalGLFWEventHandler.hpp"
 #include "Debug.hpp"
-#include <GL/glew.h>
+#include "graphics/Renderer.hpp"
 
 namespace renderel {
 
@@ -21,7 +21,7 @@ void GlobalGLFWEventHandler::HandleKeyEvent(WindowGLFW *window,
 	switch (event.keyEvent.action) {
 	case PRESS:
 		if (event.keyEvent.key == GLFW_KEY_F11) {
-			HandleFullScreen(window);
+			window->ToggleFullScreen();
 		} else {
 			window->GetEventHandler()->OnKeyDown(event.keyEvent.key, false);
 		}
@@ -32,33 +32,6 @@ void GlobalGLFWEventHandler::HandleKeyEvent(WindowGLFW *window,
 	case KEYREPEAT:
 		window->GetEventHandler()->OnKeyDown(event.keyEvent.key, true);
 		break;
-	}
-}
-
-void GlobalGLFWEventHandler::HandleFullScreen(WindowGLFW *window) {
-	static int32 prevWidth = 0;
-	static int32 prevHeight = 0;
-	static int32 prevPosX = 0;
-	static int32 prevPosY = 0;
-	if (!glfwGetWindowMonitor(
-			static_cast<GLFWwindow *>(window->GetAPIHandle()))) {
-
-		GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-		const GLFWvidmode *videoMode = glfwGetVideoMode(monitor);
-
-		prevWidth = window->GetWidth();
-		prevHeight = window->GetHeight();
-
-		glfwGetWindowPos((GLFWwindow *)window->GetAPIHandle(), &prevPosX,
-						 &prevPosY);
-
-		glfwSetWindowMonitor(static_cast<GLFWwindow *>(window->GetAPIHandle()),
-							 glfwGetPrimaryMonitor(), 0, 0, videoMode->width,
-							 videoMode->height, GLFW_DONT_CARE);
-	} else {
-		glfwSetWindowMonitor(static_cast<GLFWwindow *>(window->GetAPIHandle()),
-							 nullptr, prevPosX, prevPosY, prevWidth, prevHeight,
-							 GLFW_DONT_CARE);
 	}
 }
 
@@ -105,6 +78,8 @@ void GlobalGLFWEventHandler::HandleEvents(WindowEventData &windowEventData) {
 		case WINDOWRESIZE:
 			windowEventData.windowGLFW->SetWidth(event.windowEvent.width);
 			windowEventData.windowGLFW->SetHeight(event.windowEvent.height);
+			graphics::Renderer<>::SetViewPort(0, 0, event.windowEvent.width,
+											  event.windowEvent.height);
 			glViewport(0, 0, event.windowEvent.width, event.windowEvent.height);
 			break;
 		}

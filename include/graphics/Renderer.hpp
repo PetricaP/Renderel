@@ -20,7 +20,13 @@ class Renderer {
 	static void SetClearColor(float r, float g, float b, float a);
 	static void EnableDepthMask();
 	static void DisableDepthMask();
+	static void SetViewPort(int32 x1, int32 y1, int32 x2, int32 y2);
 };
+
+template <typename T>
+void Renderer<T>::SetViewPort(int32 x1, int32 y1, int32 x2, int32 y2) {
+	glViewport(x1, y1, x2, y2);
+}
 
 template <typename T>
 void Renderer<T>::EnableDepthMask() {

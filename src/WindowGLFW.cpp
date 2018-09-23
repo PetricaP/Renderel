@@ -93,4 +93,28 @@ void WindowGLFW::PollEvents() const {
 	GlobalGLFWEventHandler::PollEvents(m_GLFWwindow);
 }
 
+void WindowGLFW::ToggleFullScreen() const {
+	static int32 prevWidth = 0;
+	static int32 prevHeight = 0;
+	static int32 prevPosX = 0;
+	static int32 prevPosY = 0;
+	if (!glfwGetWindowMonitor(static_cast<GLFWwindow *>(m_GLFWwindow))) {
+
+		GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode *videoMode = glfwGetVideoMode(monitor);
+
+		prevWidth = m_Width;
+		prevHeight = m_Height;
+
+		glfwGetWindowPos((GLFWwindow *)m_GLFWwindow, &prevPosX, &prevPosY);
+
+		glfwSetWindowMonitor(m_GLFWwindow, glfwGetPrimaryMonitor(), 0, 0,
+							 videoMode->width, videoMode->height,
+							 GLFW_DONT_CARE);
+	} else {
+		glfwSetWindowMonitor(m_GLFWwindow, nullptr, prevPosX, prevPosY,
+							 prevWidth, prevHeight, GLFW_DONT_CARE);
+	}
+}
+
 } // namespace renderel
