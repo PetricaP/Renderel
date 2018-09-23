@@ -66,24 +66,25 @@ void TestSkybox::OnGUIRender() {
 
 	GUI *gui = m_Window.GetGUI();
 	gui->Text("Q - Toggle Mouse");
-	gui->Text("Euler angle yaw: %f", eulerAngle.yaw);
-	gui->Text("Euler angle pitch: %f", eulerAngle.pitch);
-	gui->Text("Euler angle roll: %f", eulerAngle.roll);
+	gui->Text("Euler angle yaw: %f", static_cast<double>(eulerAngle.yaw));
+	gui->Text("Euler angle pitch: %f", static_cast<double>(eulerAngle.pitch));
+	gui->Text("Euler angle roll: %f", static_cast<double>(eulerAngle.roll));
 	gui->Text("Camera position:\n\t%.1f\n\t%.1f\n\t%.1f",
-			  m_Camera.GetPosition().x, m_Camera.GetPosition().y,
-			  m_Camera.GetPosition().z);
+			  static_cast<double>(m_Camera.GetPosition().x),
+			  static_cast<double>(m_Camera.GetPosition().y),
+			  static_cast<double>(m_Camera.GetPosition().z));
 }
 
 void TestSkybox::OnUpdate(float deltaTime) {
 
-	if (toggleMouse.GetAmount()) {
+	if (static_cast<bool>(toggleMouse.GetAmount())) {
 		if (canChangeMouse) {
 			if (hasCursor) {
 				m_Window.DisableMouse();
 			} else {
 				m_Window.EnableMouse();
 			}
-			hasCursor = !hasCursor; // reverse hasCursor
+			hasCursor = !hasCursor;
 			canChangeMouse = false;
 		}
 	} else {

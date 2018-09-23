@@ -13,8 +13,8 @@ namespace renderel::graphics {
 
 class Cubemap {
   private:
-	Shader *m_Shader;
-	Texture texture;
+	Shader m_Shader;
+	Texture m_Texture;
 	uint32 m_TextureID;
 
 	std::unique_ptr<VertexArray> m_Va;
@@ -77,7 +77,7 @@ class Cubemap {
 			const std::string &fragmentShaderPath);
 	~Cubemap();
 
-	void Draw() const;
+	void Draw();
 	void SetViewMatrix(const math::Mat4<float> &mat);
 	void SetProjectionMatrix(const math::Mat4<float> &mat);
 };

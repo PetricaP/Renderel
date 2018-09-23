@@ -37,6 +37,8 @@ class Mesh {
 	}
 	VertexArray *GetVertexArray() const { return m_VA.get(); }
 
+	// TODO: This is not really a solution to our problem, just code that
+	// makes everything work
 	Mesh(Mesh &other)
 		: m_VA(other.m_VA.release()), m_IB(other.m_IB.release()) {}
 };

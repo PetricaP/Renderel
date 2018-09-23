@@ -14,9 +14,16 @@ void TestMenu::OnGUIRender() {
 }
 
 void TestMenu::Run(float deltaTime) {
+	static float fpsTimer = 0;
+	static float fps = 0;
+	fpsTimer += deltaTime;
 	m_Window.GetGUI()->Init();
 	m_Window.GetGUI()->Begin("Test");
-	m_Window.GetGUI()->Text("FPS: %.2f", static_cast<double>(1.0f / deltaTime));
+	if (fpsTimer > 1) {
+		fps = 1.0f / deltaTime;
+		fpsTimer = 0;
+	}
+	m_Window.GetGUI()->Text("FPS: %.2f", static_cast<double>(fps));
 
 	if (isActive) {
 

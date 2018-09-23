@@ -25,7 +25,7 @@ class TestTexturedCube : public Test {
 		-size, -size,  size, 0.0f, 0.0f, // 4
 		 size, -size,  size, 1.0f, 0.0f, // 5
 		-size,  size,  size, 0.0f, 1.0f, // 6
-		 size,  size,  size, 1.0f, 1.0f,  // 7
+		 size,  size,  size, 1.0f, 1.0f, // 7
 		// Left face
 		-size, -size, -size, 0.0f, 0.0f, // 8
 		-size, -size,  size, 1.0f, 0.0f, // 9

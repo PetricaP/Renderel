@@ -8,21 +8,20 @@ namespace renderel::graphics {
 Cubemap::Cubemap(const std::vector<std::string> &faces,
 				 const std::string &vertexShaderPath,
 				 const std::string &fragmentShaderPath)
-	: texture(Texture::TEXTURE_CUBE_MAP, Texture::LINEAR,
-			  Texture::CLAMP_TO_EDGE),
+	: m_Shader(vertexShaderPath, fragmentShaderPath),
+	  m_Texture(Texture::TEXTURE_CUBE_MAP, Texture::LINEAR,
+				Texture::CLAMP_TO_EDGE),
 	  m_ViewMatrix(math::Mat4<float>(1.0f)),
 	  m_ProjectionMatrix(math::Mat4<float>(1.0f)) {
 
 	ASSERT(faces.size() == 6);
-	texture.Bind();
+	m_Texture.Bind();
 
 	for (uint32 i = 0; i < faces.size(); ++i) {
-		texture.AddPart(faces[i], false, 3,
-						Texture::TEXTURE_CUBE_MAP_POSITIVE_X + i, Texture::RGB,
-						Texture::RGB8);
+		m_Texture.AddPart(faces[i], false, 3,
+						  Texture::TEXTURE_CUBE_MAP_POSITIVE_X + i,
+						  Texture::RGB, Texture::RGB8);
 	}
-
-	m_Shader = new Shader(vertexShaderPath, fragmentShaderPath);
 
 	m_Va = std::make_unique<VertexArray>();
 	m_Vb = std::make_unique<VertexBuffer>(m_SkyboxVertices,
@@ -34,17 +33,17 @@ Cubemap::Cubemap(const std::vector<std::string> &faces,
 	m_Va->AddBuffer(std::move(m_Vb), vbl);
 }
 
-Cubemap::~Cubemap() { delete m_Shader; }
+Cubemap::~Cubemap() {}
 
-void Cubemap::Draw() const {
+void Cubemap::Draw() {
 	Renderer<>::DisableDepthMask();
-	m_Shader->Bind();
+	m_Shader.Bind();
 
-	m_Shader->SetUniformMat4f("u_View", m_ViewMatrix);
-	m_Shader->SetUniformMat4f("u_Proj", m_ProjectionMatrix);
+	m_Shader.SetUniformMat4f("u_View", m_ViewMatrix);
+	m_Shader.SetUniformMat4f("u_Proj", m_ProjectionMatrix);
 
 	m_Va->Bind();
-	texture.Bind();
+	m_Texture.Bind();
 
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
 	Renderer<>::EnableDepthMask();

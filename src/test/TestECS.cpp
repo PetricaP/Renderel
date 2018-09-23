@@ -33,6 +33,7 @@ TestECS::TestECS(const Window &window)
 void TestECS::OnUpdate(float) {
 	math::Mat4<> model =
 		m_ECS.GetComponent<TransformComponent>(entity)->transform.GetModel();
+	shader.Bind();
 	shader.SetUniformMat4f("u_Model", model);
 }
 
