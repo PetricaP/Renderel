@@ -35,14 +35,14 @@ TestInput::TestInput(const Window &window)
 	va = std::make_unique<graphics::VertexArray>();
 
 	std::unique_ptr<graphics::VertexBuffer> vb =
-		std::make_unique<graphics::VertexBuffer>(vertices, sizeof(vertices));
+		std::make_unique<graphics::VertexBuffer>(vertices, 3, sizeof(float) * 3);
 
 	graphics::VertexBufferLayout layout;
 	layout.Push<float>(3);
 
 	va->AddBuffer(std::move(vb), layout);
 
-	ib = std::make_unique<graphics::IndexBuffer<>>(indices, 3);
+	ib = std::make_unique<graphics::IndexBuffer>(indices, 3);
 }
 
 TestInput::~TestInput() {}

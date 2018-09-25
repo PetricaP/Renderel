@@ -1,29 +1,22 @@
 #ifndef RENDERABLE_HPP
 #define RENDERABLE_HPP
 
-#include "graphics/Mesh.hpp"
-#include "graphics/Shader.hpp"
+#include "IndexBuffer.hpp"
+#include "Shader.hpp"
+#include "VertexArray.hpp"
 
 namespace renderel::graphics {
 
-template <typename T = uint32>
-class Renderable {
-  private:
-	const VertexArray *m_VA;
-	const IndexBuffer<T> *m_IB;
-	Shader &m_Shader;
+struct Renderable {
+	const VertexArray *va;
+	const IndexBuffer *ib;
+	Shader &shader;
 
-  public:
-	Renderable(const VertexArray *va, const IndexBuffer<T> *ib, Shader &shader)
-		: m_VA(va), m_IB(ib), m_Shader(shader) {}
-	Renderable(const Mesh<T> &mesh, Shader &shader)
-		: m_VA(mesh.GetVertexArray()), m_IB(mesh.GetIndexBuffer()),
-		  m_Shader(shader) {}
+	Renderable(Shader &shader, const VertexArray *va,
+			   const IndexBuffer *ib = nullptr)
+		: va(va), ib(ib), shader(shader) {}
+
 	~Renderable() = default;
-
-	const VertexArray *GetVA() const { return m_VA; }
-	const IndexBuffer<T> *GetIB() const { return m_IB; }
-	Shader &GetShader() const { return m_Shader; }
 };
 
 } // namespace renderel::graphics

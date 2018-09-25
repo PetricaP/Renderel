@@ -2,7 +2,7 @@
 #include "ImGUI.hpp"
 #include "WindowGLFW.hpp"
 #include "core/Common.hpp"
-#include "graphics/BasicRenderer.hpp"
+#include "graphics/Renderer.hpp"
 #include "test/TestCamera.hpp"
 #include "test/TestClearColor.hpp"
 #include "test/TestECS.hpp"
@@ -26,13 +26,13 @@ int32 main() {
 											   std::move(gameEventHandler));
 
 	auto gui = std::make_unique<ImGUI>(window->GetAPIHandle(), "#version 130");
-
-	// TODO: make it so this step is required (we don't want to check if gui
-	// is nullptr all the time
 	window->SetGUI(std::move(gui));
 
-	graphics::Renderer<>::InitGraphics();
-	graphics::Renderer<>::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	auto renderer = std::make_unique<graphics::Renderer>();
+	window->SetRenderer(std::move(renderer));
+
+	graphics::Renderer::InitGraphics();
+	graphics::Renderer::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	std::unique_ptr<test::TestMenu> testMenu(new test::TestMenu(*window));
 
@@ -55,7 +55,7 @@ int32 main() {
 		prevTime = newTime;
 
 		window->PollEvents();
-		graphics::Renderer<>::Clear();
+		graphics::Renderer::Clear();
 
 		testMenu->Run(deltaTime);
 

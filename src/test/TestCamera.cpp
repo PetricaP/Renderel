@@ -36,7 +36,8 @@ TestCamera::TestCamera(const Window &window)
 	va = std::make_unique<graphics::VertexArray>();
 
 	vb = std::make_unique<graphics::VertexBuffer>(
-		static_cast<const float *>(m_Vertices), sizeof(m_Vertices));
+		static_cast<const float *>(m_Vertices),
+		sizeof(m_Vertices) / 5 / sizeof(float), 5 * sizeof(float));
 
 	graphics::VertexBufferLayout layout;
 	layout.Push<float>(3);
@@ -44,7 +45,7 @@ TestCamera::TestCamera(const Window &window)
 
 	va->AddBuffer(std::move(vb), layout);
 
-	ib = std::make_unique<graphics::IndexBuffer<>>(
+	ib = std::make_unique<graphics::IndexBuffer>(
 		indices, sizeof(indices) / sizeof(indices[0]));
 
 	shader.Bind();
@@ -126,8 +127,10 @@ void TestCamera::OnUpdate(float deltaTime) {
 		math::Vec3<> yVec =
 			yAxis.GetAmount() * movementSensitivity * camera.GetForward();
 
-		math::Vec3<> xVec = xAxis.GetAmount() * movementSensitivity *
-							camera.GetForward().Cross(camera.GetUp());
+		math::Vec3<> xVec =
+			xAxis.GetAmount() * movementSensitivity *
+			camera.GetForward().Cross(camera.GetUp()).Normalize();
+
 		math::Vec3<> zVec =
 			zAxis.GetAmount() * movementSensitivity * camera.GetUp();
 
@@ -162,9 +165,10 @@ void TestCamera::OnGUIRender() {
 }
 
 void TestCamera::OnRender() {
-	graphics::Renderer<>::Clear();
-	renderer.Submit(graphics::Renderable(va.get(), ib.get(), shader));
-	renderer.Flush();
+	graphics::Renderer::Clear();
+	m_Window.GetRenderer()->Submit(
+		graphics::Renderable(shader, va.get(), ib.get()));
+	m_Window.GetRenderer()->Flush();
 }
 
 } // namespace renderel::test

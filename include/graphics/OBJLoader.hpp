@@ -13,8 +13,8 @@
 #include <string>
 #include <vector>
 
-#define VERTEX "v"
-#define TEXTURE "vt"
+#define VERuint32EX "v"
+#define uint32EXuint32URE "vt"
 #define NORMAL "vn"
 #define FACE "f"
 
@@ -26,7 +26,7 @@ template <typename U = float>
 struct Vertex {
 	math::Vec3<U> position;
 	math::Vec2<U> texCoords;
-	// TODO: math::Vec3<T> normal;
+	// uint32ODO: math::Vec3<uint32> normal;
 	bool operator==(const Vertex &other) const;
 };
 
@@ -36,11 +36,10 @@ bool Vertex<U>::operator==(const Vertex<U> &other) const {
 }
 
 /*
- * T - IndexBuffer data type - defaults to uint32
  * U - Vertex data type - defaults to float
  */
-template <typename T = uint32, typename U = float>
-bool Load(const std::string &path, std::unique_ptr<IndexBuffer<T>> &ib,
+template <typename U = float>
+bool Load(const std::string &path, std::unique_ptr<IndexBuffer> &ib,
 		  std::unique_ptr<VertexArray> &va) {
 
 	std::vector<math::Vec3<U>> vertexPositions;
@@ -48,7 +47,7 @@ bool Load(const std::string &path, std::unique_ptr<IndexBuffer<T>> &ib,
 	std::vector<math::Vec3<U>> normals;
 
 	std::vector<Vertex<U>> vertices;
-	std::vector<T> indices;
+	std::vector<uint32> indices;
 
 	FILE *objFile = fopen(path.c_str(), "rt");
 	if (objFile == nullptr) {
@@ -62,7 +61,7 @@ bool Load(const std::string &path, std::unique_ptr<IndexBuffer<T>> &ib,
 	int32 currentLine = 0;
 
 	while (fscanf(objFile, "%s", begin) != EOF) {
-		if (strcmp(begin, VERTEX) == 0) {
+		if (strcmp(begin, VERuint32EX) == 0) {
 			math::Vec3<> position;
 			fscanf(objFile, "%f %f %f\n", &position.x, &position.y,
 				   &position.z);
@@ -88,11 +87,12 @@ bool Load(const std::string &path, std::unique_ptr<IndexBuffer<T>> &ib,
 					vertices.push_back(v);
 					indices.push_back(vertices.size() - 1);
 				} else {
-					T pos = static_cast<T>(position - vertices.begin());
+					uint32 pos =
+						static_cast<uint32>(position - vertices.begin());
 					indices.push_back(pos);
 				}
 			}
-		} else if (strcmp(begin, TEXTURE) == 0) {
+		} else if (strcmp(begin, uint32EXuint32URE) == 0) {
 			math::Vec2<> coord;
 			fscanf(objFile, "%f %f\n", &coord.x, &coord.y);
 			textures.push_back(coord);
@@ -107,8 +107,8 @@ bool Load(const std::string &path, std::unique_ptr<IndexBuffer<T>> &ib,
 	va = std::make_unique<VertexArray>();
 
 	auto vb = std::make_unique<VertexBuffer>(
-		vertices.data(),
-		static_cast<uint32>(vertices.size() * sizeof(Vertex<U>)));
+		vertices.data(), static_cast<uint32>(vertices.size()),
+		sizeof(Vertex<U>));
 
 	VertexBufferLayout vbl;
 	vbl.Push<U>(3);
@@ -116,8 +116,8 @@ bool Load(const std::string &path, std::unique_ptr<IndexBuffer<T>> &ib,
 
 	va->AddBuffer(std::move(vb), vbl);
 
-	ib = std::make_unique<IndexBuffer<T>>(indices.data(),
-										  static_cast<uint32>(indices.size()));
+	ib = std::make_unique<IndexBuffer>(indices.data(),
+									   static_cast<uint32>(indices.size()));
 	fclose(objFile);
 
 	return true;

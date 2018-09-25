@@ -1,67 +1,10 @@
-#ifndef GRAPHICS_RENDERER_HPP
-#define GRAPHICS_RENDERER_HPP
+#ifndef GRPHICS_RENDERER_H
+#define GRPHICS_RENDERER_H
 
-#include "graphics/Renderable.hpp"
-#include <queue>
+#include "OpenGLRenderer.hpp"
 
 namespace renderel::graphics {
-
-template <typename T = uint32>
-class Renderer {
-  public:
-	Renderer() = default;
-
-	virtual ~Renderer() = default;
-	virtual void Flush() = 0;
-	virtual void Submit(const Renderable<T> &renderable) = 0;
-
-	static void InitGraphics();
-	static void Clear();
-	static void SetClearColor(float r, float g, float b, float a);
-	static void EnableDepthMask();
-	static void DisableDepthMask();
-	static void SetViewPort(int32 x1, int32 y1, int32 x2, int32 y2);
-};
-
-template <typename T>
-void Renderer<T>::SetViewPort(int32 x1, int32 y1, int32 x2, int32 y2) {
-	glViewport(x1, y1, x2, y2);
+using Renderer = OpenGLRenderer;
 }
 
-template <typename T>
-void Renderer<T>::EnableDepthMask() {
-	GLCall(glDepthMask(GL_TRUE));
-}
-
-template <typename T>
-void Renderer<T>::DisableDepthMask() {
-	GLCall(glDepthMask(GL_FALSE));
-}
-
-template <typename T>
-void Renderer<T>::InitGraphics() {
-	if (glewInit() != GLEW_OK) {
-		DEBUG_LOG("Renderer", ERROR, "Couldn't initialize GLEW.");
-		exit(EXIT_FAILURE);
-	}
-
-	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-	GLCall(glDepthFunc(GL_LEQUAL));
-	GLCall(glEnable(GL_BLEND));
-	GLCall(glEnable(GL_DEPTH_TEST));
-}
-
-template <typename T>
-void Renderer<T>::Clear() {
-	// TODO: GL_STENCIL_BIT
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-template <typename T>
-void Renderer<T>::SetClearColor(float r, float g, float b, float a) {
-	glClearColor(r, g, b, a);
-}
-
-} // namespace renderel::graphics
-
-#endif
+#endif // GRPHICS_RENDERER_H

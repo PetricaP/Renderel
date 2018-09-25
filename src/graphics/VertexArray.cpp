@@ -18,6 +18,7 @@ void VertexArray::AddBuffer(std::unique_ptr<VertexBuffer> vb,
 							const VertexBufferLayout &layout) {
 	Bind();
 	vb->Bind();
+	m_Count += vb->GetCount();
 	const auto &elements = layout.GetElements();
 	unsigned long offset = 0;
 	for (uint32 i = 0; i < elements.size(); ++i) {

@@ -1,5 +1,7 @@
 #include "graphics/Cubemap.hpp"
 #include "Debug.hpp"
+#include "graphics/Renderer.hpp"
+#include <GL/glew.h>
 
 namespace renderel::graphics {
 
@@ -22,14 +24,13 @@ Cubemap::Cubemap(const std::vector<std::string> &faces,
 	}
 
 	m_Va = std::make_unique<VertexArray>();
-	m_Vb = std::make_unique<VertexBuffer>(m_SkyboxVertices,
-										  sizeof(m_SkyboxVertices));
-
-	m_Ib = std::make_unique<IndexBuffer<>>(indices, sizeof(indices) /
-														sizeof(indices[0]));
 
 	VertexBufferLayout vbl;
 	vbl.Push<float>(3);
+
+	m_Vb = std::make_unique<VertexBuffer>(
+		m_SkyboxVertices, sizeof(m_SkyboxVertices) / 3 / sizeof(float),
+		3 * sizeof(float));
 
 	m_Va->AddBuffer(std::move(m_Vb), vbl);
 }
@@ -37,15 +38,19 @@ Cubemap::Cubemap(const std::vector<std::string> &faces,
 Cubemap::~Cubemap() {}
 
 void Cubemap::Draw() {
-	Renderer<>::DisableDepthMask();
+	Renderer::DisableDepthMask();
+	m_Shader.Bind();
+
 	m_Shader.SetUniformMat4f("u_View", m_ViewMatrix);
 	m_Shader.SetUniformMat4f("u_Proj", m_ProjectionMatrix);
 
+	m_Va->Bind();
 	m_Texture.Bind();
-	renderer.Submit(Renderable<>(m_Va.get(), m_Ib.get(), m_Shader));
 
+	renderer.Submit(Renderable(m_Shader, m_Va.get()));
 	renderer.Flush();
-	Renderer<>::EnableDepthMask();
+
+	Renderer::EnableDepthMask();
 }
 
 void Cubemap::SetViewMatrix(const math::Mat4<float> &mat) {

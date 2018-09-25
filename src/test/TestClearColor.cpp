@@ -13,9 +13,9 @@ TestClearColor::~TestClearColor() {}
 void TestClearColor::OnUpdate(float) {}
 
 void TestClearColor::OnRender() {
-	graphics::Renderer<>::SetClearColor(m_Color.r, m_Color.g, m_Color.b,
+	graphics::Renderer::SetClearColor(m_Color.r, m_Color.g, m_Color.b,
 										m_Color.a);
-	graphics::Renderer<>::Clear();
+	graphics::Renderer::Clear();
 }
 
 void TestClearColor::OnGUIRender() {

@@ -12,6 +12,7 @@ namespace renderel::graphics {
 class VertexArray {
   private:
 	uint32 m_RendererID;
+	uint32 m_Count = 0;
 	std::vector<std::unique_ptr<VertexBuffer>> m_VBs;
 
   public:
@@ -24,6 +25,7 @@ class VertexArray {
 
 	void Bind() const;
 	void Unbind() const;
+	uint32 GetCount() const { return m_Count; }
 };
 
 } // namespace renderel::graphics

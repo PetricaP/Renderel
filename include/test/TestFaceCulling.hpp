@@ -2,7 +2,6 @@
 #define TESTFACECULLING_HPP
 
 #include "Transform.hpp"
-#include "graphics/BasicRenderer.hpp"
 #include "graphics/Texture.hpp"
 #include "math/Vec4.hpp"
 #include "test/Test.hpp"
@@ -12,8 +11,7 @@ namespace renderel::test {
 class TestFaceCulling : public Test {
   private:
 	std::unique_ptr<graphics::VertexArray> va = nullptr;
-	std::unique_ptr<graphics::IndexBuffer<>> ib = nullptr;
-	graphics::BasicRenderer<> renderer;
+	std::unique_ptr<graphics::IndexBuffer> ib = nullptr;
 	graphics::Shader shader;
 	graphics::Texture texture;
 

@@ -7,7 +7,7 @@ namespace renderel::test {
 TestTexturedCube::TestTexturedCube(const Window &window)
 	: Test(window), m_Color{0.1f, 0.1f, 0.2f, 1.0f},
 	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
-	  texture("res/textures/cpp_logo.png"), rotation(0.0f, 0.0f, 0.0f),
+	  texture("res/textures/bricks.jpg"), rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -5.0f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *
@@ -18,7 +18,7 @@ TestTexturedCube::TestTexturedCube(const Window &window)
 	va = std::make_unique<graphics::VertexArray>();
 
 	vb = std::make_unique<graphics::VertexBuffer>(
-		static_cast<const float *>(m_Vertices), sizeof(m_Vertices));
+		static_cast<const float *>(m_Vertices), 24, 5 * sizeof(float));
 
 	graphics::VertexBufferLayout layout;
 	layout.Push<float>(3);
@@ -26,7 +26,7 @@ TestTexturedCube::TestTexturedCube(const Window &window)
 
 	va->AddBuffer(std::move(vb), layout);
 
-	ib = std::make_unique<graphics::IndexBuffer<>>(
+	ib = std::make_unique<graphics::IndexBuffer>(
 		indices, sizeof(indices) / sizeof(indices[0]));
 
 	shader.Bind();
@@ -68,9 +68,10 @@ void TestTexturedCube::OnGUIRender() {
 }
 
 void TestTexturedCube::OnRender() {
-	graphics::Renderer<>::Clear();
-	renderer.Submit(graphics::Renderable(va.get(), ib.get(), shader));
-	renderer.Flush();
+	graphics::Renderer::Clear();
+	m_Window.GetRenderer()->Submit(
+		graphics::Renderable(shader, va.get(), ib.get()));
+	m_Window.GetRenderer()->Flush();
 }
 
 } // namespace renderel::test

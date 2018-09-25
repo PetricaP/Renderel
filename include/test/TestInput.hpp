@@ -4,7 +4,6 @@
 #include "GameEventHandler.hpp"
 #include "Test.hpp"
 #include "Transform.hpp"
-#include "graphics/BasicRenderer.hpp"
 
 namespace renderel::test {
 
@@ -32,7 +31,7 @@ class TestInput : public Test {
 	Transform<> transform;
 
 	std::unique_ptr<graphics::VertexArray> va = nullptr;
-	std::unique_ptr<graphics::IndexBuffer<>> ib = nullptr;
+	std::unique_ptr<graphics::IndexBuffer> ib = nullptr;
 	graphics::Shader shader;
 
   public:

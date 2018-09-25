@@ -5,8 +5,6 @@
 #include "Test.hpp"
 #include "Transform.hpp"
 #include "ecs/ECS.hpp"
-#include "graphics/BasicRenderer.hpp"
-#include "graphics/Mesh.hpp"
 #include "graphics/Texture.hpp"
 
 namespace renderel::test {
@@ -16,7 +14,8 @@ struct TransformComponent : public ECSComponent<TransformComponent> {
 };
 
 struct RenderableMeshComponent : public ECSComponent<RenderableMeshComponent> {
-	graphics::Mesh<> mesh;
+	graphics::VertexArray *va = nullptr;
+	graphics::IndexBuffer *ib = nullptr;
 };
 
 struct CameraComponent : public ECSComponent<CameraComponent> {
@@ -28,11 +27,13 @@ class TestECS : public Test {
 	ECS m_ECS;
 	graphics::Shader shader;
 	EntityHandle entity;
-	graphics::BasicRenderer<> renderer;
 	TransformComponent transformComponent;
 	RenderableMeshComponent renderableMeshComponent;
 	CameraComponent cameraComponent;
 	graphics::Texture texture;
+
+	std::unique_ptr<graphics::VertexArray> m_VA;
+	std::unique_ptr<graphics::IndexBuffer> m_IB;
 
   public:
 	TestECS(const Window &window);

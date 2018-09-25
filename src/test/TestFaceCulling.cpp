@@ -7,9 +7,10 @@
 namespace renderel::test {
 
 TestFaceCulling::TestFaceCulling(const Window &window)
-	: Test(window), rotation(30.0f, 0.0f, 0.0f),
-	  texture("res/textures/UV_grid.png", graphics::Texture::TEXTURE_2D),
+	: Test(window),
 	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
+	  texture("res/textures/UV_grid.png", graphics::Texture::TEXTURE_2D),
+	  rotation(30.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.0f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *
@@ -35,9 +36,9 @@ TestFaceCulling::TestFaceCulling(const Window &window)
 TestFaceCulling::~TestFaceCulling() { GLCall(glDisable(GL_CULL_FACE)); }
 
 void TestFaceCulling::OnRender() {
-	graphics::Renderer<>::Clear();
-	renderer.Submit(graphics::Renderable(va.get(), ib.get(), shader));
-	renderer.Flush();
+	graphics::Renderer::Clear();
+	m_Window.GetRenderer()->Submit(graphics::Renderable(shader, va.get(), ib.get()));
+	m_Window.GetRenderer()->Flush();
 }
 
 void TestFaceCulling::OnGUIRender() {}

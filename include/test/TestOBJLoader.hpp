@@ -2,7 +2,6 @@
 #define TESTOBJLOADER_HPP
 
 #include "Transform.hpp"
-#include "graphics/BasicRenderer.hpp"
 #include "graphics/Texture.hpp"
 #include "math/Vec4.hpp"
 #include "test/Test.hpp"
@@ -13,16 +12,17 @@ class TestOBJLoader : public Test {
   protected:
 	math::Vec4<> m_Color;
 
-	graphics::BasicRenderer<> renderer;
 	graphics::Shader shader;
 	graphics::Texture texture;
-	graphics::Mesh<> mesh;
 
 	math::Vec3<> rotation;
 	Transform<> transform;
 
 	math::Mat4<> model;
 	math::Mat4<> proj;
+
+	std::unique_ptr<graphics::VertexArray> m_VA = nullptr;
+	std::unique_ptr<graphics::IndexBuffer> m_IB = nullptr;
 
   public:
 	TestOBJLoader(

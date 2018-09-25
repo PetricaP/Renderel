@@ -1,7 +1,7 @@
 #ifndef TESTTRIANGLECOLOR_HPP
 #define TESTTRIANGLECOLOR_HPP
 
-#include "graphics/BasicRenderer.hpp"
+#include "graphics/Renderer.hpp"
 #include "math/Vec4.hpp"
 #include "test/Test.hpp"
 
@@ -29,8 +29,7 @@ class TestTriangleColor : public Test {
 
 	std::unique_ptr<graphics::VertexArray> va;
 	std::unique_ptr<graphics::VertexBuffer> vb;
-	std::unique_ptr<graphics::IndexBuffer<>> ib;
-	graphics::BasicRenderer<> renderer;
+	std::unique_ptr<graphics::IndexBuffer> ib;
 	graphics::Shader shader;
 
   public:

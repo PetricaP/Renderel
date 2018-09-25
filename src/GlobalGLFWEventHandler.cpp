@@ -78,9 +78,8 @@ void GlobalGLFWEventHandler::HandleEvents(WindowEventData &windowEventData) {
 		case WINDOWRESIZE:
 			windowEventData.windowGLFW->SetWidth(event.windowEvent.width);
 			windowEventData.windowGLFW->SetHeight(event.windowEvent.height);
-			graphics::Renderer<>::SetViewPort(0, 0, event.windowEvent.width,
+			graphics::Renderer::SetViewPort(0, 0, event.windowEvent.width,
 											  event.windowEvent.height);
-			glViewport(0, 0, event.windowEvent.width, event.windowEvent.height);
 			break;
 		}
 

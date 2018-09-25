@@ -11,7 +11,7 @@ TestOBJLoader::TestOBJLoader(const Window &window, const std::string objPath,
 							 const std::string fragmentShaderPath)
 	: Test(window), m_Color{0.1f, 0.1f, 0.1f, 0.5f},
 	  shader(vertexShaderPath, fragmentShaderPath),
-	  texture(texturePath.c_str()), mesh(objPath), rotation(0.0f, 0.0f, 0.0f),
+	  texture(texturePath.c_str()), rotation(0.0f, 0.0f, 0.0f),
 	  transform(
 		  math::Vec3<>(0.0f, 0.0f, -2.5f),
 		  math::Quaternion<>(math::Vec3<>(1.0f, 0.0f, 0.0f), rotation.x) *
@@ -20,6 +20,8 @@ TestOBJLoader::TestOBJLoader(const Window &window, const std::string objPath,
 		  math::Vec3<>(1.0f)) {
 
 	shader.Bind();
+
+	graphics::OBJLoader::Load<>("res/models/monkey.obj", m_IB, m_VA);
 
 	texture.Bind();
 	shader.SetUniform1i("u_Sampler", 0);
@@ -60,9 +62,10 @@ void TestOBJLoader::OnGUIRender() {
 
 void TestOBJLoader::OnRender() {
 
-	// graphics::Renderer<>::Clear();
-	renderer.Submit(graphics::Renderable(mesh, shader));
-	renderer.Flush();
+	// graphics::Renderer::Clear();
+	m_Window.GetRenderer()->Submit(
+		graphics::Renderable(shader, m_VA.get(), m_IB.get()));
+	m_Window.GetRenderer()->Flush();
 }
 
 } // namespace renderel::test

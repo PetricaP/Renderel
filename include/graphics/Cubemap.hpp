@@ -2,7 +2,7 @@
 #define CUBEMAP_HPP
 
 #include "core/Common.hpp"
-#include "graphics/BasicRenderer.hpp"
+#include "graphics/Renderer.hpp"
 #include "graphics/Texture.hpp"
 #include "math/Mat4.hpp"
 #include <vector>
@@ -17,11 +17,11 @@ class Cubemap {
 
 	std::unique_ptr<VertexArray> m_Va;
 	std::unique_ptr<VertexBuffer> m_Vb;
-	std::unique_ptr<IndexBuffer<>> m_Ib;
+	std::unique_ptr<IndexBuffer> m_Ib;
 
 	math::Mat4<float> m_ViewMatrix;
 	math::Mat4<float> m_ProjectionMatrix;
-	BasicRenderer<> renderer;
+	Renderer renderer;
 
 	static constexpr float size = 1.0f;
 

@@ -11,8 +11,8 @@ TestTriangleColor::TestTriangleColor(const Window &window)
 
 	va = std::make_unique<graphics::VertexArray>();
 
-	vb = std::make_unique<graphics::VertexBuffer>(m_Vertices,
-												  sizeof(m_Vertices));
+	vb = std::make_unique<graphics::VertexBuffer>(m_Vertices, 4,
+												  sizeof(float) * 3 + sizeof(int32));
 
 	graphics::VertexBufferLayout vbl;
 	vbl.Push<float>(3);
@@ -20,7 +20,7 @@ TestTriangleColor::TestTriangleColor(const Window &window)
 
 	va->AddBuffer(std::move(vb), vbl);
 
-	ib = std::make_unique<graphics::IndexBuffer<>>(
+	ib = std::make_unique<graphics::IndexBuffer>(
 		m_Indices, sizeof(m_Indices) / sizeof(m_Indices[0]));
 
 	shader.Bind();
@@ -35,9 +35,9 @@ void TestTriangleColor::OnUpdate(float) {
 }
 
 void TestTriangleColor::OnRender() {
-	renderer.Clear();
-	renderer.Submit(graphics::Renderable(va.get(), ib.get(), shader));
-	renderer.Flush();
+	m_Window.GetRenderer()->Clear();
+	m_Window.GetRenderer()->Submit(graphics::Renderable(shader, va.get(), ib.get()));
+	m_Window.GetRenderer()->Flush();
 }
 
 void TestTriangleColor::OnGUIRender() {

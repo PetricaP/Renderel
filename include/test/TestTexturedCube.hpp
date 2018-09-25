@@ -2,7 +2,6 @@
 #define TESTTEXTUREDCUBE_HPP
 
 #include "Transform.hpp"
-#include "graphics/BasicRenderer.hpp"
 #include "graphics/Texture.hpp"
 #include "math/Vec4.hpp"
 #include "test/Test.hpp"
@@ -72,8 +71,7 @@ class TestTexturedCube : public Test {
 
 	std::unique_ptr<graphics::VertexArray> va;
 	std::unique_ptr<graphics::VertexBuffer> vb;
-	std::unique_ptr<graphics::IndexBuffer<>> ib;
-	graphics::BasicRenderer<> renderer;
+	std::unique_ptr<graphics::IndexBuffer> ib;
 	graphics::Shader shader;
 	graphics::Texture texture;
 

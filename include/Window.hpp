@@ -3,6 +3,7 @@
 
 #include "EventHandler.hpp"
 #include "GUI.hpp"
+#include "graphics/Renderer.hpp"
 #include <memory>
 #include <string>
 
@@ -13,8 +14,8 @@ class Window {
 	int32 m_Width;
 	int32 m_Height;
 	std::unique_ptr<EventHandler> m_EventHandler = nullptr;
-	// TODO: make it so m_GUI can never be nullptr
 	std::unique_ptr<GUI> m_GUI = nullptr;
+	std::unique_ptr<graphics::Renderer> m_Renderer = nullptr;
 
   protected:
 	Window(int32 width, int32 height,
@@ -40,8 +41,18 @@ class Window {
 	void SetEventHandler(std::unique_ptr<EventHandler> handler) {
 		m_EventHandler = std::move(handler);
 	}
-	GUI *GetGUI() const { return m_GUI.get(); }
+	GUI *GetGUI() const {
+		ASSERT(m_GUI.get() != nullptr);
+		return m_GUI.get();
+	}
 	void SetGUI(std::unique_ptr<GUI> gui) { m_GUI = std::move(gui); }
+	graphics::Renderer *GetRenderer() const {
+		ASSERT(m_Renderer.get() != nullptr);
+		return m_Renderer.get();
+	}
+	void SetRenderer(std::unique_ptr<graphics::Renderer> renderer) {
+		m_Renderer = std::move(renderer);
+	}
 };
 
 } // namespace renderel

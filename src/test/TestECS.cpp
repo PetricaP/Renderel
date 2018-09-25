@@ -1,4 +1,5 @@
 #include "test/TestECS.hpp"
+#include "graphics/OBJLoader.hpp"
 #include "graphics/Shader.hpp"
 
 namespace renderel::test {
@@ -8,13 +9,16 @@ TestECS::TestECS(const Window &window)
 	  shader("shaders/vertexShader.glsl", "shaders/fragmentShaderTexture.glsl"),
 	  texture("res/textures/monkey_baked.png") {
 
-	renderableMeshComponent.mesh.LoadOBJ("res/models/monkey.obj");
 	cameraComponent.camera.SetUp(math::Vec3<>(0.0f, 0.0f, -3.0f), 70.0f, 1.23f,
 								 0.1f, 100.0f);
 
 	transformComponent.transform.SetPosition(math::Vec3<>(0.0f, 0.0f, 5.0f));
 	transformComponent.transform.SetRotation(
 		math::Quaternion<>(math::Vec3<>(0.0f, 1.0f, 0.0f), 180.0f));
+
+	graphics::OBJLoader::Load<>("res/models/monkey.obj", m_IB, m_VA);
+	renderableMeshComponent.ib = m_IB.get();
+	renderableMeshComponent.va = m_VA.get();
 
 	entity = m_ECS.MakeEntity(renderableMeshComponent, transformComponent,
 							  cameraComponent);
@@ -40,17 +44,18 @@ void TestECS::OnUpdate(float) {
 void TestECS::OnGUIRender() {
 	math::Vec3<> position =
 		m_ECS.GetComponent<TransformComponent>(entity)->transform.GetPosition();
-	m_Window.GetGUI()->Text("Position: x: %f y: %f z: %f", position.x,
-							position.y, position.z);
+	m_Window.GetGUI()->Text(
+		"Position: x: %f y: %f z: %f", static_cast<double>(position.x),
+		static_cast<double>(position.y), static_cast<double>(position.z));
 }
 
 void TestECS::OnRender() {
-	graphics::Mesh<> &mesh =
-		m_ECS.GetComponent<RenderableMeshComponent>(entity)->mesh;
+	RenderableMeshComponent *mesh =
+		m_ECS.GetComponent<RenderableMeshComponent>(entity);
 
-	renderer.Submit(graphics::Renderable<>(mesh.GetVertexArray(),
-										   mesh.GetIndexBuffer(), shader));
-	renderer.Flush();
+	m_Window.GetRenderer()->Submit(
+		graphics::Renderable(shader, mesh->va, mesh->ib));
+	m_Window.GetRenderer()->Flush();
 }
 
 } // namespace renderel::test
