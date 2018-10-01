@@ -16,7 +16,6 @@ class IndexBuffer {
   public:
 	IndexBuffer(void *data, uint32 count);
 	IndexBuffer(const void *data, uint32 count);
-	void Load(void *data, uint32 count);
 
 	~IndexBuffer();
 	void Bind() const;
