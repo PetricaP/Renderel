@@ -100,8 +100,9 @@ void TestSkybox::OnUpdate(float deltaTime) {
 	math::Vec3<> yVec =
 		yAxis.GetAmount() * movementSensitivity * m_Camera.GetForward();
 
-	math::Vec3<> xVec = xAxis.GetAmount() * movementSensitivity *
-						m_Camera.GetForward().Cross(m_Camera.GetUp());
+	math::Vec3<> xVec =
+		xAxis.GetAmount() * movementSensitivity *
+		m_Camera.GetForward().Cross(m_Camera.GetUp()).Normalize();
 	math::Vec3<> zVec =
 		zAxis.GetAmount() * movementSensitivity * m_Camera.GetUp();
 
